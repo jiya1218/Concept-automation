@@ -309,6 +309,7 @@ function Index() {
                         <img
                           src="https://cpimg.tistatic.com/09164988/b/4/Siemens-S120-Drive-6SL3120-1TE21-8AD0-S120-VFD.jpg"
                           alt="SINAMICS S120 Servo"
+                          referrerPolicy="no-referrer"
                           className="h-full w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
                         />
                       </div>
@@ -330,6 +331,7 @@ function Index() {
                         <img
                           src="https://cpimg.tistatic.com/09164979/b/4/Siemens-Logo-6ED1052-1FB08-0BA1-PLC.jpg"
                           alt="SIMATIC LOGO! 8 CPU"
+                          referrerPolicy="no-referrer"
                           className="h-full w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
                         />
                       </div>

@@ -128,6 +128,10 @@ function ProductDetailPage() {
                 <img
                   src={image}
                   alt={title}
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=80";
+                  }}
                   className="h-full w-full object-contain"
                 />
               </div>
