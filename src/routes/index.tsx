@@ -326,10 +326,10 @@ function Index() {
             </div>
           </div>
 
-          {/* OEM Brands Bar */}
-          <div className="mt-16 border-t border-slate-200 dark:border-slate-800/80 bg-white/70 dark:bg-slate-950/60 py-6 backdrop-blur-md">
+          {/* OEM Brands Bar - Enlarged & Prominent */}
+          <div className="mt-16 border-t border-slate-200 dark:border-slate-800/80 bg-white/80 dark:bg-slate-950/80 py-10 backdrop-blur-md">
             <div className="mx-auto max-w-7xl px-6">
-              <span className="block text-center text-xs font-bold uppercase tracking-[0.25em] text-sky-700 dark:text-cyan-400/80 mb-4">
+              <span className="block text-center text-sm sm:text-base font-extrabold uppercase tracking-[0.2em] text-sky-700 dark:text-cyan-400 mb-6">
                 Core Stocked Industrial Brands
               </span>
               <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
@@ -338,9 +338,9 @@ function Index() {
                     key={b}
                     to="/products"
                     search={{ q: b }}
-                    className="glass-card flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-sky-600 dark:hover:text-cyan-400 transition-all bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
+                    className="glass-card flex items-center gap-3 rounded-2xl px-6 py-3.5 text-sm sm:text-base font-extrabold text-slate-800 dark:text-slate-100 hover:text-sky-600 dark:hover:text-cyan-400 hover:scale-105 transition-all bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-md hover:shadow-xl"
                   >
-                    <span className="h-2 w-2 rounded-full bg-sky-500 dark:bg-cyan-400" />
+                    <span className="h-3 w-3 rounded-full bg-sky-500 dark:bg-cyan-400 animate-pulse" />
                     {b}
                   </Link>
                 ))}
