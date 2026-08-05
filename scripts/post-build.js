@@ -12,10 +12,15 @@ async function generateClientEntry() {
   console.log('Building standalone client bundle for static Vercel deployment...');
 
   try {
-    // Compile src/main.tsx to dist/client/assets/main.js
+    // Compile src/main.tsx to dist/client/assets/main.js with process.env polyfills
     await build({
       configFile: false,
       plugins: [tsconfigPaths(), react(), tailwindcss()],
+      define: {
+        'process.env.NODE_ENV': JSON.stringify('production'),
+        'process.env': '{}',
+        'global': 'window',
+      },
       build: {
         outDir: clientDir,
         emptyOutDir: false,
