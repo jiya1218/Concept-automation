@@ -276,34 +276,84 @@ function Index() {
         <section className="py-20 bg-surface/50 dark:bg-background overflow-hidden border-t border-border">
           <div className="mx-auto max-w-7xl px-6">
             <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
-              {/* Left Column: Naksh Interlocking Curved Images + Dot Matrix */}
-              <div className="lg:col-span-6 relative flex items-center justify-center py-6">
-                {/* Cyan Dot Matrix Grid Background */}
-                <div className="absolute top-0 left-6 sm:left-12 z-0 grid grid-cols-6 gap-3 opacity-60">
-                  {[...Array(24)].map((_, i) => (
-                    <div key={i} className="h-2.5 w-2.5 rounded-full bg-cyan-500" />
-                  ))}
-                </div>
+              {/* Left Column: Premium Dark Engineering Console Showcase */}
+              <div className="lg:col-span-6 relative">
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0a2540] via-[#091e3a] to-[#003b73] p-6 sm:p-8 shadow-2xl border border-blue-500/20 text-white">
+                  {/* Subtle Grid Pattern Overlay */}
+                  <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
-                <div className="relative z-10 flex items-end gap-3 sm:gap-6">
-                  {/* Curved Block 1 (Left Tall Block with rounded top-left) */}
-                  <div className="relative w-44 sm:w-56 h-80 sm:h-96 rounded-tl-[80px] rounded-bl-[40px] rounded-tr-[20px] rounded-br-[20px] bg-gradient-to-b from-[#091e3a] via-[#0b2b52] to-[#00529b] p-4 shadow-2xl flex flex-col justify-center items-center border border-blue-400/30">
-                    <div className="absolute inset-0 bg-[radial-gradient(#ffffff15_1px,transparent_1px)] [background-size:16px_16px] opacity-40" />
-                    <img
-                      src="https://cpimg.tistatic.com/09164988/b/4/Siemens-S120-Drive-6SL3120-1TE21-8AD0-S120-VFD.jpg"
-                      alt="SINAMICS VFD Drive"
-                      className="relative z-10 h-64 sm:h-72 w-full object-contain filter drop-shadow-2xl transition-transform duration-500 hover:scale-105"
-                    />
+                  {/* Header Status Bar */}
+                  <div className="relative z-10 flex items-center justify-between border-b border-white/15 pb-4 mb-6">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-white/90">
+                        Operational Inventory · Makarba, Ahmedabad
+                      </span>
+                    </div>
+                    <span className="rounded-full bg-orange-500/20 border border-orange-500/40 px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest text-orange-400">
+                      100% Genuine OEM
+                    </span>
                   </div>
 
-                  {/* Curved Block 2 (Right Arch Block with rounded-t-full) */}
-                  <div className="relative w-40 sm:w-52 h-64 sm:h-80 rounded-t-[100px] rounded-b-[30px] bg-gradient-to-b from-[#0b2b52] via-[#004b8d] to-[#0066b2] p-4 shadow-2xl flex flex-col justify-center items-center border border-blue-400/30">
-                    <div className="absolute inset-0 bg-[radial-gradient(#ffffff15_1px,transparent_1px)] [background-size:16px_16px] opacity-40" />
-                    <img
-                      src="https://cpimg.tistatic.com/09164979/b/4/Siemens-Logo-6ED1052-1FB08-0BA1-PLC.jpg"
-                      alt="Siemens SITOP PSU & PLC"
-                      className="relative z-10 h-52 sm:h-64 w-full object-contain filter drop-shadow-2xl transition-transform duration-500 hover:scale-105"
-                    />
+                  {/* 2 Showcase Product Cards */}
+                  <div className="relative z-10 grid grid-cols-2 gap-4">
+                    {/* Product Card 1 */}
+                    <div className="group rounded-2xl bg-white p-4 shadow-xl border border-white/20 transition-all duration-300 hover:-translate-y-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="rounded bg-blue-600 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white">
+                          Siemens VFD
+                        </span>
+                        <ShieldCheck className="h-3.5 w-3.5 text-blue-600" />
+                      </div>
+                      <div className="h-44 sm:h-48 w-full flex items-center justify-center p-2">
+                        <img
+                          src="https://cpimg.tistatic.com/09164988/b/4/Siemens-S120-Drive-6SL3120-1TE21-8AD0-S120-VFD.jpg"
+                          alt="SINAMICS S120 Servo"
+                          className="h-full w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="mt-2 text-center pt-2 border-t border-gray-100">
+                        <div className="font-display text-xs font-bold text-gray-900 uppercase">SINAMICS S120 Servo</div>
+                        <div className="text-[10px] text-gray-500 font-mono">6SL3120-1TE21</div>
+                      </div>
+                    </div>
+
+                    {/* Product Card 2 */}
+                    <div className="group rounded-2xl bg-white p-4 shadow-xl border border-white/20 transition-all duration-300 hover:-translate-y-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="rounded bg-orange-600 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white">
+                          Siemens PLC
+                        </span>
+                        <ShieldCheck className="h-3.5 w-3.5 text-orange-600" />
+                      </div>
+                      <div className="h-44 sm:h-48 w-full flex items-center justify-center p-2">
+                        <img
+                          src="https://cpimg.tistatic.com/09164979/b/4/Siemens-Logo-6ED1052-1FB08-0BA1-PLC.jpg"
+                          alt="SIMATIC LOGO! 8 CPU"
+                          className="h-full w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="mt-2 text-center pt-2 border-t border-gray-100">
+                        <div className="font-display text-xs font-bold text-gray-900 uppercase">SIMATIC LOGO! 8 CPU</div>
+                        <div className="text-[10px] text-gray-500 font-mono">6ED1052-1FB08</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom Technical Metrics Bar */}
+                  <div className="relative z-10 mt-6 pt-4 border-t border-white/15 grid grid-cols-3 gap-2 text-center">
+                    <div>
+                      <div className="font-display text-base font-extrabold text-white">1,500+</div>
+                      <div className="text-[9px] uppercase tracking-wider text-white/70">Parts Ready</div>
+                    </div>
+                    <div>
+                      <div className="font-display text-base font-extrabold text-orange-400">24-48 HR</div>
+                      <div className="text-[9px] uppercase tracking-wider text-white/70">Dispatch</div>
+                    </div>
+                    <div>
+                      <div className="font-display text-base font-extrabold text-white">PAN-INDIA</div>
+                      <div className="text-[9px] uppercase tracking-wider text-white/70">Global Export</div>
+                    </div>
                   </div>
                 </div>
               </div>
