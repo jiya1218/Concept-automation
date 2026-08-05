@@ -59,7 +59,7 @@ function Products() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-slate-100">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       <Header />
 
       <main>

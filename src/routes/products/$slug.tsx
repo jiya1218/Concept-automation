@@ -106,7 +106,7 @@ function ProductDetailPage() {
   const related = allProducts.filter((p) => p.brand.toLowerCase() === brand.toLowerCase() && p.name !== title).slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-slate-100">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       <Header />
 
       <main>
