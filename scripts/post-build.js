@@ -1,17 +1,39 @@
 import fs from 'fs';
 import path from 'path';
+import { build } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 const clientDir = path.join(process.cwd(), 'dist', 'client');
 const assetsDir = path.join(clientDir, 'assets');
 
-if (fs.existsSync(assetsDir)) {
-  const files = fs.readdirSync(assetsDir);
-  const cssFile = files.find(f => f.startsWith('styles-') && f.endsWith('.css'));
-  const routesJs = files.find(f => f.startsWith('routes-') && f.endsWith('.js'));
-  const indexJs = files.find(f => f.startsWith('index-') && f.endsWith('.js'));
-  const footerJs = files.find(f => f.startsWith('Footer-') && f.endsWith('.js'));
+async function generateClientEntry() {
+  console.log('Building standalone client bundle for static Vercel deployment...');
 
-  const html = `<!DOCTYPE html>
+  try {
+    // Compile src/main.tsx to dist/client/assets/main.js
+    await build({
+      configFile: false,
+      plugins: [tsconfigPaths(), react(), tailwindcss()],
+      build: {
+        outDir: clientDir,
+        emptyOutDir: false,
+        lib: {
+          entry: path.join(process.cwd(), 'src', 'main.tsx'),
+          formats: ['es'],
+          fileName: () => 'assets/main.js',
+        },
+        rollupOptions: {
+          external: [],
+        },
+      },
+    });
+
+    const files = fs.readdirSync(assetsDir);
+    const cssFile = files.find(f => f.startsWith('styles-') && f.endsWith('.css'));
+
+    const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -24,14 +46,15 @@ if (fs.existsSync(assetsDir)) {
 </head>
 <body class="bg-background text-foreground antialiased">
   <div id="root"></div>
-  ${footerJs ? `<script type="module" src="/assets/${footerJs}"></script>` : ''}
-  ${routesJs ? `<script type="module" src="/assets/${routesJs}"></script>` : ''}
-  ${indexJs ? `<script type="module" src="/assets/${indexJs}"></script>` : ''}
+  <script type="module" src="/assets/main.js"></script>
 </body>
 </html>`;
 
-  fs.writeFileSync(path.join(clientDir, 'index.html'), html);
-  console.log('Successfully generated dist/client/index.html for Vercel static deployment!');
-} else {
-  console.error('dist/client/assets directory not found!');
+    fs.writeFileSync(path.join(clientDir, 'index.html'), html);
+    console.log('Successfully created dist/client/index.html & dist/client/assets/main.js for Vercel!');
+  } catch (err) {
+    console.error('Error generating client entry:', err);
+  }
 }
+
+generateClientEntry();
