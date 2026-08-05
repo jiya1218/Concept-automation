@@ -4,15 +4,16 @@ import { ArrowLeft, CheckCircle2, ShieldCheck, Truck, Globe, MessageSquare, Phon
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
-import { allProducts, categories, company } from "@/data/catalog";
+import { allProducts, categories, company, getCombinedProducts } from "@/data/catalog";
 import { submitInquiry } from "@/lib/supabase";
 import { toast } from "sonner";
 import { getProxiedImageUrl, getFallbackImageUrl, getSvgDataUrl } from "@/lib/imageHelper";
 
 export const Route = createFileRoute("/products/$slug")({
-  loader: ({ params }) => {
-    const product = allProducts.find(
-      (p) => p.slug === params.slug || p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") === params.slug
+  loader: async ({ params }) => {
+    const combined = await getCombinedProducts();
+    const product = combined.find(
+      (p) => p.slug === params.slug || p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") === params.slug || p.id === params.slug
     );
     const category = categories.find((c) => c.slug === params.slug);
 

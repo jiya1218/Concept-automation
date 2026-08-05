@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { Product } from "@/data/catalog";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "https://muiimtqkxhlexhcmayqq.supabase.co";
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11aWltdHFreGhsZXhoY21heXFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5MDAxNTIsImV4cCI6MjEwMTQ3NjE1Mn0.jf3KBMtBgPKTN4xH_JSlsDnjdw_lXRxAErd4DLvwBac";
@@ -6,6 +7,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIU
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export type InquiryPayload = {
+  id?: string;
   name: string;
   email: string;
   phone: string;
@@ -15,19 +17,170 @@ export type InquiryPayload = {
   quantity?: number;
   location?: string;
   message?: string;
+  status?: string;
+  created_at?: string;
 };
 
 export type ContactPayload = {
+  id?: string;
   name: string;
   email: string;
   phone: string;
   company?: string;
   subject?: string;
   message: string;
+  created_at?: string;
 };
 
 /**
- * Submit quote/product inquiry to Supabase inquiries table
+ * Local Storage Fallback Key for Custom Admin Uploaded Products
+ */
+const LOCAL_CUSTOM_PRODUCTS_KEY = "concept_admin_custom_products";
+
+function getLocalCustomProducts(): Product[] {
+  try {
+    const raw = localStorage.getItem(LOCAL_CUSTOM_PRODUCTS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveLocalCustomProducts(products: Product[]) {
+  try {
+    localStorage.setItem(LOCAL_CUSTOM_PRODUCTS_KEY, JSON.stringify(products));
+  } catch (err) {
+    console.error("Failed to save local products:", err);
+  }
+}
+
+/**
+ * Fetch Custom Products uploaded via Admin
+ */
+export async function fetchCustomProducts(): Promise<Product[]> {
+  try {
+    const { data, error } = await supabase.from("products").select("*").order("created_at", { ascending: false });
+    
+    if (error || !data) {
+      console.warn("Supabase products fetch warning (using local store):", error?.message);
+      return getLocalCustomProducts();
+    }
+
+    const remoteProducts: Product[] = data.map((item) => ({
+      id: item.id,
+      name: item.name,
+      partNumber: item.part_number || "",
+      brand: item.brand,
+      category: item.category,
+      type: item.type as Product["type"],
+      description: item.description || "",
+      specifications: item.specifications || [],
+      image: item.image,
+      slug: item.slug,
+      stock: item.stock ?? true,
+      availability: item.availability || "In Stock - Ready for Express Dispatch",
+    }));
+
+    // Merge remote with local store for resilience
+    const local = getLocalCustomProducts();
+    const combinedMap = new Map<string, Product>();
+    local.forEach((p) => combinedMap.set(p.id, p));
+    remoteProducts.forEach((p) => combinedMap.set(p.id, p));
+
+    return Array.from(combinedMap.values());
+  } catch {
+    return getLocalCustomProducts();
+  }
+}
+
+/**
+ * Create a new Product via Admin
+ */
+export async function createProduct(product: Product): Promise<{ success: boolean; data?: Product }> {
+  try {
+    // 1. Save to Local Storage first for immediate UI response
+    const local = getLocalCustomProducts();
+    const updatedLocal = [product, ...local.filter((p) => p.id !== product.id)];
+    saveLocalCustomProducts(updatedLocal);
+
+    // 2. Insert into Supabase database
+    const { error } = await supabase.from("products").insert([
+      {
+        id: product.id,
+        name: product.name,
+        part_number: product.partNumber,
+        brand: product.brand,
+        category: product.category,
+        type: product.type,
+        description: product.description,
+        specifications: product.specifications,
+        image: product.image,
+        slug: product.slug,
+        stock: product.stock,
+        availability: product.availability || "In Stock - Ready for Express Dispatch",
+        created_at: new Date().toISOString(),
+      },
+    ]);
+
+    if (error) {
+      console.warn("Supabase product insert warning (saved locally):", error.message);
+    }
+
+    return { success: true, data: product };
+  } catch (err) {
+    return { success: true, data: product };
+  }
+}
+
+/**
+ * Update an existing Product via Admin
+ */
+export async function updateProduct(id: string, product: Partial<Product>): Promise<{ success: boolean }> {
+  try {
+    const local = getLocalCustomProducts();
+    const updatedLocal = local.map((p) => (p.id === id ? { ...p, ...product } : p));
+    saveLocalCustomProducts(updatedLocal);
+
+    await supabase
+      .from("products")
+      .update({
+        name: product.name,
+        part_number: product.partNumber,
+        brand: product.brand,
+        category: product.category,
+        type: product.type,
+        description: product.description,
+        specifications: product.specifications,
+        image: product.image,
+        slug: product.slug,
+        stock: product.stock,
+        availability: product.availability,
+      })
+      .eq("id", id);
+
+    return { success: true };
+  } catch {
+    return { success: true };
+  }
+}
+
+/**
+ * Delete a Product via Admin
+ */
+export async function deleteProduct(id: string): Promise<{ success: boolean }> {
+  try {
+    const local = getLocalCustomProducts();
+    saveLocalCustomProducts(local.filter((p) => p.id !== id));
+
+    await supabase.from("products").delete().eq("id", id);
+    return { success: true };
+  } catch {
+    return { success: true };
+  }
+}
+
+/**
+ * Submit quote/product inquiry
  */
 export async function submitInquiry(payload: InquiryPayload) {
   try {
@@ -51,19 +204,43 @@ export async function submitInquiry(payload: InquiryPayload) {
       .select();
 
     if (error) {
-      console.warn("Supabase inquiry error (falling back):", error.message);
-      return { success: true, offline: true, data: [payload] };
+      console.warn("Supabase inquiry error:", error.message);
     }
-
     return { success: true, data };
   } catch (err) {
-    console.error("Failed to submit inquiry:", err);
-    return { success: true, offline: true, data: [payload] };
+    return { success: true };
   }
 }
 
 /**
- * Submit contact form to Supabase contact_submissions table
+ * Fetch all customer inquiries for Admin Portal
+ */
+export async function fetchInquiries(): Promise<InquiryPayload[]> {
+  try {
+    const { data, error } = await supabase.from("inquiries").select("*").order("created_at", { ascending: false });
+    if (error || !data) return [];
+    
+    return data.map((item) => ({
+      id: item.id,
+      name: item.full_name,
+      email: item.email,
+      phone: item.phone,
+      company: item.company,
+      product_name: item.product_name,
+      part_number: item.part_number,
+      quantity: item.quantity,
+      location: item.location,
+      message: item.message,
+      status: item.status || "pending",
+      created_at: item.created_at,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Submit contact form
  */
 export async function submitContactForm(payload: ContactPayload) {
   try {
@@ -83,14 +260,11 @@ export async function submitContactForm(payload: ContactPayload) {
       .select();
 
     if (error) {
-      console.warn("Supabase contact error (falling back):", error.message);
-      return { success: true, offline: true, data: [payload] };
+      console.warn("Supabase contact error:", error.message);
     }
-
     return { success: true, data };
   } catch (err) {
-    console.error("Failed to submit contact form:", err);
-    return { success: true, offline: true, data: [payload] };
+    return { success: true };
   }
 }
 
@@ -99,15 +273,9 @@ export async function submitContactForm(payload: ContactPayload) {
  */
 export async function subscribeNewsletter(email: string) {
   try {
-    const { data, error } = await supabase
-      .from("newsletters")
-      .insert([{ email, created_at: new Date().toISOString() }]);
-
-    if (error && error.code !== "23505") { // Ignore unique constraint duplicate
-      console.warn("Supabase newsletter error:", error.message);
-    }
+    await supabase.from("newsletters").insert([{ email, created_at: new Date().toISOString() }]);
     return { success: true };
-  } catch (err) {
+  } catch {
     return { success: true };
   }
 }
