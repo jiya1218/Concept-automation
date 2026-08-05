@@ -202,10 +202,10 @@ function Index() {
     }
   };
 
-  // Filtered Showcase Products
+  // Filtered Showcase Products (1 Clean Row of 4 Products)
   const featuredProducts = useMemo(() => {
-    if (activeTab === "All") return allProducts.slice(0, 8);
-    return allProducts.filter((p) => p.type.toLowerCase() === activeTab.toLowerCase()).slice(0, 8);
+    if (activeTab === "All") return allProducts.slice(0, 4);
+    return allProducts.filter((p) => p.type.toLowerCase() === activeTab.toLowerCase()).slice(0, 4);
   }, [activeTab]);
 
   return (
