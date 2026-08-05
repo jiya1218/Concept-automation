@@ -58,19 +58,19 @@ export function Header() {
       <header className="sticky top-0 z-40 glass-header shadow-md transition-colors">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3.5">
           {/* Official Logo Brand Identity */}
-          <Link to="/" className="flex items-center gap-3.5 group">
+          <Link to="/" className="flex items-center gap-4 group py-1">
             <img
               src="/logo.jpg"
               alt="Concept Automation Technologies logo"
-              className="h-11 w-11 rounded-xl object-contain bg-white p-1 border border-slate-200 dark:border-slate-800 shadow-md transition-transform group-hover:scale-105"
-              width={44}
-              height={44}
+              className="h-16 w-16 sm:h-20 sm:w-20 rounded-2xl object-contain bg-white p-1.5 border border-slate-200 dark:border-slate-800 shadow-lg transition-transform group-hover:scale-105"
+              width={80}
+              height={80}
             />
             <div className="leading-tight">
-              <span className="block font-display text-lg font-extrabold uppercase tracking-tight text-slate-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-cyan-400 transition-colors">
+              <span className="block font-display text-xl sm:text-2xl font-extrabold uppercase tracking-tight text-slate-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-cyan-400 transition-colors">
                 Concept Automation
               </span>
-              <span className="block text-[10px] font-bold uppercase tracking-[0.25em] text-sky-600 dark:text-cyan-400">
+              <span className="block text-xs font-bold uppercase tracking-[0.25em] text-sky-600 dark:text-cyan-400">
                 Technologies
               </span>
             </div>

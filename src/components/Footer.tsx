@@ -83,15 +83,15 @@ export function Footer() {
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-2 lg:grid-cols-5">
           {/* Col 1: Brand Info */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <img
                 src="/logo.jpg"
                 alt="Concept Automation Technologies logo"
-                className="h-11 w-11 rounded-xl object-contain bg-white p-1 border border-slate-200 dark:border-slate-800 shadow-md"
-                width={44}
-                height={44}
+                className="h-16 w-16 sm:h-20 sm:w-20 rounded-2xl object-contain bg-white p-1.5 border border-slate-200 dark:border-slate-800 shadow-lg"
+                width={80}
+                height={80}
               />
-              <span className="font-display text-base font-bold uppercase leading-tight text-white">
+              <span className="font-display text-lg sm:text-xl font-extrabold uppercase leading-tight text-white">
                 Concept Automation
                 <br />
                 Technologies
