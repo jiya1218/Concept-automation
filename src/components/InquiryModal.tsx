@@ -69,6 +69,8 @@ export function InquiryModal({ isOpen, onClose, productName = "", partNumber = "
     }
   };
 
+  if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-in fade-in">
       <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-background shadow-2xl transition-all">
