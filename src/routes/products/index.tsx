@@ -4,9 +4,8 @@ import { Search, Filter, SlidersHorizontal, MessageSquare, Check, Layers } from 
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
-import { allProducts, brands, categories, getCombinedProducts, Product } from "@/data/catalog";
+import { allProducts, brands, categories } from "@/data/catalog";
 import { InquiryModal } from "@/components/InquiryModal";
-import { useEffect } from "react";
 
 export const Route = createFileRoute("/products/")({
   head: () => ({
@@ -30,24 +29,17 @@ function Products() {
   const [selectedBrand, setSelectedBrand] = useState<string>("All");
   const [selectedType, setSelectedType] = useState<string>("All");
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
-  const [productsList, setProductsList] = useState<Product[]>(allProducts);
-
-  useEffect(() => {
-    getCombinedProducts().then((items) => {
-      setProductsList(items);
-    });
-  }, []);
 
   const brandCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     brands.forEach((b) => {
-      counts[b] = productsList.filter((p) => p.brand.toLowerCase() === b.toLowerCase()).length;
+      counts[b] = allProducts.filter((p) => p.brand.toLowerCase() === b.toLowerCase()).length;
     });
     return counts;
-  }, [productsList]);
+  }, []);
 
   const filteredProducts = useMemo(() => {
-    return productsList.filter((product) => {
+    return allProducts.filter((product) => {
       const matchesBrand = selectedBrand === "All" || product.brand.toLowerCase() === selectedBrand.toLowerCase();
       const matchesType = selectedType === "All" || product.type === selectedType;
       const matchesSearch =

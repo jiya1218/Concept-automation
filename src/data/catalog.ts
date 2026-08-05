@@ -6940,28 +6940,3 @@ export const allProducts: Product[] = [
     "stock": true
   }
 ];
-
-export async function getCombinedProducts(): Promise<Product[]> {
-  try {
-    const { fetchCustomProducts } = await import("@/lib/supabase");
-    const custom = await fetchCustomProducts();
-    
-    // Create a map to ensure no duplicate ID/slug collisions
-    const productMap = new Map<string, Product>();
-    
-    // 1. Load custom uploaded products first so they take priority
-    custom.forEach((p) => productMap.set(p.slug || p.id, p));
-    
-    // 2. Load static scraped catalog products
-    allProducts.forEach((p) => {
-      if (!productMap.has(p.slug)) {
-        productMap.set(p.slug, p);
-      }
-    });
-
-    return Array.from(productMap.values());
-  } catch {
-    return allProducts;
-  }
-}
-
