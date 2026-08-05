@@ -1,5 +1,5 @@
 import { createFileRoute, useSearch } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Search, Filter, SlidersHorizontal, MessageSquare, Check, Layers } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -30,18 +30,28 @@ function Products() {
   const [selectedType, setSelectedType] = useState<string>("All");
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
 
-  const filteredProducts = allProducts.filter((product) => {
-    const matchesBrand = selectedBrand === "All" || product.brand.toLowerCase() === selectedBrand.toLowerCase();
-    const matchesType = selectedType === "All" || product.type === selectedType;
-    const matchesSearch =
-      !searchQuery ||
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.partNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchQuery.toLowerCase());
+  const brandCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    brands.forEach((b) => {
+      counts[b] = allProducts.filter((p) => p.brand.toLowerCase() === b.toLowerCase()).length;
+    });
+    return counts;
+  }, []);
 
-    return matchesBrand && matchesType && matchesSearch;
-  });
+  const filteredProducts = useMemo(() => {
+    return allProducts.filter((product) => {
+      const matchesBrand = selectedBrand === "All" || product.brand.toLowerCase() === selectedBrand.toLowerCase();
+      const matchesType = selectedType === "All" || product.type === selectedType;
+      const matchesSearch =
+        !searchQuery ||
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.partNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchQuery.toLowerCase());
+
+      return matchesBrand && matchesType && matchesSearch;
+    });
+  }, [selectedBrand, selectedType, searchQuery]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -130,7 +140,7 @@ function Products() {
               All Brands ({allProducts.length})
             </button>
             {brands.map((b) => {
-              const count = allProducts.filter((p) => p.brand.toLowerCase() === b.toLowerCase()).length;
+              const count = brandCounts[b] || 0;
               return (
                 <button
                   key={b}
