@@ -57,11 +57,15 @@ export function Header() {
       {/* Main Glassmorphic Header */}
       <header className="sticky top-0 z-40 glass-header shadow-md transition-colors">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3.5">
-          {/* Logo Brand Identity */}
+          {/* Official Logo Brand Identity */}
           <Link to="/" className="flex items-center gap-3.5 group">
-            <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600 font-display font-black text-white text-xl shadow-md transition-transform group-hover:scale-105">
-              CAT
-            </div>
+            <img
+              src="/logo.jpg"
+              alt="Concept Automation Technologies logo"
+              className="h-11 w-11 rounded-xl object-contain bg-white p-1 border border-slate-200 dark:border-slate-800 shadow-md transition-transform group-hover:scale-105"
+              width={44}
+              height={44}
+            />
             <div className="leading-tight">
               <span className="block font-display text-lg font-extrabold uppercase tracking-tight text-slate-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-cyan-400 transition-colors">
                 Concept Automation

@@ -84,9 +84,13 @@ export function Footer() {
           {/* Col 1: Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-display font-black text-slate-950 text-lg shadow-md">
-                CAT
-              </div>
+              <img
+                src="/logo.jpg"
+                alt="Concept Automation Technologies logo"
+                className="h-11 w-11 rounded-xl object-contain bg-white p-1 border border-slate-200 dark:border-slate-800 shadow-md"
+                width={44}
+                height={44}
+              />
               <span className="font-display text-base font-bold uppercase leading-tight text-white">
                 Concept Automation
                 <br />
