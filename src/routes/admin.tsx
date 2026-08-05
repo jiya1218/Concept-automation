@@ -315,8 +315,8 @@ function AdminPortal() {
   // UNAUTHENTICATED LOGIN SCREEN
   if (!isAuthenticated) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4 text-slate-100 font-sans">
-        <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl backdrop-blur-xl">
+      <div className="relative z-50 flex min-h-screen items-center justify-center bg-slate-950 px-4 text-slate-100 font-sans pointer-events-auto">
+        <div className="relative z-50 w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/95 p-8 shadow-2xl backdrop-blur-xl pointer-events-auto">
           <div className="flex justify-center">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-500/10 text-orange-500 border border-orange-500/20 shadow-inner">
               <Lock className="h-7 w-7" />
@@ -335,38 +335,49 @@ function AdminPortal() {
             </p>
           </div>
 
-          <form onSubmit={handleLogin} className="mt-8 space-y-4">
+          <form onSubmit={handleLogin} className="mt-8 space-y-4 relative z-50">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300">
-                Admin Password
-              </label>
-              <input
-                type="password"
-                required
-                autoFocus
-                placeholder="Enter password..."
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500"
-              />
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-300">
+                  Admin Password
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setPasswordInput(DEFAULT_ADMIN_PASS)}
+                  className="text-[11px] text-orange-400 hover:underline font-medium"
+                >
+                  Fill Default Password
+                </button>
+              </div>
+              <div className="relative mt-2">
+                <input
+                  type="text"
+                  required
+                  autoFocus
+                  placeholder="Enter password (e.g. concept@admin2026)..."
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 cursor-text relative z-50 pointer-events-auto"
+                />
+              </div>
             </div>
 
             {authError && (
               <div className="flex items-center gap-2 rounded-lg bg-red-500/10 p-3 text-xs font-semibold text-red-400 border border-red-500/20">
-                <AlertCircle className="h-4 w-4 shrink-0" /> Incorrect admin password.
+                <AlertCircle className="h-4 w-4 shrink-0" /> Incorrect admin password. Try: <code className="font-mono">concept@admin2026</code>
               </div>
             )}
 
             <button
               type="submit"
-              className="w-full rounded-xl bg-orange-500 py-3 text-xs font-bold uppercase tracking-wider text-slate-950 transition-all hover:bg-orange-400 shadow-lg shadow-orange-500/20"
+              className="w-full rounded-xl bg-orange-500 py-3.5 text-xs font-bold uppercase tracking-wider text-slate-950 transition-all hover:bg-orange-400 active:scale-98 shadow-lg shadow-orange-500/20 cursor-pointer relative z-50 pointer-events-auto"
             >
               Authenticate & Enter Console
             </button>
           </form>
 
           <p className="mt-6 text-center text-[11px] text-slate-500">
-            Protected Admin System • Concept Automation Technologies
+            Protected Admin System • Password: <code className="text-slate-400 font-mono">concept@admin2026</code>
           </p>
         </div>
       </div>
