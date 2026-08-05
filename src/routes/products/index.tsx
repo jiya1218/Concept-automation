@@ -39,15 +39,14 @@ function Products() {
   }, []);
 
   const filteredProducts = useMemo(() => {
+    const searchTerms = searchQuery.toLowerCase().trim().split(/\s+/).filter(Boolean);
+
     return allProducts.filter((product) => {
       const matchesBrand = selectedBrand === "All" || product.brand.toLowerCase() === selectedBrand.toLowerCase();
       const matchesType = selectedType === "All" || product.type === selectedType;
-      const matchesSearch =
-        !searchQuery ||
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.partNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const searchableText = `${product.name} ${product.partNumber} ${product.brand} ${product.category} ${product.type} ${product.description}`.toLowerCase();
+      const matchesSearch = searchTerms.length === 0 || searchTerms.every((term) => searchableText.includes(term));
 
       return matchesBrand && matchesType && matchesSearch;
     });

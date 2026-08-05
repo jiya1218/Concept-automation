@@ -27,8 +27,8 @@ export const Route = createFileRoute("/products/$slug")({
       };
     }
     const { product, category } = loaderData;
-    const name = product ? product.name : category!.name;
-    const desc = product ? product.description : category!.blurb;
+    const name = product ? product.name : (category?.name || "Product Detail");
+    const desc = product ? product.description : (category ? `${category.name} supplied by Concept Automation Technologies Makarba, Ahmedabad.` : "Industrial Automation Parts Supplier");
     return {
       meta: [
         { title: `${name} | Concept Automation Technologies` },
@@ -45,10 +45,10 @@ function ProductDetailPage() {
   const [submitted, setSubmitted] = useState(false);
   const [errorCount, setErrorCount] = useState(0);
 
-  const title = product ? product.name : category!.name;
-  const brand = product ? product.brand : category!.brand;
+  const title = product ? product.name : (category?.name || "Product Detail");
+  const brand = product ? product.brand : (category?.brand || "OEM Hardware");
   const partNumber = product ? product.partNumber : "";
-  const rawImage = product ? product.image : category!.image;
+  const rawImage = product?.image || "";
   
   const getImageSrc = () => {
     if (errorCount === 0) {
@@ -59,10 +59,10 @@ function ProductDetailPage() {
     }
     return getSvgDataUrl(title, brand);
   };
-  const description = product ? product.description : category!.blurb;
-  const availability = product ? product.availability : "In Stock";
-  const warranty = product ? product.warranty : "1 Year OEM Warranty";
-  const origin = product ? product.origin : "Germany / Japan";
+  const description = product ? product.description : (category ? `${category.name} supplied by Concept Automation Technologies Makarba, Ahmedabad. Fast Pan-India dispatch.` : "Original OEM factory automation hardware.");
+  const availability = product?.stock !== false ? "In Stock" : "Available on Order";
+  const warranty = "1 Year OEM Warranty";
+  const origin = "Germany / Japan";
   const specs = product?.specifications || [
     { label: "Category", value: category?.name || "Automation Hardware" },
     { label: "Brand", value: category?.brand || brand || "Genuine OEM" },
