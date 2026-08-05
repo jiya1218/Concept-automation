@@ -44,6 +44,8 @@ function ProductDetailPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const title = product ? product.name : category!.name;
+  const brand = product ? product.brand : category!.brand;
+  const partNumber = product ? product.partNumber : "";
   const rawImage = product ? product.image : category!.image;
   const image = rawImage.startsWith("http")
     ? `https://wsrv.nl/?url=${encodeURIComponent(rawImage)}&w=600&output=webp`
