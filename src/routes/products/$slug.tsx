@@ -44,9 +44,10 @@ function ProductDetailPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const title = product ? product.name : category!.name;
-  const brand = product ? product.brand : category!.brand;
-  const image = product ? product.image : category!.image;
-  const partNumber = product ? product.partNumber : "";
+  const rawImage = product ? product.image : category!.image;
+  const image = rawImage.startsWith("http")
+    ? `https://wsrv.nl/?url=${encodeURIComponent(rawImage)}&w=600&output=webp`
+    : rawImage;
   const description = product ? product.description : category!.blurb;
   const availability = product ? product.availability : "In Stock";
   const warranty = product ? product.warranty : "1 Year OEM Warranty";
