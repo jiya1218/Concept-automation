@@ -23,7 +23,7 @@ import {
   X,
   AlertCircle
 } from "lucide-react";
-import { brands, Product, ProductSpec } from "@/data/catalog";
+import { brands, Product, ProductSpec, getCombinedProducts } from "@/data/catalog";
 import {
   fetchCustomProducts,
   createProduct,
@@ -107,7 +107,7 @@ function AdminPortal() {
   const loadAdminData = async () => {
     setLoadingData(true);
     try {
-      const [prods, inqs] = await Promise.all([fetchCustomProducts(), fetchInquiries()]);
+      const [prods, inqs] = await Promise.all([getCombinedProducts(), fetchInquiries()]);
       setProductsList(prods);
       setInquiriesList(inqs);
     } catch (err) {
@@ -300,6 +300,9 @@ function AdminPortal() {
     toast.success("Exported Inquiries to CSV!");
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 20;
+
   const filteredProducts = useMemo(() => {
     return productsList.filter((p) => {
       const matchesSearch =
@@ -311,6 +314,13 @@ function AdminPortal() {
       return matchesSearch && matchesBrand;
     });
   }, [productsList, productSearch, selectedBrandFilter]);
+
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) || 1;
+
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredProducts.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredProducts, currentPage]);
 
   // UNAUTHENTICATED LOGIN SCREEN
   if (!isAuthenticated) {
@@ -544,14 +554,14 @@ function AdminPortal() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60">
-                    {filteredProducts.length === 0 ? (
+                    {paginatedProducts.length === 0 ? (
                       <tr>
                         <td colSpan={6} className="p-8 text-center text-slate-500">
                           No products found matching your filter criteria.
                         </td>
                       </tr>
                     ) : (
-                      filteredProducts.map((p) => (
+                      paginatedProducts.map((p) => (
                         <tr key={p.id} className="hover:bg-slate-800/40 transition-colors">
                           <td className="p-4">
                             <img
@@ -597,7 +607,7 @@ function AdminPortal() {
                             <div className="flex items-center justify-end gap-2">
                               <button
                                 onClick={() => handleEditProduct(p)}
-                                className="inline-flex items-center gap-1 rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-xs text-slate-200 hover:border-orange-500 hover:text-orange-400 transition-all"
+                                className="inline-flex items-center gap-1 rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-xs text-slate-200 hover:border-orange-500 hover:text-orange-400 transition-all cursor-pointer"
                                 title="Edit Product"
                               >
                                 <Edit3 className="h-3.5 w-3.5" /> Edit
@@ -605,10 +615,10 @@ function AdminPortal() {
 
                               <button
                                 onClick={() => handleDeleteProduct(p.id, p.name)}
-                                className="inline-flex items-center gap-1 rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-xs text-slate-400 hover:border-red-500 hover:bg-red-500/20 hover:text-red-400 transition-all"
+                                className="inline-flex items-center gap-1 rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-xs text-slate-400 hover:border-red-500 hover:bg-red-500/20 hover:text-red-400 transition-all cursor-pointer"
                                 title="Delete Product"
                               >
-                                <Trash2 className="h-3.5 w-3.5" />
+                                <Trash2 className="h-3.5 w-3.5" /> Delete
                               </button>
                             </div>
                           </td>
@@ -617,6 +627,37 @@ function AdminPortal() {
                     )}
                   </tbody>
                 </table>
+              </div>
+
+              {/* Table Pagination Bar */}
+              <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-800 bg-slate-950/60 px-6 py-4 sm:flex-row">
+                <div className="text-xs text-slate-400">
+                  Showing <span className="font-bold text-white">{Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, filteredProducts.length)}</span> to{" "}
+                  <span className="font-bold text-white">{Math.min(currentPage * ITEMS_PER_PAGE, filteredProducts.length)}</span> of{" "}
+                  <span className="font-bold text-orange-400">{filteredProducts.length}</span> Total Products
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-semibold text-slate-300 disabled:opacity-40 hover:bg-slate-800 transition-all"
+                  >
+                    Previous
+                  </button>
+
+                  <span className="px-2 text-xs font-mono text-slate-400">
+                    Page <span className="text-white font-bold">{currentPage}</span> / {totalPages}
+                  </span>
+
+                  <button
+                    disabled={currentPage >= totalPages}
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-semibold text-slate-300 disabled:opacity-40 hover:bg-slate-800 transition-all"
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             </div>
           </div>
