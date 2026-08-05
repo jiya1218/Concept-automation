@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { MessageSquare, ArrowRight, Check, ShieldCheck } from "lucide-react";
+import { MessageSquare, ArrowRight, Check } from "lucide-react";
 import { InquiryModal } from "./InquiryModal";
+import { getProxiedImageUrl, getFallbackImageUrl, getSvgDataUrl } from "@/lib/imageHelper";
 
 interface ProductCardProps {
   product: {
@@ -18,16 +19,22 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const [modalOpen, setModalOpen] = useState(false);
+  const [errorCount, setErrorCount] = useState(0);
   const navigate = useNavigate();
   const slug = product.slug || product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
-  // Format image URL using wsrv.nl proxy to bypass TradeIndia hotlinking restrictions
-  const imageUrl = product.image.startsWith("http")
-    ? `https://wsrv.nl/?url=${encodeURIComponent(product.image)}&w=400&output=webp`
-    : product.image;
+  // Determine current image source based on error retry state
+  const getImageSrc = () => {
+    if (errorCount === 0) {
+      return getProxiedImageUrl(product.image);
+    }
+    if (errorCount === 1) {
+      return getFallbackImageUrl(product.brand, product.type);
+    }
+    return getSvgDataUrl(product.name, product.brand);
+  };
 
   const handleCardClick = (e: React.MouseEvent) => {
-    // If clicking the Get Quote button, don't navigate
     if ((e.target as HTMLElement).closest("button")) {
       return;
     }
@@ -51,13 +58,12 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
 
           <img
-            src={imageUrl}
+            src={getImageSrc()}
             alt={product.name}
             loading="lazy"
             referrerPolicy="no-referrer"
-            onError={(e) => {
-              // High resolution industrial fallback image
-              (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=80";
+            onError={() => {
+              setErrorCount((prev) => prev + 1);
             }}
             className="h-full w-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-500 group-hover:scale-105"
           />

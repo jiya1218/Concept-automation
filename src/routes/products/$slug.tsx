@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { allProducts, categories, company } from "@/data/catalog";
 import { submitInquiry } from "@/lib/supabase";
 import { toast } from "sonner";
+import { getProxiedImageUrl, getFallbackImageUrl, getSvgDataUrl } from "@/lib/imageHelper";
 
 export const Route = createFileRoute("/products/$slug")({
   loader: ({ params }) => {
@@ -42,14 +43,22 @@ function ProductDetailPage() {
   const { product, category } = Route.useLoaderData();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorCount, setErrorCount] = useState(0);
 
   const title = product ? product.name : category!.name;
   const brand = product ? product.brand : category!.brand;
   const partNumber = product ? product.partNumber : "";
   const rawImage = product ? product.image : category!.image;
-  const image = rawImage.startsWith("http")
-    ? `https://wsrv.nl/?url=${encodeURIComponent(rawImage)}&w=600&output=webp`
-    : rawImage;
+  
+  const getImageSrc = () => {
+    if (errorCount === 0) {
+      return getProxiedImageUrl(rawImage);
+    }
+    if (errorCount === 1) {
+      return getFallbackImageUrl(brand, product?.type || category?.type);
+    }
+    return getSvgDataUrl(title, brand);
+  };
   const description = product ? product.description : category!.blurb;
   const availability = product ? product.availability : "In Stock";
   const warranty = product ? product.warranty : "1 Year OEM Warranty";
@@ -129,11 +138,11 @@ function ProductDetailPage() {
                   <Check className="h-3.5 w-3.5" /> {availability}
                 </span>
                 <img
-                  src={image}
+                  src={getImageSrc()}
                   alt={title}
                   referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=80";
+                  onError={() => {
+                    setErrorCount((prev) => prev + 1);
                   }}
                   className="h-full w-full object-contain"
                 />
