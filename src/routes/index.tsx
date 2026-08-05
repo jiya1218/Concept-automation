@@ -214,25 +214,20 @@ function Index() {
 
       <main>
         {/* ========================================================================= */}
-        {/* HERO SECTION WITH DYNAMIC SLIDER & CYBER GRID BACKGROUND                  */}
+        {/* HERO SECTION - SOFT LIGHT MODE / CYBER DARK MODE                          */}
         {/* ========================================================================= */}
-        <section className="relative overflow-hidden border-b border-slate-800 py-16 lg:py-24 bg-gradient-to-b from-slate-950 via-[#0B0F19] to-[#080C14]">
-          {/* Cyber Grid Mask Background */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#06b6d40d_1px,transparent_1px),linear-gradient(to_bottom,#06b6d40d_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
-          <div className="absolute -top-40 right-1/4 h-[500px] w-[500px] rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
-          <div className="absolute top-1/2 left-10 h-[400px] w-[400px] rounded-full bg-blue-600/10 blur-[100px] pointer-events-none" />
-
+        <section className="relative overflow-hidden border-b border-border py-16 lg:py-24 bg-gradient-to-b from-sky-50/80 via-white to-slate-50 dark:from-slate-950 dark:via-[#0B0F19] dark:to-[#080C14]">
           <div className="relative mx-auto max-w-7xl px-6">
             <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
               
               {/* Hero Left Content */}
               <div className="lg:col-span-7 space-y-6">
-                <div className="inline-flex items-center gap-2 rounded-full bg-cyan-500/10 px-4 py-1.5 text-xs font-bold text-cyan-400 border border-cyan-500/30 glow-cyan">
-                  <Sparkles className="h-3.5 w-3.5 animate-spin" />
+                <div className="inline-flex items-center gap-2 rounded-full bg-sky-100 text-sky-800 dark:bg-cyan-500/10 dark:text-cyan-400 px-4 py-1.5 text-xs font-bold border border-sky-300 dark:border-cyan-500/30">
+                  <Sparkles className="h-3.5 w-3.5 animate-spin text-sky-600 dark:text-cyan-400" />
                   <span>{heroSlides[currentSlide].tag}</span>
                 </div>
 
-                <h1 className="font-display text-4xl font-extrabold uppercase tracking-tight text-white sm:text-5xl lg:text-6xl leading-[1.08]">
+                <h1 className="font-display text-4xl font-extrabold uppercase tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl leading-[1.08]">
                   {heroSlides[currentSlide].title.split(" ")[0]}{" "}
                   <span className="gradient-text-cyan">
                     {heroSlides[currentSlide].title.split(" ").slice(1, 3).join(" ")}
@@ -240,7 +235,7 @@ function Index() {
                   {heroSlides[currentSlide].title.split(" ").slice(3).join(" ")}
                 </h1>
 
-                <p className="max-w-2xl text-base text-slate-300 leading-relaxed">
+                <p className="max-w-2xl text-base text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                   {heroSlides[currentSlide].subtitle}
                 </p>
 
@@ -249,16 +244,16 @@ function Index() {
                   <Link
                     to="/products"
                     search={{ q: heroSlides[currentSlide].brandQuery }}
-                    className="inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3.5 font-display text-sm font-extrabold uppercase tracking-wider text-slate-950 shadow-xl shadow-cyan-500/25 transition-all hover:scale-[1.03] active:scale-95"
+                    className="inline-flex items-center gap-2.5 rounded-xl bg-sky-600 dark:bg-gradient-to-r dark:from-cyan-500 dark:to-blue-600 px-6 py-3.5 font-display text-sm font-extrabold uppercase tracking-wider text-white dark:text-slate-950 shadow-lg transition-all hover:scale-[1.03] active:scale-95"
                   >
                     {heroSlides[currentSlide].cta} <ArrowRight className="h-4 w-4" />
                   </Link>
 
                   <button
                     onClick={() => setInquiryModalOpen(true)}
-                    className="inline-flex items-center gap-2 rounded-xl bg-slate-800/80 px-6 py-3.5 font-display text-sm font-bold uppercase tracking-wider text-slate-200 border border-slate-700 hover:bg-slate-700 hover:border-cyan-500/50 transition-all"
+                    className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-slate-800/80 px-6 py-3.5 font-display text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm"
                   >
-                    <MessageSquare className="h-4 w-4 text-cyan-400" /> Request Instant Quote
+                    <MessageSquare className="h-4 w-4 text-sky-600 dark:text-cyan-400" /> Request Instant Quote
                   </button>
                 </div>
 
@@ -269,7 +264,7 @@ function Index() {
                       key={idx}
                       onClick={() => setCurrentSlide(idx)}
                       className={`h-2 rounded-full transition-all duration-500 ${
-                        currentSlide === idx ? "w-10 bg-cyan-400 shadow-md shadow-cyan-400/50" : "w-2 bg-slate-700 hover:bg-slate-500"
+                        currentSlide === idx ? "w-10 bg-sky-600 dark:bg-cyan-400" : "w-2 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400"
                       }`}
                       aria-label={`Go to slide ${idx + 1}`}
                     />
@@ -282,8 +277,8 @@ function Index() {
 
               {/* Hero Right Visual Showcase Card */}
               <div className="lg:col-span-5">
-                <div className="glass-card relative overflow-hidden rounded-3xl p-6 border border-cyan-500/30 shadow-2xl animate-float">
-                  <div className="relative aspect-4/3 overflow-hidden rounded-2xl bg-slate-900 border border-slate-800">
+                <div className="glass-card relative overflow-hidden rounded-3xl p-6 border border-slate-200 dark:border-cyan-500/30 shadow-xl animate-float bg-white dark:bg-slate-900">
+                  <div className="relative aspect-4/3 overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                     <img
                       src={heroImage}
                       alt="Industrial PLC Automation Hardware Setup"
@@ -291,17 +286,17 @@ function Index() {
                       width={600}
                       height={450}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent dark:from-slate-950 dark:via-slate-950/20" />
                     
-                    <div className="absolute bottom-4 left-4 right-4 rounded-xl bg-slate-950/90 p-4 border border-cyan-500/30 backdrop-blur-xl">
-                      <div className="flex items-center justify-between text-xs font-bold text-cyan-400 uppercase tracking-wider">
+                    <div className="absolute bottom-4 left-4 right-4 rounded-xl bg-white/95 dark:bg-slate-950/90 p-4 border border-slate-200 dark:border-cyan-500/30 backdrop-blur-xl shadow-md">
+                      <div className="flex items-center justify-between text-xs font-bold text-sky-700 dark:text-cyan-400 uppercase tracking-wider">
                         <span className="flex items-center gap-1.5">
-                          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+                          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
                           Ready Stock in Ahmedabad
                         </span>
-                        <span className="text-slate-400 font-mono">199+ Part Numbers</span>
+                        <span className="text-slate-500 dark:text-slate-400 font-mono">199+ Part Numbers</span>
                       </div>
-                      <p className="mt-1.5 text-xs text-slate-300">
+                      <p className="mt-1.5 text-xs text-slate-700 dark:text-slate-300">
                         Siemens, Mitsubishi, Omron, Allen Bradley, Pepperl+Fuchs & Delta Hardware.
                       </p>
                     </div>
@@ -309,20 +304,20 @@ function Index() {
 
                   {/* Feature Badges Row */}
                   <div className="mt-6 grid grid-cols-3 gap-3">
-                    <div className="rounded-xl bg-slate-900/80 p-3 text-center border border-slate-800">
-                      <ShieldCheck className="mx-auto h-5 w-5 text-cyan-400 mb-1" />
-                      <span className="block text-[11px] font-bold text-slate-200">100% OEM</span>
-                      <span className="block text-[9px] text-slate-400">Genuine Guarantee</span>
+                    <div className="rounded-xl bg-slate-50 dark:bg-slate-900/80 p-3 text-center border border-slate-200 dark:border-slate-800">
+                      <ShieldCheck className="mx-auto h-5 w-5 text-sky-600 dark:text-cyan-400 mb-1" />
+                      <span className="block text-[11px] font-bold text-slate-800 dark:text-slate-200">100% OEM</span>
+                      <span className="block text-[9px] text-slate-500 dark:text-slate-400">Genuine Guarantee</span>
                     </div>
-                    <div className="rounded-xl bg-slate-900/80 p-3 text-center border border-slate-800">
-                      <Truck className="mx-auto h-5 w-5 text-cyan-400 mb-1" />
-                      <span className="block text-[11px] font-bold text-slate-200">Pan-India</span>
-                      <span className="block text-[9px] text-slate-400">Express Delivery</span>
+                    <div className="rounded-xl bg-slate-50 dark:bg-slate-900/80 p-3 text-center border border-slate-200 dark:border-slate-800">
+                      <Truck className="mx-auto h-5 w-5 text-sky-600 dark:text-cyan-400 mb-1" />
+                      <span className="block text-[11px] font-bold text-slate-800 dark:text-slate-200">Pan-India</span>
+                      <span className="block text-[9px] text-slate-500 dark:text-slate-400">Express Delivery</span>
                     </div>
-                    <div className="rounded-xl bg-slate-900/80 p-3 text-center border border-slate-800">
-                      <Award className="mx-auto h-5 w-5 text-amber-400 mb-1" />
-                      <span className="block text-[11px] font-bold text-slate-200">12 Months</span>
-                      <span className="block text-[9px] text-slate-400">Official Warranty</span>
+                    <div className="rounded-xl bg-slate-50 dark:bg-slate-900/80 p-3 text-center border border-slate-200 dark:border-slate-800">
+                      <Award className="mx-auto h-5 w-5 text-amber-500 mb-1" />
+                      <span className="block text-[11px] font-bold text-slate-800 dark:text-slate-200">12 Months</span>
+                      <span className="block text-[9px] text-slate-500 dark:text-slate-400">Official Warranty</span>
                     </div>
                   </div>
                 </div>
@@ -331,10 +326,10 @@ function Index() {
             </div>
           </div>
 
-          {/* OEM Brands Logo Bar */}
-          <div className="mt-16 border-t border-slate-800/80 bg-slate-950/60 py-6 backdrop-blur-md">
+          {/* OEM Brands Bar */}
+          <div className="mt-16 border-t border-slate-200 dark:border-slate-800/80 bg-white/70 dark:bg-slate-950/60 py-6 backdrop-blur-md">
             <div className="mx-auto max-w-7xl px-6">
-              <span className="block text-center text-xs font-bold uppercase tracking-[0.25em] text-cyan-400/80 mb-4">
+              <span className="block text-center text-xs font-bold uppercase tracking-[0.25em] text-sky-700 dark:text-cyan-400/80 mb-4">
                 Core Stocked Industrial Brands
               </span>
               <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
@@ -343,9 +338,9 @@ function Index() {
                     key={b}
                     to="/products"
                     search={{ q: b }}
-                    className="glass-card flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold text-slate-200 hover:text-cyan-400 hover:border-cyan-500/50 transition-all"
+                    className="glass-card flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-sky-600 dark:hover:text-cyan-400 transition-all bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"
                   >
-                    <span className="h-2 w-2 rounded-full bg-cyan-400" />
+                    <span className="h-2 w-2 rounded-full bg-sky-500 dark:bg-cyan-400" />
                     {b}
                   </Link>
                 ))}
@@ -358,30 +353,30 @@ function Index() {
         {/* ========================================================================= */}
         {/* TABBED HARDWARE SHOWCASE & FEATURED CATALOG GRID                           */}
         {/* ========================================================================= */}
-        <section className="py-20 bg-[#080C14] border-b border-slate-800">
+        <section className="py-20 bg-slate-50/50 dark:bg-[#080C14] border-b border-border">
           <div className="mx-auto max-w-7xl px-6">
             
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
               <div>
                 <span className="eyebrow">Inventory Catalog</span>
-                <h2 className="mt-2 section-title text-3xl sm:text-4xl text-white">
+                <h2 className="mt-2 section-title text-3xl sm:text-4xl text-slate-900 dark:text-white">
                   Featured Industrial Hardware
                 </h2>
-                <p className="mt-2 text-sm text-slate-400 max-w-xl">
+                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 max-w-xl">
                   In-stock Siemens, Mitsubishi, Omron, Delta & Pepperl+Fuchs controllers, HMIs, VFDs & industrial sensors ready for dispatch.
                 </p>
               </div>
 
               {/* Hardware Type Tabs Filter */}
-              <div className="flex flex-wrap gap-2 rounded-2xl bg-slate-900 p-1.5 border border-slate-800">
+              <div className="flex flex-wrap gap-2 rounded-2xl bg-white dark:bg-slate-900 p-1.5 border border-slate-200 dark:border-slate-800 shadow-sm">
                 {["All", "PLC", "HMI", "VFD", "Sensors"].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`rounded-xl px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all ${
                       activeTab === tab
-                        ? "bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/25"
-                        : "text-slate-400 hover:text-slate-200 hover:bg-slate-800"
+                        ? "bg-sky-600 dark:bg-cyan-500 text-white dark:text-slate-950 shadow-md"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
                     }`}
                   >
                     {tab}
@@ -400,7 +395,7 @@ function Index() {
             <div className="mt-12 text-center">
               <Link
                 to="/products"
-                className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-8 py-4 font-display text-xs font-extrabold uppercase tracking-wider text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/10 hover:border-cyan-500 transition-all shadow-lg shadow-cyan-500/10"
+                className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-slate-900 px-8 py-4 font-display text-xs font-extrabold uppercase tracking-wider text-sky-600 dark:text-cyan-400 border border-slate-200 dark:border-cyan-500/30 hover:border-sky-500 dark:hover:border-cyan-500 transition-all shadow-md"
               >
                 View Full 199+ Product Catalog <ArrowRight className="h-4 w-4" />
               </Link>
@@ -412,14 +407,14 @@ function Index() {
         {/* ========================================================================= */}
         {/* NETWORK & TRUST COUNTERS                                                   */}
         {/* ========================================================================= */}
-        <section className="py-20 bg-gradient-to-b from-[#080C14] to-[#0B0F19] border-b border-slate-800">
+        <section className="py-20 bg-white dark:bg-gradient-to-b dark:from-[#080C14] dark:to-[#0B0F19] border-b border-border">
           <div className="mx-auto max-w-7xl px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="eyebrow">Pan-India Network</span>
-              <h2 className="mt-2 section-title text-3xl sm:text-4xl text-white">
+              <h2 className="mt-2 section-title text-3xl sm:text-4xl text-slate-900 dark:text-white">
                 Trusted Automation Supply Ecosystem
               </h2>
-              <p className="mt-3 text-sm text-slate-400">
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
                 Directly supplying factory automation products from Makarba, Ahmedabad to 10,000+ panel builders, OEMs & manufacturing plants.
               </p>
             </div>
@@ -428,19 +423,17 @@ function Index() {
               {networkStats.map((stat, idx) => (
                 <div
                   key={idx}
-                  className="glass-card group relative overflow-hidden rounded-2xl p-8 border border-slate-800 hover:border-cyan-500/40"
+                  className="glass-card group relative overflow-hidden rounded-2xl p-8 border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/60 hover:border-sky-500 dark:hover:border-cyan-500/40"
                 >
-                  <div className="absolute top-0 right-0 h-24 w-24 translate-x-8 -translate-y-8 rounded-full bg-cyan-500/5 blur-xl group-hover:bg-cyan-500/15 transition-colors" />
-                  
                   <div className="flex items-center justify-between mb-4">
-                    <span className="font-display text-4xl font-extrabold text-cyan-400 tracking-tight">
+                    <span className="font-display text-4xl font-extrabold text-sky-600 dark:text-cyan-400 tracking-tight">
                       {stat.value}
                     </span>
-                    <Building className="h-6 w-6 text-slate-600 group-hover:text-cyan-400 transition-colors" />
+                    <Building className="h-6 w-6 text-slate-400 dark:text-slate-600 group-hover:text-sky-600 dark:group-hover:text-cyan-400 transition-colors" />
                   </div>
                   
-                  <h3 className="text-sm font-bold text-slate-200">{stat.label}</h3>
-                  <p className="mt-1 text-xs text-slate-400">Verified buyers & official trading channels across India.</p>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-200">{stat.label}</h3>
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Verified buyers & official trading channels across India.</p>
                 </div>
               ))}
             </div>
@@ -451,14 +444,14 @@ function Index() {
         {/* ========================================================================= */}
         {/* INDUSTRIES SERVED INTERACTIVE TABBED SECTION                               */}
         {/* ========================================================================= */}
-        <section className="py-20 bg-[#080C14] border-b border-slate-800">
+        <section className="py-20 bg-slate-50/50 dark:bg-[#080C14] border-b border-border">
           <div className="mx-auto max-w-7xl px-6">
             <div className="text-center max-w-2xl mx-auto mb-14">
               <span className="eyebrow">Industry Solutions</span>
-              <h2 className="mt-2 section-title text-3xl sm:text-4xl text-white">
+              <h2 className="mt-2 section-title text-3xl sm:text-4xl text-slate-900 dark:text-white">
                 Serving Key Manufacturing Sectors
               </h2>
-              <p className="mt-3 text-sm text-slate-400">
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
                 Customized PLC automation architectures & field hardware for specialized industrial applications.
               </p>
             </div>
@@ -472,13 +465,13 @@ function Index() {
                     onClick={() => setSelectedIndustry(idx)}
                     className={`w-full text-left rounded-2xl p-5 transition-all border ${
                       selectedIndustry === idx
-                        ? "bg-slate-800/90 border-cyan-500/50 shadow-xl shadow-cyan-500/10 text-white"
-                        : "bg-slate-900/50 border-slate-800 text-slate-400 hover:bg-slate-900 hover:text-slate-200"
+                        ? "bg-white dark:bg-slate-800/90 border-sky-500 dark:border-cyan-500/50 shadow-md text-slate-900 dark:text-white"
+                        : "bg-slate-100/60 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-900"
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-display text-base font-bold uppercase">{ind.title}</span>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-500/30">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700 dark:text-cyan-400 bg-sky-100 dark:bg-cyan-950 px-2 py-0.5 rounded border border-sky-200 dark:border-cyan-500/30">
                         {ind.badge}
                       </span>
                     </div>
@@ -488,25 +481,23 @@ function Index() {
 
               {/* Detail Card Column */}
               <div className="lg:col-span-7">
-                <div className="glass-card rounded-3xl p-8 border border-cyan-500/30 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-cyan-500/10 blur-2xl pointer-events-none" />
-                  
+                <div className="glass-card rounded-3xl p-8 border border-slate-200 dark:border-cyan-500/30 bg-white dark:bg-slate-900 relative overflow-hidden shadow-lg">
                   <span className="eyebrow text-xs">Sector Overview</span>
-                  <h3 className="mt-2 font-display text-2xl font-bold uppercase text-white">
+                  <h3 className="mt-2 font-display text-2xl font-bold uppercase text-slate-900 dark:text-white">
                     {keyIndustries[selectedIndustry].title}
                   </h3>
-                  <p className="mt-4 text-sm text-slate-300 leading-relaxed">
+                  <p className="mt-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                     {keyIndustries[selectedIndustry].desc}
                   </p>
 
-                  <div className="mt-8 pt-6 border-t border-slate-800 flex flex-wrap items-center justify-between gap-4">
-                    <span className="text-xs text-cyan-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                      <CheckCircle2 className="h-4 w-4" /> Ready Stock & Engineering Support
+                  <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                    <span className="text-xs text-sky-700 dark:text-cyan-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500" /> Ready Stock & Engineering Support
                     </span>
 
                     <button
                       onClick={() => setInquiryModalOpen(true)}
-                      className="inline-flex items-center gap-2 rounded-xl bg-cyan-500 px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-slate-950 hover:bg-cyan-400 transition-colors"
+                      className="inline-flex items-center gap-2 rounded-xl bg-sky-600 dark:bg-cyan-500 px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-white dark:text-slate-950 hover:bg-sky-500 dark:hover:bg-cyan-400 transition-colors shadow-sm"
                     >
                       Inquire Sector Products <ArrowRight className="h-3.5 w-3.5" />
                     </button>
@@ -521,33 +512,33 @@ function Index() {
         {/* ========================================================================= */}
         {/* CUSTOMER REVIEWS & TESTIMONIALS                                            */}
         {/* ========================================================================= */}
-        <section className="py-20 bg-gradient-to-b from-[#080C14] to-[#0B0F19] border-b border-slate-800">
+        <section className="py-20 bg-white dark:bg-gradient-to-b dark:from-[#080C14] dark:to-[#0B0F19] border-b border-border">
           <div className="mx-auto max-w-7xl px-6">
             <div className="text-center max-w-2xl mx-auto mb-14">
               <span className="eyebrow">Client Feedback</span>
-              <h2 className="mt-2 section-title text-3xl sm:text-4xl text-white">
+              <h2 className="mt-2 section-title text-3xl sm:text-4xl text-slate-900 dark:text-white">
                 What Industry Leaders Say
               </h2>
             </div>
 
             <div className="grid gap-6 md:grid-cols-3">
               {testimonials.map((t, idx) => (
-                <div key={idx} className="glass-card rounded-2xl p-6 border border-slate-800 flex flex-col justify-between">
+                <div key={idx} className="glass-card rounded-2xl p-6 border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/60 flex flex-col justify-between">
                   <div>
-                    <div className="flex items-center gap-1 text-amber-400 mb-4">
+                    <div className="flex items-center gap-1 text-amber-500 mb-4">
                       {[...Array(t.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-amber-400" />
+                        <Star key={i} className="h-4 w-4 fill-amber-500" />
                       ))}
                     </div>
-                    <p className="text-xs text-slate-300 leading-relaxed italic mb-6">"{t.comment}"</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic mb-6">"{t.comment}"</p>
                   </div>
 
-                  <div className="border-t border-slate-800 pt-4 flex items-center justify-between">
+                  <div className="border-t border-slate-200 dark:border-slate-800 pt-4 flex items-center justify-between">
                     <div>
-                      <span className="block text-xs font-bold text-white">{t.name}</span>
-                      <span className="block text-[10px] text-cyan-400">{t.role} — {t.company}</span>
+                      <span className="block text-xs font-bold text-slate-900 dark:text-white">{t.name}</span>
+                      <span className="block text-[10px] text-sky-600 dark:text-cyan-400">{t.role} — {t.company}</span>
                     </div>
-                    <User className="h-7 w-7 rounded-full bg-slate-800 p-1.5 text-slate-400" />
+                    <User className="h-7 w-7 rounded-full bg-slate-200 dark:bg-slate-800 p-1.5 text-slate-600 dark:text-slate-400" />
                   </div>
                 </div>
               ))}
@@ -557,33 +548,31 @@ function Index() {
 
 
         {/* ========================================================================= */}
-        {/* DIRECT QUOTE FORM SECTION WITH CAPTCHA CODE                                */}
+        {/* DIRECT QUOTE FORM SECTION                                                 */}
         {/* ========================================================================= */}
-        <section className="py-20 bg-slate-950 border-b border-slate-800 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(6,182,212,0.15),transparent_50%)] pointer-events-none" />
-
+        <section className="py-20 bg-slate-50 dark:bg-slate-950 border-b border-border relative overflow-hidden">
           <div className="relative mx-auto max-w-4xl px-6">
-            <div className="glass-card rounded-3xl p-8 sm:p-12 border border-cyan-500/30 shadow-2xl">
+            <div className="glass-card rounded-3xl p-8 sm:p-12 border border-slate-200 dark:border-cyan-500/30 bg-white dark:bg-slate-900 shadow-xl">
               <div className="text-center max-w-xl mx-auto mb-8">
                 <span className="eyebrow">Direct Sales Desk</span>
-                <h2 className="mt-2 section-title text-3xl text-white">
+                <h2 className="mt-2 section-title text-3xl text-slate-900 dark:text-white">
                   Request Official Price & Delivery Quote
                 </h2>
-                <p className="mt-2 text-xs text-slate-400">
+                <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
                   Get instant availability and pricing directly from Concept Automation Technologies in Makarba, Ahmedabad.
                 </p>
               </div>
 
               {formSubmitted ? (
-                <div className="rounded-2xl bg-emerald-500/10 p-8 text-center border border-emerald-500/30">
-                  <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-400 mb-3" />
-                  <h3 className="text-lg font-bold text-white">Quote Request Received!</h3>
-                  <p className="mt-2 text-xs text-slate-300">
+                <div className="rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 p-8 text-center border border-emerald-200 dark:border-emerald-500/30">
+                  <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-600 dark:text-emerald-400 mb-3" />
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">Quote Request Received!</h3>
+                  <p className="mt-2 text-xs text-slate-600 dark:text-slate-300">
                     Our sales desk will email/call you with official pricing and dispatch details shortly.
                   </p>
                   <button
                     onClick={() => setFormSubmitted(false)}
-                    className="mt-6 rounded-xl bg-emerald-500 px-6 py-2.5 font-display text-xs font-bold uppercase text-slate-950"
+                    className="mt-6 rounded-xl bg-emerald-600 text-white px-6 py-2.5 font-display text-xs font-bold uppercase"
                   >
                     Submit Another Inquiry
                   </button>
@@ -592,68 +581,68 @@ function Index() {
                 <form onSubmit={handleQuickSubmit} className="space-y-4">
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-300 uppercase mb-1">Your Name *</label>
+                      <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Your Name *</label>
                       <input
                         type="text"
                         required
                         placeholder="e.g. Mr. Rajesh Patel"
                         value={quickForm.name}
                         onChange={(e) => setQuickForm({ ...quickForm, name: e.target.value })}
-                        className="w-full rounded-xl border border-slate-700 bg-slate-900/90 px-4 py-3 text-xs text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+                        className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-300 uppercase mb-1">Phone / WhatsApp *</label>
+                      <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Phone / WhatsApp *</label>
                       <input
                         type="tel"
                         required
                         placeholder="e.g. +91 98980 12345"
                         value={quickForm.phone}
                         onChange={(e) => setQuickForm({ ...quickForm, phone: e.target.value })}
-                        className="w-full rounded-xl border border-slate-700 bg-slate-900/90 px-4 py-3 text-xs text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+                        className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
                       />
                     </div>
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-300 uppercase mb-1">Work Email *</label>
+                      <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Work Email *</label>
                       <input
                         type="email"
                         required
                         placeholder="e.g. rajesh@company.com"
                         value={quickForm.email}
                         onChange={(e) => setQuickForm({ ...quickForm, email: e.target.value })}
-                        className="w-full rounded-xl border border-slate-700 bg-slate-900/90 px-4 py-3 text-xs text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+                        className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-300 uppercase mb-1">Part Number / Required Model</label>
+                      <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Part Number / Required Model</label>
                       <input
                         type="text"
                         placeholder="e.g. 6ES7214-1AG40-0XB0, FR-CS84..."
                         value={quickForm.part}
                         onChange={(e) => setQuickForm({ ...quickForm, part: e.target.value })}
-                        className="w-full rounded-xl border border-slate-700 bg-slate-900/90 px-4 py-3 text-xs text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+                        className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-300 uppercase mb-1">Message / Requirements</label>
+                    <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Message / Requirements</label>
                     <textarea
                       rows={3}
                       placeholder="Specify required quantity, location, or urgency..."
                       value={quickForm.message}
                       onChange={(e) => setQuickForm({ ...quickForm, message: e.target.value })}
-                      className="w-full rounded-xl border border-slate-700 bg-slate-900/90 px-4 py-3 text-xs text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={formLoading}
-                    className="w-full rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 py-4 font-display text-sm font-extrabold uppercase tracking-wider text-slate-950 shadow-xl shadow-cyan-500/20 hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50"
+                    className="w-full rounded-xl bg-sky-600 dark:bg-gradient-to-r dark:from-cyan-500 dark:via-blue-600 dark:to-indigo-600 py-4 font-display text-sm font-extrabold uppercase tracking-wider text-white dark:text-slate-950 shadow-lg hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50"
                   >
                     {formLoading ? "Sending Quote Request..." : "Submit Quote Request"}
                   </button>

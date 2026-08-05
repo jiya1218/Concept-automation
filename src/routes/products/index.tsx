@@ -64,35 +64,33 @@ function Products() {
 
       <main>
         {/* Header Cyber Banner */}
-        <section className="relative overflow-hidden border-b border-slate-800 bg-gradient-to-b from-slate-950 via-[#0B0F19] to-[#080C14] py-16">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#06b6d40d_1px,transparent_1px),linear-gradient(to_bottom,#06b6d40d_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
-
+        <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-sky-50 via-white to-slate-50 dark:from-slate-950 dark:via-[#0B0F19] dark:to-[#080C14] py-16">
           <div className="relative mx-auto max-w-7xl px-6">
             <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-cyan-500/10 px-4 py-1.5 text-xs font-bold text-cyan-400 border border-cyan-500/30">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-sky-100 text-sky-800 dark:bg-cyan-500/10 dark:text-cyan-400 px-4 py-1.5 text-xs font-bold border border-sky-200 dark:border-cyan-500/30">
                 <Sparkles className="h-3.5 w-3.5" /> 199+ Genuine OEM Part Numbers In Stock
               </span>
-              <h1 className="mt-4 font-display text-4xl font-extrabold uppercase tracking-tight text-white sm:text-5xl">
+              <h1 className="mt-4 font-display text-4xl font-extrabold uppercase tracking-tight text-slate-900 dark:text-white sm:text-5xl">
                 Industrial Automation Catalog
               </h1>
-              <p className="mt-3 text-sm text-slate-300 max-w-2xl leading-relaxed">
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
                 Explore 100% genuine Siemens, Mitsubishi, Allen Bradley, Omron, Delta, Schneider, Fuji, Proface & Danfoss controllers, touch panels, inverters & sensors.
               </p>
 
               {/* Instant Search Control Bar */}
-              <div className="mt-8 flex w-full max-w-2xl items-center gap-2 rounded-2xl bg-slate-900/90 p-2 border border-cyan-500/30 shadow-2xl backdrop-blur-xl">
-                <Search className="ml-3 h-5 w-5 text-cyan-400 shrink-0" />
+              <div className="mt-8 flex w-full max-w-2xl items-center gap-2 rounded-2xl bg-white dark:bg-slate-900/90 p-2 border border-slate-300 dark:border-cyan-500/30 shadow-lg backdrop-blur-xl">
+                <Search className="ml-3 h-5 w-5 text-sky-600 dark:text-cyan-400 shrink-0" />
                 <input
                   type="text"
                   placeholder="Search model number, part number, or brand (e.g. S7-1200, GS2110, FR-CS84)..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-transparent px-2 py-2 text-xs text-white placeholder-slate-400 focus:outline-none"
+                  className="w-full bg-transparent px-2 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none"
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery("")}
-                    className="rounded-lg bg-slate-800 px-3 py-1.5 text-[11px] font-bold text-slate-400 hover:text-white"
+                    className="rounded-lg bg-slate-100 dark:bg-slate-800 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   >
                     Clear
                   </button>
@@ -108,15 +106,15 @@ function Products() {
             
             {/* Filter Sidebar */}
             <aside className="lg:col-span-3 space-y-6">
-              <div className="glass-card rounded-2xl p-6 border border-slate-800">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
-                  <span className="font-display text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
-                    <SlidersHorizontal className="h-4 w-4 text-cyan-400" /> Filter Catalog
+              <div className="glass-card rounded-2xl p-6 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+                <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4 mb-4">
+                  <span className="font-display text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2">
+                    <SlidersHorizontal className="h-4 w-4 text-sky-600 dark:text-cyan-400" /> Filter Catalog
                   </span>
                   {(selectedBrand !== "All" || selectedType !== "All" || searchQuery) && (
                     <button
                       onClick={resetFilters}
-                      className="text-[11px] font-bold text-cyan-400 hover:underline flex items-center gap-1"
+                      className="text-[11px] font-bold text-sky-600 dark:text-cyan-400 hover:underline flex items-center gap-1"
                     >
                       <RefreshCw className="h-3 w-3" /> Reset
                     </button>
@@ -125,7 +123,7 @@ function Products() {
 
                 {/* Hardware Type Filter */}
                 <div className="space-y-3 mb-6">
-                  <label className="block text-[11px] font-extrabold uppercase tracking-wider text-cyan-400">
+                  <label className="block text-[11px] font-extrabold uppercase tracking-wider text-sky-700 dark:text-cyan-400">
                     Product Type
                   </label>
                   <div className="space-y-1.5">
@@ -135,8 +133,8 @@ function Products() {
                         onClick={() => setSelectedType(type)}
                         className={`w-full flex items-center justify-between rounded-xl px-3 py-2 text-xs font-bold transition-all ${
                           selectedType === type
-                            ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40"
-                            : "text-slate-300 hover:bg-slate-800/60"
+                            ? "bg-sky-100 dark:bg-cyan-500/20 text-sky-800 dark:text-cyan-400 border border-sky-300 dark:border-cyan-500/40"
+                            : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60"
                         }`}
                       >
                         <span>{type}</span>
@@ -152,7 +150,7 @@ function Products() {
 
                 {/* Brand Filter */}
                 <div className="space-y-3">
-                  <label className="block text-[11px] font-extrabold uppercase tracking-wider text-cyan-400">
+                  <label className="block text-[11px] font-extrabold uppercase tracking-wider text-sky-700 dark:text-cyan-400">
                     OEM Manufacturer
                   </label>
                   <div className="space-y-1.5 max-h-[320px] overflow-y-auto pr-1">
@@ -160,8 +158,8 @@ function Products() {
                       onClick={() => setSelectedBrand("All")}
                       className={`w-full flex items-center justify-between rounded-xl px-3 py-2 text-xs font-bold transition-all ${
                         selectedBrand === "All"
-                          ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40"
-                          : "text-slate-300 hover:bg-slate-800/60"
+                          ? "bg-sky-100 dark:bg-cyan-500/20 text-sky-800 dark:text-cyan-400 border border-sky-300 dark:border-cyan-500/40"
+                          : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60"
                       }`}
                     >
                       <span>All Brands</span>
@@ -173,8 +171,8 @@ function Products() {
                         onClick={() => setSelectedBrand(b)}
                         className={`w-full flex items-center justify-between rounded-xl px-3 py-2 text-xs font-bold transition-all ${
                           selectedBrand === b
-                            ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40"
-                            : "text-slate-300 hover:bg-slate-800/60"
+                            ? "bg-sky-100 dark:bg-cyan-500/20 text-sky-800 dark:text-cyan-400 border border-sky-300 dark:border-cyan-500/40"
+                            : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60"
                         }`}
                       >
                         <span>{b}</span>
@@ -186,13 +184,13 @@ function Products() {
               </div>
 
               {/* Direct Quote Banner Card */}
-              <div className="glass-card rounded-2xl p-6 border border-orange-500/30 text-center relative overflow-hidden">
-                <Zap className="mx-auto h-8 w-8 text-orange-400 mb-2" />
-                <h3 className="font-display text-sm font-bold uppercase text-white">Need Custom Model Bulk Pricing?</h3>
-                <p className="mt-1.5 text-xs text-slate-400">Submit your parts list directly to our Makarba, Ahmedabad sales desk.</p>
+              <div className="glass-card rounded-2xl p-6 border border-orange-200 dark:border-orange-500/30 bg-orange-50/50 dark:bg-slate-900 text-center relative overflow-hidden">
+                <Zap className="mx-auto h-8 w-8 text-orange-500 mb-2" />
+                <h3 className="font-display text-sm font-bold uppercase text-slate-900 dark:text-white">Need Custom Model Bulk Pricing?</h3>
+                <p className="mt-1.5 text-xs text-slate-600 dark:text-slate-400">Submit your parts list directly to our Makarba, Ahmedabad sales desk.</p>
                 <button
                   onClick={() => setInquiryModalOpen(true)}
-                  className="mt-4 w-full rounded-xl bg-orange-500 py-2.5 font-display text-xs font-bold uppercase text-slate-950 hover:bg-orange-400 transition-colors shadow-lg shadow-orange-500/20"
+                  className="mt-4 w-full rounded-xl bg-orange-500 py-2.5 font-display text-xs font-bold uppercase text-white hover:bg-orange-600 transition-colors shadow-md"
                 >
                   Request Bulk Quote
                 </button>
@@ -201,38 +199,38 @@ function Products() {
 
             {/* Catalog Grid Area */}
             <main className="lg:col-span-9 space-y-6">
-              <div className="flex items-center justify-between rounded-2xl bg-slate-900/60 px-6 py-4 border border-slate-800">
-                <span className="text-xs font-bold text-slate-300">
-                  Showing <span className="text-cyan-400 font-mono text-sm">{filteredProducts.length}</span> Products
-                  {selectedBrand !== "All" && <span> for <span className="text-white">{selectedBrand}</span></span>}
-                  {selectedType !== "All" && <span> in <span className="text-white">{selectedType}</span></span>}
+              <div className="flex items-center justify-between rounded-2xl bg-white dark:bg-slate-900/60 px-6 py-4 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                  Showing <span className="text-sky-600 dark:text-cyan-400 font-mono text-sm">{filteredProducts.length}</span> Products
+                  {selectedBrand !== "All" && <span> for <span className="text-slate-900 dark:text-white">{selectedBrand}</span></span>}
+                  {selectedType !== "All" && <span> in <span className="text-slate-900 dark:text-white">{selectedType}</span></span>}
                 </span>
 
                 <button
                   onClick={() => setInquiryModalOpen(true)}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:underline"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-sky-600 dark:text-cyan-400 hover:underline"
                 >
                   <MessageSquare className="h-3.5 w-3.5" /> Can't find model? Ask Us
                 </button>
               </div>
 
               {filteredProducts.length === 0 ? (
-                <div className="glass-card rounded-3xl p-16 text-center border border-slate-800">
-                  <Layers className="mx-auto h-12 w-12 text-slate-600 mb-4" />
-                  <h3 className="font-display text-lg font-bold text-white uppercase">No exact matches found</h3>
-                  <p className="mt-2 text-xs text-slate-400 max-w-md mx-auto">
+                <div className="glass-card rounded-3xl p-16 text-center border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+                  <Layers className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-600 mb-4" />
+                  <h3 className="font-display text-lg font-bold text-slate-900 dark:text-white uppercase">No exact matches found</h3>
+                  <p className="mt-2 text-xs text-slate-600 dark:text-slate-400 max-w-md mx-auto">
                     We maintain offline stock for 500+ additional part numbers in Makarba, Ahmedabad. Submit an inquiry for quick availability.
                   </p>
                   <div className="mt-6 flex flex-wrap justify-center gap-3">
                     <button
                       onClick={resetFilters}
-                      className="rounded-xl bg-slate-800 px-5 py-2.5 text-xs font-bold text-white hover:bg-slate-700"
+                      className="rounded-xl bg-slate-100 dark:bg-slate-800 px-5 py-2.5 text-xs font-bold text-slate-800 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
                     >
                       Reset Search Filters
                     </button>
                     <button
                       onClick={() => setInquiryModalOpen(true)}
-                      className="rounded-xl bg-cyan-500 px-5 py-2.5 font-display text-xs font-bold uppercase text-slate-950 hover:bg-cyan-400"
+                      className="rounded-xl bg-sky-600 dark:bg-cyan-500 px-5 py-2.5 font-display text-xs font-bold uppercase text-white dark:text-slate-950"
                     >
                       Inquire Custom Model
                     </button>
