@@ -39,26 +39,22 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
   return (
     <>
       <motion.article
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.4, delay: index * 0.08 }}
-        whileHover={{ y: -6, transition: { duration: 0.2 } }}
+        viewport={{ once: true, margin: "-30px" }}
+        transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.3) }}
+        whileHover={{ y: -4, transition: { duration: 0.2 } }}
         onClick={handleCardClick}
-        className="group relative flex flex-col overflow-hidden rounded-2xl border border-[#e7e5e4] bg-white shadow-sm transition-all duration-300 hover:shadow-xl hover:border-[#b45309]/50 cursor-pointer"
+        className="group relative flex flex-col overflow-hidden rounded-xl border border-[#e7e5e4] bg-white shadow-sm transition-all duration-300 hover:shadow-md hover:border-[#b45309]/50 cursor-pointer"
       >
-        {/* Hover Border Accent */}
-        <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-[#b45309]/30 pointer-events-none transition-colors duration-300" />
-
-        {/* Product Image Container — Warm Sand Tint (#f4f1eb) */}
-        <div className="relative aspect-square overflow-hidden bg-[#f4f1eb]/70 p-6 border-b border-[#e7e5e4] flex items-center justify-center">
-          <span className="absolute left-3.5 top-3.5 z-10 rounded-full bg-[#1a130f] px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white shadow-sm">
+        {/* Product Image Container — Pure Uniform White (#ffffff) */}
+        <div className="relative aspect-square overflow-hidden bg-white p-2.5 sm:p-5 border-b border-[#e7e5e4]/60 flex items-center justify-center">
+          <span className="absolute left-2 top-2 z-10 rounded bg-[#1a130f] px-2 py-0.5 text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider text-white shadow-sm">
             {product.brand || product.category.split(" ")[0]}
           </span>
           {product.availability && (
-            <span className="absolute right-3.5 top-3.5 z-10 flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold text-emerald-700 border border-emerald-500/20 backdrop-blur-sm">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              In Stock
+            <span className="absolute right-2 top-2 z-10 hidden sm:flex items-center gap-1 rounded bg-emerald-50 px-2 py-0.5 text-[9px] font-bold text-emerald-700 border border-emerald-200">
+              <Check className="h-2.5 w-2.5" /> Stock
             </span>
           )}
 
@@ -68,48 +64,48 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             loading="lazy"
             referrerPolicy="no-referrer"
             onError={() => setErrorCount((prev) => prev + 1)}
-            whileHover={{ scale: 1.08 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="h-full w-full object-contain filter drop-shadow-sm"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+            className="h-full w-full object-contain"
           />
         </div>
 
-        {/* Content */}
-        <div className="flex flex-1 flex-col justify-between p-5 gap-3">
+        {/* Content Box — Uniform White (#ffffff) */}
+        <div className="flex flex-1 flex-col justify-between p-2.5 sm:p-4 gap-2 bg-white">
           <div>
-            <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#b45309] block mb-1">
+            <span className="text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider text-[#b45309] block mb-0.5">
               {product.category}
             </span>
 
             <Link
               to="/products/$slug"
               params={{ slug }}
-              className="text-sm font-bold leading-snug text-[#1a130f] line-clamp-2 min-h-[2.6rem] group-hover:text-[#b45309] transition-colors"
+              className="text-[11px] sm:text-xs font-bold leading-tight text-[#1a130f] line-clamp-2 min-h-[2.1rem] group-hover:text-[#b45309] transition-colors"
             >
               {product.name}
             </Link>
 
             {product.partNumber && (
-              <p className="mt-1.5 text-[11px] font-mono text-[#6b5e54]">
+              <p className="mt-1 text-[9px] sm:text-[10px] font-mono text-slate-500 truncate">
                 PN: <span className="text-[#1a130f] font-bold">{product.partNumber}</span>
               </p>
             )}
           </div>
 
-          <div className="pt-3 border-t border-[#e7e5e4] flex items-center justify-between gap-2">
+          <div className="pt-2 border-t border-[#e7e5e4] flex items-center justify-between gap-1">
             <button
               onClick={(e) => { e.stopPropagation(); setModalOpen(true); }}
-              className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#1a130f] px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider text-white hover:bg-[#b45309] transition-all duration-200 shadow-sm"
+              className="inline-flex items-center justify-center gap-1 rounded-lg bg-[#1a130f] px-2 py-1.5 sm:px-3 sm:py-1.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-white hover:bg-[#b45309] transition-all shadow-sm shrink-0"
             >
-              <MessageSquare className="h-3.5 w-3.5 text-amber-400 group-hover:text-white" /> Get Quote
+              <MessageSquare className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-amber-400" /> Quote
             </button>
 
             <Link
               to="/products/$slug"
               params={{ slug }}
-              className="inline-flex items-center gap-1 text-[11px] font-bold text-[#1a130f] group-hover:text-[#b45309] group-hover:translate-x-1 transition-all"
+              className="inline-flex items-center gap-0.5 text-[9px] sm:text-[10px] font-bold text-[#1a130f] group-hover:text-[#b45309] transition-colors shrink-0"
             >
-              Details <ArrowRight className="h-3.5 w-3.5" />
+              Details <ArrowRight className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
             </Link>
           </div>
         </div>

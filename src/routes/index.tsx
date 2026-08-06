@@ -138,7 +138,7 @@ function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f6f4ee] text-[#1a130f] font-sans selection:bg-[#b45309] selection:text-white">
+    <div className="min-h-screen bg-[#f6f4ee] text-[#1a130f] font-sans selection:bg-[#b45309] selection:text-white pb-16 sm:pb-0">
       <Header />
 
       <main>
@@ -365,7 +365,7 @@ function Index() {
               </div>
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-3 sm:gap-5 grid-cols-2 lg:grid-cols-4">
               {previewProducts.map((p, idx) => (
                 <ProductCard key={p.id} product={p} index={idx} />
               ))}

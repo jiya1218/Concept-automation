@@ -56,38 +56,38 @@ function Products() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f6f4ee]">
+    <div className="min-h-screen bg-[#f6f4ee] pb-16 sm:pb-0">
       <Header />
 
       <main>
         {/* Page Header Banner */}
-        <div className="border-b border-[#e7e5e4] bg-[#140d09] py-10 sm:py-14 text-white">
+        <div className="border-b border-[#e7e5e4] bg-[#140d09] py-8 sm:py-14 text-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 text-center">
-            <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#b45309]">Complete Catalog</span>
-            <h1 className="mt-2 font-display text-2xl font-extrabold text-white sm:text-4xl">
+            <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#b45309]">Complete Catalog</span>
+            <h1 className="mt-1 font-display text-xl font-extrabold text-white sm:text-4xl">
               Industrial Automation Products
             </h1>
-            <p className="mt-2 text-xs sm:text-sm text-slate-300 max-w-lg mx-auto font-medium">
+            <p className="mt-1 text-xs text-slate-300 max-w-lg mx-auto font-medium">
               {allProducts.length}+ genuine OEM products from {brands.length} global manufacturers. Ready for dispatch.
             </p>
           </div>
         </div>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* TOP FILTER SECTION (User Request: Filter on Top)       */}
+        {/* TOP FILTER SECTION                                     */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <div className="sticky top-16 z-30 border-b border-[#e7e5e4] bg-[#f4f1eb]/95 backdrop-blur-md py-4 shadow-sm">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 space-y-3">
+        <div className="sticky top-14 sm:top-16 z-30 border-b border-[#e7e5e4] bg-[#f4f1eb]/95 backdrop-blur-md py-3 shadow-sm">
+          <div className="mx-auto max-w-7xl px-3 sm:px-6 space-y-2.5">
             {/* Search Input Bar & Result Count */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
               <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#334155]" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#334155]" />
                 <input
                   type="text"
-                  placeholder="Search model name, part number, brand..."
+                  placeholder="Search model, part number, brand..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-xl border border-[#e7e5e4] bg-white pl-10 pr-4 py-2.5 text-xs text-[#1a130f] font-semibold placeholder-[#334155] focus:border-[#1a130f] focus:outline-none focus:ring-2 focus:ring-[#1a130f]/20 shadow-sm"
+                  className="w-full rounded-xl border border-[#e7e5e4] bg-white pl-9 pr-4 py-2 text-xs text-[#1a130f] font-semibold placeholder-[#334155] focus:border-[#1a130f] focus:outline-none focus:ring-1 focus:ring-[#1a130f]/20 shadow-sm"
                 />
                 {searchQuery && (
                   <button onClick={() => setSearchQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
@@ -103,9 +103,9 @@ function Products() {
                 {(selectedBrand !== "All" || selectedType !== "All" || searchQuery) && (
                   <button
                     onClick={resetFilters}
-                    className="rounded-lg border border-[#e7e5e4] bg-white px-3 py-1.5 text-[11px] font-bold text-[#b45309] hover:bg-[#f6f4ee] transition-colors"
+                    className="rounded-lg border border-[#e7e5e4] bg-white px-2.5 py-1 text-[10px] font-bold text-[#b45309] hover:bg-[#f6f4ee] transition-colors"
                   >
-                    Reset Filters
+                    Reset
                   </button>
                 )}
               </div>
@@ -113,12 +113,12 @@ function Products() {
 
             {/* Product Type Filter Pills */}
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#334155] mr-2 shrink-0">Type:</span>
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#334155] mr-1 shrink-0">Type:</span>
               {productTypes.map((t) => (
                 <button
                   key={t}
                   onClick={() => setSelectedType(t)}
-                  className={`shrink-0 rounded-xl px-3.5 py-1.5 text-xs font-extrabold transition-all ${
+                  className={`shrink-0 rounded-xl px-3 py-1 text-[11px] font-extrabold transition-all ${
                     selectedType === t
                       ? "bg-[#1a130f] text-white shadow-sm"
                       : "bg-white text-[#1a130f] border border-[#e7e5e4] hover:bg-[#f6f4ee]"
@@ -131,10 +131,10 @@ function Products() {
 
             {/* Brand Filter Pills */}
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#334155] mr-2 shrink-0">Brand:</span>
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#334155] mr-1 shrink-0">Brand:</span>
               <button
                 onClick={() => setSelectedBrand("All")}
-                className={`shrink-0 rounded-xl px-3.5 py-1.5 text-xs font-extrabold transition-all ${
+                className={`shrink-0 rounded-xl px-3 py-1 text-[11px] font-extrabold transition-all ${
                   selectedBrand === "All"
                     ? "bg-[#b45309] text-white shadow-sm"
                     : "bg-white text-[#1a130f] border border-[#e7e5e4] hover:bg-[#f6f4ee]"
@@ -146,7 +146,7 @@ function Products() {
                 <button
                   key={b}
                   onClick={() => setSelectedBrand(b)}
-                  className={`shrink-0 rounded-xl px-3.5 py-1.5 text-xs font-extrabold transition-all ${
+                  className={`shrink-0 rounded-xl px-3 py-1 text-[11px] font-extrabold transition-all ${
                     selectedBrand === b
                       ? "bg-[#b45309] text-white shadow-sm"
                       : "bg-white text-[#1a130f] border border-[#e7e5e4] hover:bg-[#f6f4ee]"
@@ -159,8 +159,8 @@ function Products() {
           </div>
         </div>
 
-        {/* Product Grid Area */}
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+        {/* 2-COLUMN MOBILE PRODUCT GRID (User Request: 2 products in mobile view) */}
+        <div className="mx-auto max-w-7xl px-3 py-6 sm:px-6">
           {filteredProducts.length === 0 ? (
             <div className="rounded-3xl border border-[#e7e5e4] bg-white p-12 text-center shadow-sm">
               <p className="text-[#334155] text-sm font-semibold">No products match your filter criteria.</p>
@@ -169,7 +169,7 @@ function Products() {
               </button>
             </div>
           ) : (
-            <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid gap-3 grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
               {filteredProducts.map((p, idx) => (
                 <ProductCard key={p.id} product={p} index={idx} />
               ))}
