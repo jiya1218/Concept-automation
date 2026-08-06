@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   ArrowRight,
   Phone,
@@ -14,7 +14,6 @@ import {
   ChevronRight,
   Star,
   ArrowUpRight,
-  Play,
   Globe,
   Package,
   Settings,
@@ -45,14 +44,14 @@ const heroSlides = [
 ];
 
 const solutions = [
-  { icon: Cpu, title: "PLC Controllers", desc: "Siemens S7-1200/1500, Mitsubishi FX5U, AB CompactLogix, Omron CP/CJ series", color: "bg-blue-50 text-blue-600" },
-  { icon: Settings, title: "VFD Drives", desc: "SINAMICS, FREQROL, PowerFlex, Delta MS/VFD-E, Schneider ATV series", color: "bg-amber-50 text-amber-600" },
-  { icon: Package, title: "HMI Panels", desc: "SIMATIC Comfort, GOT2000, PanelView Plus, Proface GP-4000 series", color: "bg-emerald-50 text-emerald-600" },
-  { icon: Globe, title: "Sensors & I/O", desc: "Pepperl+Fuchs proximity, photoelectric sensors, signal conditioners", color: "bg-violet-50 text-violet-600" },
+  { icon: Cpu, title: "PLC Controllers", desc: "Siemens S7-1200/1500, Mitsubishi FX5U, AB CompactLogix, Omron CP/CJ series", color: "bg-blue-50 text-[#0f2a4a]" },
+  { icon: Settings, title: "VFD Drives", desc: "SINAMICS, FREQROL, PowerFlex, Delta MS/VFD-E, Schneider ATV series", color: "bg-amber-50 text-[#d97706]" },
+  { icon: Package, title: "HMI Panels", desc: "SIMATIC Comfort, GOT2000, PanelView Plus, Proface GP-4000 series", color: "bg-emerald-50 text-emerald-700" },
+  { icon: Globe, title: "Sensors & I/O", desc: "Pepperl+Fuchs proximity, photoelectric sensors, signal conditioners", color: "bg-slate-100 text-slate-800" },
 ];
 
 const reviews = [
-  { quote: "Supplied genuine Siemens S7-1200 CPUs and TP1200 HMIs within 24 hours during a critical plant breakdown.", author: "Mr. R. K. Patel", role: "Pharma Machine OEM, Ahmedabad" },
+  { quote: "Supplied genuine Siemens S7-1200 CPUs and TP1200 HMIs within 24 hours during a critical plant breakdown. Exceptional service!", author: "Mr. R. K. Patel", role: "Pharma Machine OEM, Ahmedabad" },
   { quote: "We regularly source Mitsubishi FREQROL VFDs and GOT touch screens. Always original stock with complete warranty.", author: "Mr. Vikram Shah", role: "Packaging Systems, Vadodara" },
   { quote: "Fast response on hard-to-find Allen Bradley CompactLogix parts. Technical team verified the exact cross-reference.", author: "Mr. Amit Verma", role: "Automotive Ancillary Pvt Ltd, Pune" },
 ];
@@ -83,73 +82,67 @@ function Index() {
 
       <main>
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* SECTION 1: HERO — Bright Modern Light Palette          */}
+        {/* HERO SECTION — MB Finishing Tech Palette              */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-stone-100 via-stone-50 to-white min-h-[85vh] flex items-center border-b border-stone-200">
-          {/* Subtle Background Pattern & Soft Overlay */}
+        <section className="relative overflow-hidden bg-gradient-to-b from-slate-100 via-slate-50 to-white min-h-[85vh] flex items-center border-b border-slate-200">
           <div className="absolute inset-0 z-0">
-            <img src={heroImage} alt="" className="h-full w-full object-cover opacity-[0.06] mix-blend-multiply" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-50/60 via-transparent to-transparent" />
+            <img src={heroImage} alt="" className="h-full w-full object-cover opacity-[0.05] mix-blend-multiply" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-50/70 via-transparent to-transparent" />
           </div>
 
-          {/* Decorative grid lines */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000005_1px,transparent_1px),linear-gradient(to_bottom,#00000005_1px,transparent_1px)] bg-[size:64px_64px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000006_1px,transparent_1px),linear-gradient(to_bottom,#00000006_1px,transparent_1px)] bg-[size:64px_64px]" />
 
           <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
-            {/* Top badge */}
             <div className="animate-fade-in">
-              <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50/80 px-4 py-1.5 text-[11px] font-bold tracking-[0.15em] text-amber-700 uppercase shadow-sm">
-                <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-[11px] font-bold tracking-[0.15em] text-[#d97706] uppercase shadow-sm">
+                <span className="h-2 w-2 rounded-full bg-[#d97706] animate-pulse" />
                 Trusted Industrial Automation Partner
               </span>
             </div>
 
-            {/* Giant headline */}
-            <h1 className="mt-6 font-display text-[clamp(2.4rem,6vw,5.2rem)] font-extrabold leading-[1.05] tracking-tight text-stone-900 max-w-4xl animate-slide-left">
+            <h1 className="mt-6 font-display text-[clamp(2.4rem,6vw,5.2rem)] font-extrabold leading-[1.05] tracking-tight text-[#0f2a4a] max-w-4xl animate-slide-left">
               {slide.title}
             </h1>
 
-            <p className="mt-5 text-lg text-stone-600 leading-relaxed max-w-xl animate-fade-up stagger-1 sm:text-xl font-normal">
+            <p className="mt-5 text-lg text-slate-600 leading-relaxed max-w-xl animate-fade-up stagger-1 sm:text-xl font-normal">
               {slide.subtitle}
             </p>
 
-            {/* CTA row */}
             <div className="mt-8 flex flex-wrap items-center gap-4 animate-fade-up stagger-2">
               <button
                 onClick={() => openQuote(slide.title, "")}
-                className="group rounded-2xl bg-stone-950 px-8 py-4 text-sm font-bold text-white shadow-lg hover:bg-amber-600 transition-all flex items-center gap-2"
+                className="group rounded-xl bg-[#0f2a4a] px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-lg hover:bg-[#0a1e36] transition-all flex items-center gap-2"
               >
-                {slide.cta} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                {slide.cta} <ArrowRight className="h-4 w-4 text-[#d97706] transition-transform group-hover:translate-x-1" />
               </button>
               <button
                 onClick={() => openQuote("General Inquiry", "")}
-                className="rounded-2xl border border-stone-300 bg-white px-8 py-4 text-sm font-semibold text-stone-800 hover:border-stone-400 hover:bg-stone-50 transition-all shadow-sm"
+                className="rounded-xl border border-slate-300 bg-white px-8 py-4 text-xs font-bold uppercase tracking-wider text-[#0f2a4a] hover:border-[#0f2a4a] hover:bg-slate-50 transition-all shadow-sm"
               >
                 Get Free Quote
               </button>
               <a
                 href={`tel:${company.phoneRaw}`}
-                className="flex items-center gap-2 text-sm font-semibold text-stone-600 hover:text-amber-600 transition-colors ml-2"
+                className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#0f2a4a] hover:text-[#d97706] transition-colors ml-2"
               >
-                <Phone className="h-4 w-4 text-amber-600" /> {company.phone}
+                <Phone className="h-4 w-4 text-[#d97706]" /> {company.phone}
               </a>
             </div>
 
-            {/* Slide dots */}
             <div className="mt-10 flex items-center gap-2">
               {heroSlides.map((_, i) => (
                 <button key={i} onClick={() => setSlideIndex(i)}
-                  className={`h-1.5 rounded-full transition-all duration-500 ${i === slideIndex ? "w-10 bg-amber-600" : "w-3 bg-stone-300 hover:bg-stone-400"}`} />
+                  className={`h-1.5 rounded-full transition-all duration-500 ${i === slideIndex ? "w-10 bg-[#d97706]" : "w-3 bg-slate-300 hover:bg-slate-400"}`} />
               ))}
             </div>
 
-            {/* Brand logos cloud */}
-            <div className="mt-12 border-t border-stone-200/80 pt-6 animate-fade-up stagger-3">
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400 mb-4">Official Partners & Brands We Stock</p>
+            {/* Brand Cloud */}
+            <div className="mt-12 border-t border-slate-200 pt-6 animate-fade-up stagger-3">
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#d97706] mb-4">Official Partners & Brands We Stock</p>
               <div className="flex flex-wrap gap-x-8 gap-y-3">
                 {brands.map((b) => (
                   <Link key={b} to="/products" search={{ q: b }}
-                    className="text-sm font-bold text-stone-600 hover:text-amber-600 transition-colors cursor-pointer">
+                    className="text-xs font-bold uppercase tracking-wider text-[#0f2a4a] hover:text-[#d97706] transition-colors cursor-pointer">
                     {b}
                   </Link>
                 ))}
@@ -159,59 +152,57 @@ function Index() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* SECTION 2: BENTO GRID — Solutions/Categories            */}
+        {/* SOLUTIONS BENTO GRID — Steel Navy & Amber Accent       */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="bg-stone-50 py-20 sm:py-28">
+        <section className="bg-slate-50 py-20 sm:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="max-w-2xl animate-fade-up">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-600">What We Supply</span>
-              <h2 className="mt-3 font-display text-3xl font-extrabold text-stone-900 leading-tight sm:text-4xl lg:text-5xl">
-                Complete automation<br className="hidden sm:block" /> hardware ecosystem
+              <span className="eyebrow">WHAT WE SUPPLY</span>
+              <h2 className="mt-2 font-display text-3xl font-extrabold text-[#0f2a4a] leading-tight sm:text-4xl">
+                Complete Automation Hardware Ecosystem
               </h2>
-              <p className="mt-4 text-base text-stone-500 leading-relaxed sm:text-lg">
-                From PLC controllers to VFD drives, HMI panels to proximity sensors — everything your factory needs, sourced directly from global OEMs.
+              <p className="mt-3 text-sm text-slate-600 leading-relaxed sm:text-base">
+                From PLC controllers to VFD drives, HMI panels to proximity sensors — sourced directly from global OEMs.
               </p>
             </div>
 
-            {/* Bento Grid — asymmetric layout */}
-            <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 animate-fade-up stagger-2">
-              {/* Large card */}
-              <div className="lg:row-span-2 rounded-3xl bg-stone-900 p-8 sm:p-10 text-white flex flex-col justify-between relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 animate-fade-up stagger-2">
+              {/* Giant Steel Navy Highlight Card */}
+              <div className="lg:row-span-2 rounded-2xl bg-[#0a1e36] p-8 text-white flex flex-col justify-between relative overflow-hidden group shadow-xl">
                 <div className="relative z-10">
-                  <div className="h-12 w-12 rounded-2xl bg-amber-500/20 flex items-center justify-center mb-6">
-                    <ShieldCheck className="h-6 w-6 text-amber-400" />
+                  <div className="h-12 w-12 rounded-xl bg-white/10 flex items-center justify-center mb-6">
+                    <ShieldCheck className="h-6 w-6 text-[#d97706]" />
                   </div>
-                  <h3 className="font-display text-2xl font-bold leading-tight sm:text-3xl">
-                    1,500+ genuine parts<br />ready to dispatch
+                  <h3 className="font-display text-2xl font-bold uppercase leading-snug">
+                    1,500+ Genuine Parts<br />Ready for Dispatch
                   </h3>
-                  <p className="mt-4 text-stone-400 leading-relaxed">
-                    Every item in our inventory is 100% original OEM with factory seal, official warranty, and complete documentation. No knock-offs, no compromises.
+                  <p className="mt-4 text-xs text-slate-300 leading-relaxed">
+                    100% original OEM inventory with factory seal, official warranty, and fast breakdown dispatch service.
                   </p>
                 </div>
                 <div className="relative z-10 mt-8 grid grid-cols-2 gap-4 pt-6 border-t border-white/10">
                   <div>
-                    <div className="text-2xl font-bold text-white font-display">24-48<span className="text-amber-400">hr</span></div>
-                    <div className="text-xs text-stone-400 mt-0.5">Average Dispatch</div>
+                    <div className="text-2xl font-bold text-white font-display">24-48<span className="text-[#d97706]">HR</span></div>
+                    <div className="text-[10px] text-slate-300 uppercase tracking-wider mt-0.5">Fast Dispatch</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-white font-display">Pan-India</div>
-                    <div className="text-xs text-stone-400 mt-0.5">+ Global Export</div>
+                    <div className="text-2xl font-bold text-white font-display">PAN-INDIA</div>
+                    <div className="text-[10px] text-slate-300 uppercase tracking-wider mt-0.5">+ Global Export</div>
                   </div>
                 </div>
               </div>
 
-              {/* Solution cards */}
+              {/* Solution Cards */}
               {solutions.map((sol) => (
-                <div key={sol.title} className="rounded-3xl border border-stone-200 bg-white p-7 sm:p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
+                <div key={sol.title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg hover:border-[#d97706] hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
                   onClick={() => navigate({ to: "/products" })}>
-                  <div className={`h-11 w-11 rounded-xl ${sol.color} flex items-center justify-center mb-5`}>
+                  <div className={`h-10 w-10 rounded-lg ${sol.color} flex items-center justify-center mb-4`}>
                     <sol.icon className="h-5 w-5" />
                   </div>
-                  <h3 className="font-display text-lg font-bold text-stone-900">{sol.title}</h3>
-                  <p className="mt-2 text-sm text-stone-500 leading-relaxed">{sol.desc}</p>
-                  <div className="mt-5 flex items-center gap-1 text-xs font-semibold text-amber-600 group-hover:gap-2 transition-all">
-                    Browse catalog <ArrowUpRight className="h-3.5 w-3.5" />
+                  <h3 className="font-display text-base font-bold text-[#0f2a4a] uppercase">{sol.title}</h3>
+                  <p className="mt-2 text-xs text-slate-600 leading-relaxed">{sol.desc}</p>
+                  <div className="mt-4 flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-[#d97706] group-hover:gap-2 transition-all">
+                    Explore <ArrowUpRight className="h-3.5 w-3.5" />
                   </div>
                 </div>
               ))}
@@ -220,96 +211,63 @@ function Index() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* SECTION 3: ABOUT — Split layout with floating card      */}
+        {/* ABOUT US SECTION                                       */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="bg-white py-20 sm:py-28 overflow-hidden">
+        <section className="bg-white py-20 sm:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="grid gap-16 lg:grid-cols-5 lg:items-center">
-              {/* Left: Text content (3 cols) */}
+            <div className="grid gap-12 lg:grid-cols-5 lg:items-center">
               <div className="lg:col-span-3 animate-fade-up">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-600">About Us</span>
-                <h2 className="mt-3 font-display text-3xl font-extrabold text-stone-900 leading-tight sm:text-4xl lg:text-5xl">
-                  Industrial automation,<br className="hidden sm:block" />simplified.
+                <span className="eyebrow">ABOUT US</span>
+                <h2 className="mt-2 font-display text-3xl font-extrabold text-[#0f2a4a] leading-tight sm:text-4xl">
+                  Concept Automation Technologies
                 </h2>
-                <p className="mt-6 text-base text-stone-500 leading-relaxed sm:text-lg max-w-xl">
-                  {company.name} is Ahmedabad's premier supplier of Siemens, Mitsubishi, Omron, Delta & Allen Bradley automation products. We deliver PLCs, AC Drives, Servo Systems, HMIs, and SCADA solutions — engineered for maximum reliability.
+                <p className="mt-4 text-sm text-slate-600 leading-relaxed">
+                  Located in Ahmedabad, India, we are a leading supplier of Siemens, Mitsubishi, Omron, Delta & Allen Bradley automation products. We offer PLCs, AC Drives, Servo Systems, HMIs, and SCADA systems tailored for maximum performance.
                 </p>
 
-                <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
                   {[
-                    { title: "Genuine OEM Stock", desc: "100% original with factory seal" },
-                    { title: "Technical Assistance", desc: "Cross-reference & parameter support" },
-                    { title: "Custom Panels", desc: "Retrofit & automation panel builds" },
-                    { title: "Fast Turnaround", desc: "24-48 hour dispatch nationwide" },
+                    { title: "Genuine 100% Original OEM", desc: "Factory direct quality guarantee" },
+                    { title: "Technical Cross-Reference", desc: "Fast part number identification" },
+                    { title: "Custom Panel Solutions", desc: "Retrofit & panel development" },
+                    { title: "PAN-India Logistics", desc: "Express delivery to manufacturing sites" },
                   ].map((item) => (
-                    <div key={item.title} className="flex items-start gap-3">
-                      <CheckCircle2 className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+                    <div key={item.title} className="flex items-start gap-2.5">
+                      <CheckCircle2 className="h-4 w-4 text-[#d97706] shrink-0 mt-0.5" />
                       <div>
-                        <div className="text-sm font-bold text-stone-900">{item.title}</div>
-                        <div className="text-xs text-stone-500 mt-0.5">{item.desc}</div>
+                        <div className="text-xs font-bold text-[#0f2a4a] uppercase">{item.title}</div>
+                        <div className="text-[11px] text-slate-500 mt-0.5">{item.desc}</div>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-10 flex flex-wrap gap-3">
-                  <Link to="/about" className="group rounded-2xl bg-stone-950 px-7 py-3.5 text-sm font-semibold text-white hover:bg-amber-600 transition-colors flex items-center gap-2">
-                    Learn more <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                  <Link to="/contact" className="rounded-2xl border border-stone-200 px-7 py-3.5 text-sm font-semibold text-stone-700 hover:border-stone-400 transition-colors">
-                    Contact us
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Link to="/about" className="rounded-xl bg-[#0f2a4a] px-7 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#0a1e36] transition-colors flex items-center gap-2 shadow-sm">
+                    Read Company Profile <ArrowRight className="h-4 w-4 text-[#d97706]" />
                   </Link>
                 </div>
               </div>
 
-              {/* Right: Floating product showcase (2 cols) */}
               <div className="lg:col-span-2 animate-slide-right stagger-2">
-                <div className="relative">
-                  {/* Decorative blur */}
-                  <div className="absolute -inset-8 bg-amber-100/50 rounded-[2rem] blur-3xl" />
-
-                  <div className="relative rounded-3xl bg-stone-950 p-6 shadow-2xl">
-                    <div className="flex items-center justify-between mb-5">
-                      <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                        <span className="text-[10px] font-semibold text-stone-400 uppercase tracking-wider">Live Inventory</span>
-                      </div>
-                      <span className="rounded-full bg-amber-500/15 border border-amber-500/25 px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-amber-400">
-                        OEM Verified
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                      {[
-                        { label: "Siemens VFD", part: "6SL3120-1TE21", name: "SINAMICS S120", img: "https://cpimg.tistatic.com/09164988/b/4/Siemens-S120-Drive-6SL3120-1TE21-8AD0-S120-VFD.jpg" },
-                        { label: "Siemens PLC", part: "6ED1052-1FB08", name: "LOGO! 8 CPU", img: "https://cpimg.tistatic.com/09164979/b/4/Siemens-Logo-6ED1052-1FB08-0BA1-PLC.jpg" },
-                      ].map((p) => (
-                        <div key={p.part} className="group rounded-2xl bg-white p-3 transition-transform duration-300 hover:-translate-y-1">
-                          <div className="h-28 sm:h-36 flex items-center justify-center p-2">
-                            <img src={p.img} alt={p.name} referrerPolicy="no-referrer" className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105" />
-                          </div>
-                          <div className="mt-2 text-center border-t border-stone-100 pt-2">
-                            <div className="text-[11px] font-bold text-stone-900">{p.name}</div>
-                            <div className="text-[9px] text-stone-400 font-mono">{p.part}</div>
-                          </div>
+                <div className="rounded-2xl bg-[#0a1e36] p-6 shadow-xl text-white">
+                  <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#d97706]">Operational Facility</span>
+                    <span className="text-[10px] font-bold uppercase text-emerald-400">Makarba, Ahmedabad</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { label: "Siemens VFD", part: "6SL3120-1TE21", name: "SINAMICS S120", img: "https://cpimg.tistatic.com/09164988/b/4/Siemens-S120-Drive-6SL3120-1TE21-8AD0-S120-VFD.jpg" },
+                      { label: "Siemens PLC", part: "6ED1052-1FB08", name: "LOGO! 8 CPU", img: "https://cpimg.tistatic.com/09164979/b/4/Siemens-Logo-6ED1052-1FB08-0BA1-PLC.jpg" },
+                    ].map((p) => (
+                      <div key={p.part} className="rounded-xl bg-white p-3 text-center">
+                        <div className="h-28 flex items-center justify-center p-2">
+                          <img src={p.img} alt={p.name} referrerPolicy="no-referrer" className="h-full w-full object-contain" />
                         </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-4 pt-4 border-t border-white/10 grid grid-cols-3 text-center">
-                      <div>
-                        <div className="text-lg font-bold text-white font-display">1,500+</div>
-                        <div className="text-[9px] text-stone-500 uppercase tracking-wider">Parts</div>
+                        <div className="text-xs font-bold text-[#0f2a4a] uppercase mt-1">{p.name}</div>
+                        <div className="text-[9px] text-slate-400 font-mono">{p.part}</div>
                       </div>
-                      <div>
-                        <div className="text-lg font-bold text-amber-400 font-display">10+</div>
-                        <div className="text-[9px] text-stone-500 uppercase tracking-wider">Brands</div>
-                      </div>
-                      <div>
-                        <div className="text-lg font-bold text-white font-display">12 Mo</div>
-                        <div className="text-[9px] text-stone-500 uppercase tracking-wider">Warranty</div>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -318,19 +276,19 @@ function Index() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* SECTION 4: FEATURED PRODUCTS — Horizontal scroll         */}
+        {/* FEATURED PRODUCTS                                      */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="bg-stone-50 py-20 sm:py-28 border-y border-stone-200">
+        <section className="bg-slate-50 py-20 border-y border-slate-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12 animate-fade-up">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 animate-fade-up">
               <div>
-                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-600">Inventory Catalog</span>
-                <h2 className="mt-2 font-display text-3xl font-extrabold text-stone-900 sm:text-4xl">
-                  Featured products
+                <span className="eyebrow">INVENTORY CATALOG</span>
+                <h2 className="mt-1 font-display text-3xl font-extrabold text-[#0f2a4a]">
+                  Featured Products & Parts
                 </h2>
               </div>
-              <Link to="/products" className="group inline-flex items-center gap-2 text-sm font-semibold text-stone-600 hover:text-amber-600 transition-colors shrink-0">
-                View all {allProducts.length}+ products <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <Link to="/products" className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#0f2a4a] hover:text-[#d97706] transition-colors">
+                View All {allProducts.length}+ Products <ArrowRight className="h-3.5 w-3.5 text-[#d97706]" />
               </Link>
             </div>
 
@@ -343,53 +301,44 @@ function Index() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* SECTION 5: TESTIMONIALS — Oversized card carousel       */}
+        {/* TESTIMONIAL CAROUSEL                                   */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="bg-white py-20 sm:py-28">
+        <section className="bg-white py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="grid gap-12 lg:grid-cols-5 lg:items-center">
-              {/* Left label */}
+            <div className="grid gap-10 lg:grid-cols-5 lg:items-center">
               <div className="lg:col-span-2 animate-fade-up">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-600">Testimonials</span>
-                <h2 className="mt-3 font-display text-3xl font-extrabold text-stone-900 leading-tight sm:text-4xl">
-                  Trusted by engineers across India
+                <span className="eyebrow">TESTIMONIALS</span>
+                <h2 className="mt-2 font-display text-3xl font-extrabold text-[#0f2a4a] leading-tight">
+                  Client Feedback & Reviews
                 </h2>
-                <p className="mt-4 text-base text-stone-500 leading-relaxed">
-                  From pharma OEMs to automotive plants — our clients trust us for genuine parts, fast delivery, and technical support.
+                <p className="mt-3 text-xs text-slate-600 leading-relaxed">
+                  Trusted by pharma, packaging, and automotive engineers across India.
                 </p>
 
-                {/* Nav arrows */}
-                <div className="mt-8 flex items-center gap-3">
+                <div className="mt-6 flex items-center gap-3">
                   <button onClick={() => setReviewIndex((prev) => (prev - 1 + reviews.length) % reviews.length)}
-                    className="h-11 w-11 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-100 transition-colors">
-                    <ChevronLeft className="h-5 w-5 text-stone-600" />
+                    className="h-10 w-10 rounded-lg border border-slate-200 flex items-center justify-center text-[#0f2a4a] hover:bg-slate-100 transition-colors">
+                    <ChevronLeft className="h-5 w-5" />
                   </button>
                   <button onClick={() => setReviewIndex((prev) => (prev + 1) % reviews.length)}
-                    className="h-11 w-11 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-100 transition-colors">
-                    <ChevronRight className="h-5 w-5 text-stone-600" />
+                    className="h-10 w-10 rounded-lg border border-slate-200 flex items-center justify-center text-[#0f2a4a] hover:bg-slate-100 transition-colors">
+                    <ChevronRight className="h-5 w-5" />
                   </button>
-                  <span className="text-xs text-stone-400 ml-2">{reviewIndex + 1} / {reviews.length}</span>
+                  <span className="text-xs font-bold text-slate-400 ml-2">{reviewIndex + 1} / {reviews.length}</span>
                 </div>
               </div>
 
-              {/* Right: Active review card */}
               <div className="lg:col-span-3 animate-scale-in" key={reviewIndex}>
-                <div className="rounded-3xl bg-stone-50 border border-stone-200 p-8 sm:p-10 relative">
-                  <div className="absolute top-6 right-8 text-7xl font-display font-black text-stone-200/80 leading-none select-none">"</div>
-                  <div className="flex text-amber-500 mb-5">
-                    {[...Array(5)].map((_, i) => <Star key={i} className="h-5 w-5 fill-current" />)}
+                <div className="rounded-2xl bg-slate-50 border border-slate-200 p-8 relative">
+                  <div className="flex text-[#d97706] mb-4">
+                    {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
                   </div>
-                  <p className="text-lg text-stone-700 leading-relaxed font-medium relative z-10 sm:text-xl">
+                  <p className="text-sm text-slate-700 leading-relaxed italic font-medium">
                     "{reviews[reviewIndex].quote}"
                   </p>
-                  <div className="mt-8 flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-full bg-stone-900 flex items-center justify-center text-white font-bold text-sm">
-                      {reviews[reviewIndex].author.split(" ").map(n => n[0]).join("").slice(0, 2)}
-                    </div>
-                    <div>
-                      <div className="font-bold text-stone-900">{reviews[reviewIndex].author}</div>
-                      <div className="text-sm text-amber-600">{reviews[reviewIndex].role}</div>
-                    </div>
+                  <div className="mt-6 pt-4 border-t border-slate-200">
+                    <div className="font-display text-sm font-bold uppercase text-[#0f2a4a]">{reviews[reviewIndex].author}</div>
+                    <div className="text-xs text-[#d97706] font-semibold">{reviews[reviewIndex].role}</div>
                   </div>
                 </div>
               </div>
@@ -398,26 +347,23 @@ function Index() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* SECTION 6: CTA — Full-width gradient                    */}
+        {/* CALL TO ACTION BANNER — Steel Navy & Gold              */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="relative overflow-hidden bg-stone-950 py-24 sm:py-32">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:60px_60px]" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-amber-500/5 rounded-full blur-3xl" />
-
-          <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 text-center animate-fade-up">
-            <h2 className="font-display text-3xl font-extrabold text-white leading-tight sm:text-5xl">
-              Ready to power your<br />next automation project?
+        <section className="bg-[#0a1e36] py-20 text-white border-t border-slate-800">
+          <div className="mx-auto max-w-4xl px-4 text-center animate-fade-up">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#d97706]">
+              Factory Breakdown or Project Inquiry?
+            </span>
+            <h2 className="mt-2 font-display text-3xl font-extrabold uppercase text-white sm:text-4xl">
+              Get Instant Part Quotation & Engineering Support
             </h2>
-            <p className="mt-5 text-lg text-stone-400 max-w-xl mx-auto">
-              Get instant part pricing and engineering assistance from our technical sales desk in Ahmedabad.
-            </p>
-            <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
               <button onClick={() => openQuote("General Inquiry", "")}
-                className="group rounded-2xl bg-amber-500 px-10 py-4 text-sm font-bold text-stone-950 shadow-lg shadow-amber-500/20 hover:bg-amber-400 transition-all flex items-center gap-2">
-                Get In Touch <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                className="rounded-xl bg-[#d97706] px-8 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg hover:bg-[#b45309] transition-all">
+                Request Instant Quote
               </button>
               <a href={`tel:${company.phoneRaw}`}
-                className="rounded-2xl border border-white/15 bg-white/5 px-10 py-4 text-sm font-semibold text-white hover:bg-white/10 transition-all backdrop-blur-sm">
+                className="rounded-xl border border-white/20 bg-white/10 px-8 py-3.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-white/20 transition-all">
                 Call {company.phone}
               </a>
             </div>

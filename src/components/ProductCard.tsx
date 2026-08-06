@@ -38,15 +38,15 @@ export function ProductCard({ product }: ProductCardProps) {
     <>
       <article
         onClick={handleCardClick}
-        className="group flex flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-amber-300 cursor-pointer"
+        className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-[#d97706] cursor-pointer"
       >
-        {/* Image */}
-        <div className="relative aspect-square overflow-hidden bg-stone-50 p-5">
-          <span className="absolute left-3 top-3 z-10 rounded-full bg-stone-900 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white">
+        {/* Product Image Container */}
+        <div className="relative aspect-square overflow-hidden bg-slate-50 p-5 border-b border-slate-100">
+          <span className="absolute left-3 top-3 z-10 rounded bg-[#0f2a4a] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
             {product.brand || product.category.split(" ")[0]}
           </span>
           {product.availability && (
-            <span className="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 border border-emerald-200">
+            <span className="absolute right-3 top-3 z-10 flex items-center gap-1 rounded bg-emerald-50 px-2 py-1 text-[10px] font-bold text-emerald-700 border border-emerald-200">
               <Check className="h-3 w-3" /> In Stock
             </span>
           )}
@@ -60,28 +60,28 @@ export function ProductCard({ product }: ProductCardProps) {
           />
         </div>
 
-        {/* Info */}
-        <div className="flex flex-1 flex-col gap-1.5 border-t border-stone-100 p-4">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-stone-400">{product.category}</span>
+        {/* Content */}
+        <div className="flex flex-1 flex-col gap-1.5 p-4">
+          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#d97706]">{product.category}</span>
 
           <Link
             to="/products/$slug"
             params={{ slug }}
-            className="text-sm font-semibold leading-snug text-stone-900 line-clamp-2 min-h-[2.5rem] hover:text-amber-700 transition-colors"
+            className="text-xs font-bold leading-snug text-[#0f2a4a] line-clamp-2 min-h-[2.4rem] hover:text-[#d97706] transition-colors"
           >
             {product.name}
           </Link>
 
           {product.partNumber && (
-            <p className="text-[11px] font-mono text-stone-400">
-              PN: <span className="text-stone-600 font-medium">{product.partNumber}</span>
+            <p className="text-[11px] font-mono text-slate-500">
+              Part No: <span className="text-[#0f2a4a] font-semibold">{product.partNumber}</span>
             </p>
           )}
 
-          <div className="mt-auto pt-3 border-t border-stone-100 flex items-center justify-between gap-2">
+          <div className="mt-auto pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
             <button
               onClick={(e) => { e.stopPropagation(); setModalOpen(true); }}
-              className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-stone-950 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-white hover:bg-amber-600 transition-colors"
+              className="inline-flex items-center justify-center gap-1.5 rounded bg-[#0f2a4a] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white hover:bg-[#d97706] transition-colors shadow-sm"
             >
               <MessageSquare className="h-3 w-3" /> Get Quote
             </button>
@@ -89,7 +89,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <Link
               to="/products/$slug"
               params={{ slug }}
-              className="inline-flex items-center gap-1 text-[11px] font-semibold text-stone-500 group-hover:text-amber-600 transition-colors"
+              className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0f2a4a] group-hover:text-[#d97706] transition-colors"
             >
               Details <ArrowRight className="h-3 w-3" />
             </Link>
