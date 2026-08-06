@@ -18,7 +18,13 @@ import {
   Package,
   Settings,
   Cpu,
+  Search,
+  SlidersHorizontal,
+  Check,
+  Sparkles,
+  RefreshCw,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import heroImage from "@/assets/hero-automation.jpg";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -36,334 +42,578 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const heroSlides = [
-  { title: "Rexroth A Bosch Company", subtitle: "Advanced motion control, hydraulics, and drive solutions from Bosch Rexroth.", cta: "Explore Rexroth" },
-  { title: "Siemens SIMATIC Automation", subtitle: "S7-1200, S7-1500 PLCs, Comfort HMIs, and SINAMICS drives in stock.", cta: "Explore Siemens" },
-  { title: "Mitsubishi Electric Solutions", subtitle: "MELSEC FX5U controllers, GOT2000 panels, and FREQROL drives.", cta: "Explore Mitsubishi" },
-  { title: "Schneider & Allen Bradley", subtitle: "Modicon controllers, PanelView HMIs, and CompactLogix platforms.", cta: "Explore Catalog" },
+// Interactive brand showcases inside Hero
+const heroBrandTabs = [
+  {
+    id: "siemens",
+    name: "Siemens",
+    badge: "100% Genuine SIMATIC",
+    title: "SIMATIC S7-1200 / S7-1500 & SINAMICS Drives",
+    desc: "In-stock Siemens CPUs, Comfort HMIs, and SINAMICS V20/G120/S120 frequency drives. Fast dispatch from Makarba, Ahmedabad warehouse.",
+    highlightPart: "6ES7214-1AG40-0XB0",
+    image: "https://cpimg.tistatic.com/09164979/b/4/Siemens-Logo-6ED1052-1FB08-0BA1-PLC.jpg",
+  },
+  {
+    id: "mitsubishi",
+    name: "Mitsubishi",
+    badge: "MELSEC Original Stock",
+    title: "MELSEC FX5U & FREQROL VFD Solutions",
+    desc: "High-performance FX5U PLCs, GOT2000 touch panels, and FREQROL-D700/E800 vector drives for maximum plant uptime.",
+    highlightPart: "FX5U-32MT/ESS",
+    image: "https://cpimg.tistatic.com/09377052/b/4/FR-CS84-295-60-MITSUBISHI-VFD.jpg",
+  },
+  {
+    id: "allenbradley",
+    name: "Allen Bradley",
+    badge: "Rockwell Authorized Trader",
+    title: "CompactLogix 5380 & PanelView HMIs",
+    desc: "CompactLogix controllers, PanelView 5000 graphic terminals, and PowerFlex 525 AC drives ready for immediate dispatch.",
+    highlightPart: "5069-L306ER",
+    image: "https://cpimg.tistatic.com/09377302/b/4/CompactLogix-5380.jpg",
+  },
+  {
+    id: "omron",
+    name: "Omron & Delta",
+    badge: "Factory Direct Hardware",
+    title: "Omron Sysmac CP1E/CJ2 & Delta VFD-E",
+    desc: "Complete stock of Omron micro PLCs, Delta MS300 vector inverters, and Pepperl+Fuchs inductive sensors.",
+    highlightPart: "CP1E-N40DR-A",
+    image: "https://cpimg.tistatic.com/09512948/b/4/PAPPERL-FUCHS-UC2000-30GM-IUR2-V15.jpg",
+  },
 ];
 
-const solutions = [
-  { icon: Cpu, title: "PLC Controllers", desc: "Siemens S7-1200/1500, Mitsubishi FX5U, AB CompactLogix, Omron CP/CJ series", color: "bg-blue-50 text-[#0f2a4a]" },
-  { icon: Settings, title: "VFD Drives", desc: "SINAMICS, FREQROL, PowerFlex, Delta MS/VFD-E, Schneider ATV series", color: "bg-amber-50 text-[#d97706]" },
-  { icon: Package, title: "HMI Panels", desc: "SIMATIC Comfort, GOT2000, PanelView Plus, Proface GP-4000 series", color: "bg-emerald-50 text-emerald-700" },
-  { icon: Globe, title: "Sensors & I/O", desc: "Pepperl+Fuchs proximity, photoelectric sensors, signal conditioners", color: "bg-slate-100 text-slate-800" },
+const networkStats = [
+  { label: "Connected OEMs", value: "842+" },
+  { label: "Connected Traders", value: "6,452+" },
+  { label: "Panel Builders", value: "2,145+" },
+  { label: "Connected End Users", value: "1,796+" },
+  { label: "Solution Providers", value: "710+" },
+  { label: "System Integrators", value: "539+" },
+];
+
+const keyIndustries = [
+  { id: "pharma", title: "Pharma Industry", desc: "Cleanroom automation, batch processing, 21 CFR Part 11 compliance, and precision tablet press PLC panels.", image: "https://cpimg.tistatic.com/09164979/b/4/Siemens-Logo-6ED1052-1FB08-0BA1-PLC.jpg" },
+  { id: "textile", title: "Textile & Packaging", desc: "High-speed multi-axis motion synchronization, tension control VFD inverters, and automatic wrapping SCADA.", image: "https://cpimg.tistatic.com/09377052/b/4/FR-CS84-295-60-MITSUBISHI-VFD.jpg" },
+  { id: "automotive", title: "Automotive Line", desc: "Robotic welding line racks, assembly line PLC controllers, safety light curtains, and industrial Ethernet fieldbus IO.", image: "https://cpimg.tistatic.com/09377302/b/4/CompactLogix-5380.jpg" },
+  { id: "plastic", title: "Plastic & Paper", desc: "Extruder vector drives, precise melt temperature PID control modules, and heavy-duty shaft encoders.", image: "https://cpimg.tistatic.com/09512948/b/4/PAPPERL-FUCHS-UC2000-30GM-IUR2-V15.jpg" },
+  { id: "machine", title: "Machine Engineering", desc: "Turnkey electrical control panel manufacturing, customized PLC program suites, and HMI touch screen development.", image: "https://cpimg.tistatic.com/09377030/b/4/GS2110-WTBD-N-Mitsubishi-HMI-10-inch.jpg" },
 ];
 
 const reviews = [
-  { quote: "Supplied genuine Siemens S7-1200 CPUs and TP1200 HMIs within 24 hours during a critical plant breakdown. Exceptional service!", author: "Mr. R. K. Patel", role: "Pharma Machine OEM, Ahmedabad" },
-  { quote: "We regularly source Mitsubishi FREQROL VFDs and GOT touch screens. Always original stock with complete warranty.", author: "Mr. Vikram Shah", role: "Packaging Systems, Vadodara" },
-  { quote: "Fast response on hard-to-find Allen Bradley CompactLogix parts. Technical team verified the exact cross-reference.", author: "Mr. Amit Verma", role: "Automotive Ancillary Pvt Ltd, Pune" },
+  { quote: "Concept Automation supplied us genuine Siemens S7-1200 CPUs and TP1200 HMIs within 24 hours during a critical plant breakdown. Exceptional service!", author: "Mr. R. K. Patel", company: "Pharma Machine OEM, Ahmedabad", stars: 5 },
+  { quote: "We regularly source Mitsubishi FREQROL VFDs and GOT touch screens from Mr. Gaurang. Always original stock with complete warranty.", author: "Mr. Vikram Shah", company: "Packaging Systems India, Vadodara", stars: 5 },
+  { quote: "Fast response on hard-to-find Allen Bradley CompactLogix parts. Their technical team verified the exact cross-reference for our line.", author: "Mr. Amit Verma", company: "Automotive Ancillary Pvt Ltd, Pune", stars: 5 },
 ];
 
 function Index() {
-  const [slideIndex, setSlideIndex] = useState(0);
+  const [activeBrandTab, setActiveBrandTab] = useState(heroBrandTabs[0]);
+  const [activeIndustry, setActiveIndustry] = useState(keyIndustries[0]);
+  const [catalogBrandFilter, setCatalogBrandFilter] = useState("All");
+  const [heroSearch, setHeroSearch] = useState("");
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
   const [modalProduct, setModalProduct] = useState({ name: "", part: "" });
   const [reviewIndex, setReviewIndex] = useState(0);
   const navigate = useNavigate();
 
+  // Auto rotate hero brand tabs
   useEffect(() => {
-    const timer = setInterval(() => setSlideIndex((prev) => (prev + 1) % heroSlides.length), 5000);
+    const timer = setInterval(() => {
+      setActiveBrandTab((prev) => {
+        const currIndex = heroBrandTabs.findIndex((t) => t.id === prev.id);
+        return heroBrandTabs[(currIndex + 1) % heroBrandTabs.length];
+      });
+    }, 6000);
     return () => clearInterval(timer);
   }, []);
 
-  const slide = heroSlides[slideIndex];
-  const featuredProducts = useMemo(() => allProducts.slice(0, 4), []);
+  const previewProducts = useMemo(() => {
+    if (catalogBrandFilter === "All") return allProducts.slice(0, 4);
+    return allProducts.filter((p) => p.brand.toLowerCase() === catalogBrandFilter.toLowerCase()).slice(0, 4);
+  }, [catalogBrandFilter]);
 
   const openQuote = (name = "", part = "") => {
     setModalProduct({ name, part });
     setInquiryModalOpen(true);
   };
 
+  const handleHeroSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (heroSearch.trim()) {
+      navigate({ to: "/products", search: { q: heroSearch } as any });
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-[#d97706] selection:text-white">
       <Header />
 
       <main>
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* HERO SECTION — MB Finishing Tech Palette              */}
+        {/* HERO SECTION — Dynamic Interactive Architectural Hero */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-slate-100 via-slate-50 to-white min-h-[85vh] flex items-center border-b border-slate-200">
-          <div className="absolute inset-0 z-0">
-            <img src={heroImage} alt="" className="h-full w-full object-cover opacity-[0.05] mix-blend-multiply" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-50/70 via-transparent to-transparent" />
-          </div>
+        <section className="relative overflow-hidden bg-gradient-to-b from-slate-100 via-slate-50 to-white pt-10 pb-16 sm:py-20 border-b border-slate-200">
+          {/* Subtle Grid Background */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000006_1px,transparent_1px),linear-gradient(to_bottom,#00000006_1px,transparent_1px)] bg-[size:48px_48px]" />
 
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000006_1px,transparent_1px),linear-gradient(to_bottom,#00000006_1px,transparent_1px)] bg-[size:64px_64px]" />
+          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
+            {/* Top Live Ticker & Search Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/80 pb-6 mb-8">
+              <div className="flex items-center gap-3">
+                <span className="flex h-2.5 w-2.5 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                </span>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#0f2a4a]">
+                  Makarba Warehouse Active · 1,500+ Original Parts Ready
+                </span>
+              </div>
 
-          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
-            <div className="animate-fade-in">
-              <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-[11px] font-bold tracking-[0.15em] text-[#d97706] uppercase shadow-sm">
-                <span className="h-2 w-2 rounded-full bg-[#d97706] animate-pulse" />
-                Trusted Industrial Automation Partner
-              </span>
+              {/* Quick Hero Search Input */}
+              <form onSubmit={handleHeroSearchSubmit} className="flex items-center gap-2">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder="Quick Search Part No (e.g. S7-1200, GOT2000)..."
+                    value={heroSearch}
+                    onChange={(e) => setHeroSearch(e.target.value)}
+                    className="w-64 sm:w-80 rounded-xl border border-slate-300 bg-white pl-9 pr-3 py-2 text-xs text-[#0f2a4a] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0f2a4a]/20 focus:border-[#0f2a4a] shadow-sm"
+                  />
+                </div>
+                <button type="submit" className="rounded-xl bg-[#0f2a4a] px-4 py-2 text-xs font-bold text-white hover:bg-[#0a1e36] transition-colors shadow">
+                  Find
+                </button>
+              </form>
             </div>
 
-            <h1 className="mt-6 font-display text-[clamp(2.4rem,6vw,5.2rem)] font-extrabold leading-[1.05] tracking-tight text-[#0f2a4a] max-w-4xl animate-slide-left">
-              {slide.title}
-            </h1>
-
-            <p className="mt-5 text-lg text-slate-600 leading-relaxed max-w-xl animate-fade-up stagger-1 sm:text-xl font-normal">
-              {slide.subtitle}
-            </p>
-
-            <div className="mt-8 flex flex-wrap items-center gap-4 animate-fade-up stagger-2">
-              <button
-                onClick={() => openQuote(slide.title, "")}
-                className="group rounded-xl bg-[#0f2a4a] px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-lg hover:bg-[#0a1e36] transition-all flex items-center gap-2"
-              >
-                {slide.cta} <ArrowRight className="h-4 w-4 text-[#d97706] transition-transform group-hover:translate-x-1" />
-              </button>
-              <button
-                onClick={() => openQuote("General Inquiry", "")}
-                className="rounded-xl border border-slate-300 bg-white px-8 py-4 text-xs font-bold uppercase tracking-wider text-[#0f2a4a] hover:border-[#0f2a4a] hover:bg-slate-50 transition-all shadow-sm"
-              >
-                Get Free Quote
-              </button>
-              <a
-                href={`tel:${company.phoneRaw}`}
-                className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#0f2a4a] hover:text-[#d97706] transition-colors ml-2"
-              >
-                <Phone className="h-4 w-4 text-[#d97706]" /> {company.phone}
-              </a>
-            </div>
-
-            <div className="mt-10 flex items-center gap-2">
-              {heroSlides.map((_, i) => (
-                <button key={i} onClick={() => setSlideIndex(i)}
-                  className={`h-1.5 rounded-full transition-all duration-500 ${i === slideIndex ? "w-10 bg-[#d97706]" : "w-3 bg-slate-300 hover:bg-slate-400"}`} />
+            {/* Brand Tab Selector Pill Strip */}
+            <div className="flex overflow-x-auto gap-2 pb-2 mb-8 scrollbar-none">
+              {heroBrandTabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveBrandTab(tab)}
+                  className={`shrink-0 rounded-xl px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                    activeBrandTab.id === tab.id
+                      ? "bg-[#0f2a4a] text-white shadow-lg shadow-[#0f2a4a]/20 scale-105"
+                      : "bg-white text-[#0f2a4a] border border-slate-200 hover:bg-slate-100"
+                  }`}
+                >
+                  {tab.name} Automation
+                </button>
               ))}
             </div>
 
-            {/* Brand Cloud */}
-            <div className="mt-12 border-t border-slate-200 pt-6 animate-fade-up stagger-3">
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#d97706] mb-4">Official Partners & Brands We Stock</p>
-              <div className="flex flex-wrap gap-x-8 gap-y-3">
-                {brands.map((b) => (
-                  <Link key={b} to="/products" search={{ q: b }}
-                    className="text-xs font-bold uppercase tracking-wider text-[#0f2a4a] hover:text-[#d97706] transition-colors cursor-pointer">
+            {/* Main Hero Dynamic Content */}
+            <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
+              {/* Left Column: Staggered Content */}
+              <div className="lg:col-span-7 space-y-5">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeBrandTab.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-4"
+                  >
+                    <span className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-amber-50 px-3.5 py-1 text-xs font-extrabold uppercase tracking-widest text-[#d97706] shadow-sm">
+                      <Sparkles className="h-3.5 w-3.5" /> {activeBrandTab.badge}
+                    </span>
+
+                    <h1 className="font-display text-3xl font-extrabold text-[#0f2a4a] sm:text-5xl leading-[1.1] tracking-tight">
+                      {activeBrandTab.title}
+                    </h1>
+
+                    <p className="text-base text-slate-600 leading-relaxed max-w-xl sm:text-lg">
+                      {activeBrandTab.desc}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+
+                <div className="flex flex-wrap items-center gap-4 pt-2">
+                  <button
+                    onClick={() => openQuote(activeBrandTab.title, activeBrandTab.highlightPart)}
+                    className="group rounded-xl bg-[#0f2a4a] px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-xl hover:bg-[#0a1e36] transition-all flex items-center gap-2"
+                  >
+                    Get Price Quote <ArrowRight className="h-4 w-4 text-[#d97706] transition-transform group-hover:translate-x-1" />
+                  </button>
+
+                  <a
+                    href={`tel:${company.phoneRaw}`}
+                    className="rounded-xl border border-slate-300 bg-white px-7 py-4 text-xs font-bold uppercase tracking-wider text-[#0f2a4a] hover:border-[#0f2a4a] hover:bg-slate-50 transition-all shadow-sm flex items-center gap-2"
+                  >
+                    <Phone className="h-4 w-4 text-[#d97706]" /> {company.phone}
+                  </a>
+                </div>
+
+                {/* Micro Guarantee Icons */}
+                <div className="grid grid-cols-3 gap-3 pt-6 border-t border-slate-200">
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#0f2a4a]">
+                    <ShieldCheck className="h-4 w-4 text-[#d97706] shrink-0" />
+                    <span>100% Genuine OEM</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#0f2a4a]">
+                    <Truck className="h-4 w-4 text-[#d97706] shrink-0" />
+                    <span>24-48 Hr Dispatch</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#0f2a4a]">
+                    <Award className="h-4 w-4 text-[#d97706] shrink-0" />
+                    <span>1 Year Warranty</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Animated Interactive 3D Showcase Card */}
+              <div className="lg:col-span-5">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeBrandTab.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                    className="relative overflow-hidden rounded-3xl bg-[#0a1e36] p-6 sm:p-8 shadow-2xl text-white border border-white/10"
+                  >
+                    <div className="flex items-center justify-between border-b border-white/15 pb-4 mb-5">
+                      <div className="text-[11px] font-extrabold uppercase tracking-widest text-[#d97706]">
+                        Verified Stock Item
+                      </div>
+                      <span className="rounded-full bg-emerald-500/20 border border-emerald-500/40 px-3 py-0.5 text-[10px] font-bold uppercase text-emerald-400">
+                        In Stock
+                      </span>
+                    </div>
+
+                    <div className="rounded-2xl bg-white p-6 shadow-xl text-center">
+                      <div className="h-44 sm:h-52 w-full flex items-center justify-center p-2">
+                        <img
+                          src={activeBrandTab.image}
+                          alt={activeBrandTab.title}
+                          referrerPolicy="no-referrer"
+                          className="h-full w-full object-contain transition-transform duration-500 hover:scale-105"
+                        />
+                      </div>
+                      <div className="mt-3 pt-3 border-t border-slate-100">
+                        <div className="font-display text-sm font-bold text-[#0f2a4a] uppercase">
+                          {activeBrandTab.name} Hardware Module
+                        </div>
+                        <div className="text-xs font-mono font-bold text-[#d97706] mt-0.5">
+                          PN: {activeBrandTab.highlightPart}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-5 flex items-center justify-between pt-4 border-t border-white/15 text-xs text-slate-300">
+                      <span>Dispatch: Makarba, Ahmedabad</span>
+                      <button
+                        onClick={() => openQuote(activeBrandTab.name, activeBrandTab.highlightPart)}
+                        className="text-[#d97706] font-bold uppercase hover:underline flex items-center gap-1"
+                      >
+                        Inquire Now <ArrowUpRight className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════ */}
+        {/* INFINITE MARQUEE BRAND STRIP                           */}
+        {/* ═══════════════════════════════════════════════════════ */}
+        <section className="border-b border-slate-200 bg-[#0a1e36] py-5 overflow-hidden text-white">
+          <div className="animate-marquee flex items-center gap-12 whitespace-nowrap">
+            {[...brands, ...brands, ...brands].map((b, idx) => (
+              <div
+                key={idx}
+                onClick={() => navigate({ to: "/products", search: { q: b } as any })}
+                className="flex items-center gap-3 cursor-pointer group"
+              >
+                <span className="h-2 w-2 rounded-full bg-[#d97706] group-hover:scale-125 transition-transform" />
+                <span className="font-display text-sm font-extrabold uppercase tracking-widest text-slate-200 group-hover:text-white transition-colors">
+                  {b}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════ */}
+        {/* CATALOG PREVIEW (User Request #5: 1-line or preview 4)  */}
+        {/* ═══════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24 bg-slate-50 border-b border-slate-200">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+              <div>
+                <span className="eyebrow">INVENTORY CATALOG</span>
+                <h2 className="mt-1 font-display text-2xl sm:text-4xl font-extrabold text-[#0f2a4a]">
+                  Explore Original Hardware
+                </h2>
+                <p className="mt-2 text-xs sm:text-sm text-slate-600">
+                  Showing selected high-demand PLCs, HMIs, VFDs & Sensors.
+                </p>
+              </div>
+
+              {/* Brand Filter Pill Selector */}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none">
+                {["All", "Siemens", "Mitsubishi", "Omron", "Allen Bradley"].map((b) => (
+                  <button
+                    key={b}
+                    onClick={() => setCatalogBrandFilter(b)}
+                    className={`shrink-0 rounded-xl px-4 py-2 text-xs font-bold uppercase transition-all ${
+                      catalogBrandFilter === b
+                        ? "bg-[#0f2a4a] text-white shadow"
+                        : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
+                    }`}
+                  >
                     {b}
-                  </Link>
+                  </button>
                 ))}
               </div>
             </div>
+
+            {/* 4 Product Preview Grid */}
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {previewProducts.map((p, idx) => (
+                <ProductCard key={p.id} product={p} index={idx} />
+              ))}
+            </div>
+
+            {/* Full Products Button (User Request #5) */}
+            <div className="mt-10 text-center">
+              <Link
+                to="/products"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#0f2a4a] px-8 py-4 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#0a1e36] transition-all shadow-lg hover:shadow-xl"
+              >
+                View Full {allProducts.length}+ Products Catalog <ArrowRight className="h-4 w-4 text-[#d97706]" />
+              </Link>
+            </div>
           </div>
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* SOLUTIONS BENTO GRID — Steel Navy & Amber Accent       */}
+        {/* ARCHITECTURAL BENTO GRID — Supply Infrastructure       */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="bg-slate-50 py-20 sm:py-24">
+        <section className="py-20 sm:py-24 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="max-w-2xl animate-fade-up">
-              <span className="eyebrow">WHAT WE SUPPLY</span>
-              <h2 className="mt-2 font-display text-3xl font-extrabold text-[#0f2a4a] leading-tight sm:text-4xl">
-                Complete Automation Hardware Ecosystem
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <span className="eyebrow">SUPPLY INFRASTRUCTURE</span>
+              <h2 className="mt-2 font-display text-3xl font-extrabold text-[#0f2a4a] sm:text-4xl">
+                Connected Industrial Network
               </h2>
-              <p className="mt-3 text-sm text-slate-600 leading-relaxed sm:text-base">
-                From PLC controllers to VFD drives, HMI panels to proximity sensors — sourced directly from global OEMs.
+              <p className="mt-2 text-sm text-slate-600">
+                Supplying OEM hardware to over 10,000+ manufacturing ecosystem partners across India.
               </p>
             </div>
 
-            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 animate-fade-up stagger-2">
-              {/* Giant Steel Navy Highlight Card */}
-              <div className="lg:row-span-2 rounded-2xl bg-[#0a1e36] p-8 text-white flex flex-col justify-between relative overflow-hidden group shadow-xl">
-                <div className="relative z-10">
-                  <div className="h-12 w-12 rounded-xl bg-white/10 flex items-center justify-center mb-6">
-                    <ShieldCheck className="h-6 w-6 text-[#d97706]" />
-                  </div>
-                  <h3 className="font-display text-2xl font-bold uppercase leading-snug">
-                    1,500+ Genuine Parts<br />Ready for Dispatch
+            {/* 6 Connected Network Counter Cards */}
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6 mb-12">
+              {networkStats.map((st, i) => (
+                <motion.div
+                  key={st.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: i * 0.05 }}
+                  className="rounded-2xl border border-slate-200 bg-slate-50/80 p-5 text-center shadow-sm hover:border-[#d97706] hover:bg-white transition-all"
+                >
+                  <div className="text-[11px] font-bold uppercase text-slate-500">{st.label}</div>
+                  <div className="mt-2 font-display text-2xl sm:text-3xl font-extrabold text-[#0f2a4a]">{st.value}</div>
+                  <div className="mt-1 text-[9px] font-bold text-[#d97706] uppercase tracking-wider">Verified Stock</div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Bento Grid */}
+            <div className="grid gap-6 lg:grid-cols-12">
+              <div className="lg:col-span-8 rounded-3xl bg-[#0a1e36] p-8 text-white flex flex-col justify-between shadow-xl relative overflow-hidden">
+                <div>
+                  <span className="rounded-full bg-[#d97706] px-3.5 py-1 text-[10px] font-extrabold uppercase tracking-widest text-white">
+                    Direct Warehouse Hub
+                  </span>
+                  <h3 className="mt-4 font-display text-2xl sm:text-4xl font-extrabold uppercase leading-tight">
+                    Titanium Business Park · Makarba, Ahmedabad
                   </h3>
-                  <p className="mt-4 text-xs text-slate-300 leading-relaxed">
-                    100% original OEM inventory with factory seal, official warranty, and fast breakdown dispatch service.
+                  <p className="mt-4 text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl">
+                    Our central stockist facility maintains extensive inventories of Siemens S7-1200/S7-1500 CPUs, Mitsubishi FREQROL VFDs, Omron micro controllers, and Pepperl+Fuchs sensors for immediate emergency dispatch.
                   </p>
                 </div>
-                <div className="relative z-10 mt-8 grid grid-cols-2 gap-4 pt-6 border-t border-white/10">
-                  <div>
-                    <div className="text-2xl font-bold text-white font-display">24-48<span className="text-[#d97706]">HR</span></div>
-                    <div className="text-[10px] text-slate-300 uppercase tracking-wider mt-0.5">Fast Dispatch</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-white font-display">PAN-INDIA</div>
-                    <div className="text-[10px] text-slate-300 uppercase tracking-wider mt-0.5">+ Global Export</div>
-                  </div>
+                <div className="mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-300">
+                  <span>Proprietor: <strong>{company.owner}</strong></span>
+                  <button
+                    onClick={() => openQuote("General Inquiry", "")}
+                    className="rounded-xl bg-[#d97706] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#b45309] transition-colors"
+                  >
+                    Contact Sales Desk
+                  </button>
                 </div>
               </div>
 
-              {/* Solution Cards */}
-              {solutions.map((sol) => (
-                <div key={sol.title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg hover:border-[#d97706] hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
-                  onClick={() => navigate({ to: "/products" })}>
-                  <div className={`h-10 w-10 rounded-lg ${sol.color} flex items-center justify-center mb-4`}>
-                    <sol.icon className="h-5 w-5" />
+              <div className="lg:col-span-4 space-y-6">
+                <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm hover:shadow-md transition-all">
+                  <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center mb-4">
+                    <ShieldCheck className="h-5 w-5 text-[#0f2a4a]" />
                   </div>
-                  <h3 className="font-display text-base font-bold text-[#0f2a4a] uppercase">{sol.title}</h3>
-                  <p className="mt-2 text-xs text-slate-600 leading-relaxed">{sol.desc}</p>
-                  <div className="mt-4 flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-[#d97706] group-hover:gap-2 transition-all">
-                    Explore <ArrowUpRight className="h-3.5 w-3.5" />
-                  </div>
+                  <h4 className="font-display text-base font-bold uppercase text-[#0f2a4a]">100% Genuine OEM Guarantee</h4>
+                  <p className="mt-2 text-xs text-slate-600 leading-relaxed">
+                    Every PLC, HMI, and drive includes official factory seal, serial number validation, and 12-month coverage.
+                  </p>
                 </div>
+
+                <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm hover:shadow-md transition-all">
+                  <div className="h-10 w-10 rounded-xl bg-amber-50 flex items-center justify-center mb-4">
+                    <Truck className="h-5 w-5 text-[#d97706]" />
+                  </div>
+                  <h4 className="font-display text-base font-bold uppercase text-[#0f2a4a]">Pan-India Breakdown Express</h4>
+                  <p className="mt-2 text-xs text-slate-600 leading-relaxed">
+                    Urgent 24-48 hour courier dispatch to manufacturing units across Gujarat, Maharashtra, South, and North India.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════ */}
+        {/* SERVING KEY INDUSTRIES (Interactive Tab Layout)        */}
+        {/* ═══════════════════════════════════════════════════════ */}
+        <section className="py-20 sm:py-24 bg-slate-50 border-t border-slate-200">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="eyebrow">ENGINEERED SOLUTIONS</span>
+              <h2 className="mt-1 font-display text-3xl font-extrabold text-[#0f2a4a] sm:text-4xl">
+                Serving Key Industries
+              </h2>
+            </div>
+
+            {/* Industry Selector Tabs */}
+            <div className="flex overflow-x-auto gap-2 pb-2 mb-8 justify-start lg:justify-center scrollbar-none">
+              {keyIndustries.map((ind) => (
+                <button
+                  key={ind.id}
+                  onClick={() => setActiveIndustry(ind)}
+                  className={`shrink-0 rounded-xl px-5 py-3 text-xs font-bold uppercase tracking-wider transition-all ${
+                    activeIndustry.id === ind.id
+                      ? "bg-[#0f2a4a] text-white shadow-lg scale-105"
+                      : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
+                  }`}
+                >
+                  {ind.title}
+                </button>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* ═══════════════════════════════════════════════════════ */}
-        {/* ABOUT US SECTION                                       */}
-        {/* ═══════════════════════════════════════════════════════ */}
-        <section className="bg-white py-20 sm:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="grid gap-12 lg:grid-cols-5 lg:items-center">
-              <div className="lg:col-span-3 animate-fade-up">
-                <span className="eyebrow">ABOUT US</span>
-                <h2 className="mt-2 font-display text-3xl font-extrabold text-[#0f2a4a] leading-tight sm:text-4xl">
-                  Concept Automation Technologies
-                </h2>
-                <p className="mt-4 text-sm text-slate-600 leading-relaxed">
-                  Located in Ahmedabad, India, we are a leading supplier of Siemens, Mitsubishi, Omron, Delta & Allen Bradley automation products. We offer PLCs, AC Drives, Servo Systems, HMIs, and SCADA systems tailored for maximum performance.
-                </p>
-
-                <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                  {[
-                    { title: "Genuine 100% Original OEM", desc: "Factory direct quality guarantee" },
-                    { title: "Technical Cross-Reference", desc: "Fast part number identification" },
-                    { title: "Custom Panel Solutions", desc: "Retrofit & panel development" },
-                    { title: "PAN-India Logistics", desc: "Express delivery to manufacturing sites" },
-                  ].map((item) => (
-                    <div key={item.title} className="flex items-start gap-2.5">
-                      <CheckCircle2 className="h-4 w-4 text-[#d97706] shrink-0 mt-0.5" />
-                      <div>
-                        <div className="text-xs font-bold text-[#0f2a4a] uppercase">{item.title}</div>
-                        <div className="text-[11px] text-slate-500 mt-0.5">{item.desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <Link to="/about" className="rounded-xl bg-[#0f2a4a] px-7 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#0a1e36] transition-colors flex items-center gap-2 shadow-sm">
-                    Read Company Profile <ArrowRight className="h-4 w-4 text-[#d97706]" />
-                  </Link>
-                </div>
-              </div>
-
-              <div className="lg:col-span-2 animate-slide-right stagger-2">
-                <div className="rounded-2xl bg-[#0a1e36] p-6 shadow-xl text-white">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#d97706]">Operational Facility</span>
-                    <span className="text-[10px] font-bold uppercase text-emerald-400">Makarba, Ahmedabad</span>
+            {/* Active Industry Detail Card */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndustry.id}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3 }}
+                className="rounded-3xl border border-slate-200 bg-white p-8 shadow-lg"
+              >
+                <div className="grid gap-8 lg:grid-cols-12 items-center">
+                  <div className="lg:col-span-7 space-y-4">
+                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#d97706]">
+                      Targeted Industry Hardware
+                    </span>
+                    <h3 className="font-display text-2xl sm:text-3xl font-extrabold uppercase text-[#0f2a4a]">
+                      {activeIndustry.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                      {activeIndustry.desc}
+                    </p>
+                    <button
+                      onClick={() => openQuote(activeIndustry.title, "")}
+                      className="inline-flex items-center gap-2 rounded-xl bg-[#0f2a4a] px-6 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#0a1e36] transition-colors"
+                    >
+                      Inquire Solution <ArrowRight className="h-4 w-4 text-[#d97706]" />
+                    </button>
                   </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    {[
-                      { label: "Siemens VFD", part: "6SL3120-1TE21", name: "SINAMICS S120", img: "https://cpimg.tistatic.com/09164988/b/4/Siemens-S120-Drive-6SL3120-1TE21-8AD0-S120-VFD.jpg" },
-                      { label: "Siemens PLC", part: "6ED1052-1FB08", name: "LOGO! 8 CPU", img: "https://cpimg.tistatic.com/09164979/b/4/Siemens-Logo-6ED1052-1FB08-0BA1-PLC.jpg" },
-                    ].map((p) => (
-                      <div key={p.part} className="rounded-xl bg-white p-3 text-center">
-                        <div className="h-28 flex items-center justify-center p-2">
-                          <img src={p.img} alt={p.name} referrerPolicy="no-referrer" className="h-full w-full object-contain" />
-                        </div>
-                        <div className="text-xs font-bold text-[#0f2a4a] uppercase mt-1">{p.name}</div>
-                        <div className="text-[9px] text-slate-400 font-mono">{p.part}</div>
-                      </div>
-                    ))}
+                  <div className="lg:col-span-5 flex justify-center">
+                    <img
+                      src={activeIndustry.image}
+                      alt={activeIndustry.title}
+                      className="h-48 sm:h-56 w-full max-w-xs object-contain rounded-2xl bg-slate-50 p-4 border border-slate-200"
+                    />
                   </div>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* FEATURED PRODUCTS                                      */}
+        {/* CLIENT TESTIMONIALS                                    */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="bg-slate-50 py-20 border-y border-slate-200">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 animate-fade-up">
-              <div>
-                <span className="eyebrow">INVENTORY CATALOG</span>
-                <h2 className="mt-1 font-display text-3xl font-extrabold text-[#0f2a4a]">
-                  Featured Products & Parts
-                </h2>
-              </div>
-              <Link to="/products" className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#0f2a4a] hover:text-[#d97706] transition-colors">
-                View All {allProducts.length}+ Products <ArrowRight className="h-3.5 w-3.5 text-[#d97706]" />
-              </Link>
-            </div>
-
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 animate-fade-up stagger-2">
-              {featuredProducts.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════ */}
-        {/* TESTIMONIAL CAROUSEL                                   */}
-        {/* ═══════════════════════════════════════════════════════ */}
-        <section className="bg-white py-20">
+        <section className="py-20 sm:py-24 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="grid gap-10 lg:grid-cols-5 lg:items-center">
-              <div className="lg:col-span-2 animate-fade-up">
-                <span className="eyebrow">TESTIMONIALS</span>
-                <h2 className="mt-2 font-display text-3xl font-extrabold text-[#0f2a4a] leading-tight">
-                  Client Feedback & Reviews
+              <div className="lg:col-span-2">
+                <span className="eyebrow">CLIENT VERIFICATION</span>
+                <h2 className="mt-2 font-display text-3xl font-extrabold text-[#0f2a4a]">
+                  What Engineers Say
                 </h2>
                 <p className="mt-3 text-xs text-slate-600 leading-relaxed">
-                  Trusted by pharma, packaging, and automotive engineers across India.
+                  Trusted by plant managers and OEM builders across Gujarat & India.
                 </p>
 
                 <div className="mt-6 flex items-center gap-3">
                   <button onClick={() => setReviewIndex((prev) => (prev - 1 + reviews.length) % reviews.length)}
-                    className="h-10 w-10 rounded-lg border border-slate-200 flex items-center justify-center text-[#0f2a4a] hover:bg-slate-100 transition-colors">
+                    className="h-10 w-10 rounded-xl border border-slate-200 flex items-center justify-center text-[#0f2a4a] hover:bg-slate-100 transition-colors">
                     <ChevronLeft className="h-5 w-5" />
                   </button>
                   <button onClick={() => setReviewIndex((prev) => (prev + 1) % reviews.length)}
-                    className="h-10 w-10 rounded-lg border border-slate-200 flex items-center justify-center text-[#0f2a4a] hover:bg-slate-100 transition-colors">
+                    className="h-10 w-10 rounded-xl border border-slate-200 flex items-center justify-center text-[#0f2a4a] hover:bg-slate-100 transition-colors">
                     <ChevronRight className="h-5 w-5" />
                   </button>
                   <span className="text-xs font-bold text-slate-400 ml-2">{reviewIndex + 1} / {reviews.length}</span>
                 </div>
               </div>
 
-              <div className="lg:col-span-3 animate-scale-in" key={reviewIndex}>
-                <div className="rounded-2xl bg-slate-50 border border-slate-200 p-8 relative">
+              <div className="lg:col-span-3">
+                <motion.div
+                  key={reviewIndex}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="rounded-3xl bg-slate-50 border border-slate-200 p-8 sm:p-10 shadow-sm"
+                >
                   <div className="flex text-[#d97706] mb-4">
                     {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
                   </div>
-                  <p className="text-sm text-slate-700 leading-relaxed italic font-medium">
+                  <p className="text-sm sm:text-base text-slate-700 leading-relaxed italic font-medium">
                     "{reviews[reviewIndex].quote}"
                   </p>
                   <div className="mt-6 pt-4 border-t border-slate-200">
                     <div className="font-display text-sm font-bold uppercase text-[#0f2a4a]">{reviews[reviewIndex].author}</div>
-                    <div className="text-xs text-[#d97706] font-semibold">{reviews[reviewIndex].role}</div>
+                    <div className="text-xs text-[#d97706] font-bold mt-0.5">{reviews[reviewIndex].company}</div>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* CALL TO ACTION BANNER — Steel Navy & Gold              */}
+        {/* CTA BANNER — Steel Navy & Gold                          */}
         {/* ═══════════════════════════════════════════════════════ */}
         <section className="bg-[#0a1e36] py-20 text-white border-t border-slate-800">
-          <div className="mx-auto max-w-4xl px-4 text-center animate-fade-up">
+          <div className="mx-auto max-w-4xl px-4 text-center">
             <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#d97706]">
-              Factory Breakdown or Project Inquiry?
+              Plant Breakdown or Urgent Automation Order?
             </span>
             <h2 className="mt-2 font-display text-3xl font-extrabold uppercase text-white sm:text-4xl">
-              Get Instant Part Quotation & Engineering Support
+              Get Instant Part Quotation & Technical Selection
             </h2>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <button onClick={() => openQuote("General Inquiry", "")}
-                className="rounded-xl bg-[#d97706] px-8 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg hover:bg-[#b45309] transition-all">
+                className="rounded-xl bg-[#d97706] px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-lg hover:bg-[#b45309] transition-all">
                 Request Instant Quote
               </button>
               <a href={`tel:${company.phoneRaw}`}
-                className="rounded-xl border border-white/20 bg-white/10 px-8 py-3.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-white/20 transition-all">
+                className="rounded-xl border border-white/20 bg-white/10 px-8 py-4 text-xs font-bold uppercase tracking-wider text-white hover:bg-white/20 transition-all">
                 Call {company.phone}
               </a>
             </div>
