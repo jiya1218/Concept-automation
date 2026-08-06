@@ -5,7 +5,6 @@ import {
   Phone,
   ShieldCheck,
   Truck,
-  Headphones,
   CheckCircle2,
   Zap,
   MessageSquare,
@@ -19,10 +18,7 @@ import {
   Settings,
   Cpu,
   Search,
-  SlidersHorizontal,
-  Check,
   Sparkles,
-  RefreshCw,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import heroImage from "@/assets/hero-automation.jpg";
@@ -42,7 +38,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-// Interactive brand showcases inside Hero
 const heroBrandTabs = [
   {
     id: "siemens",
@@ -115,7 +110,6 @@ function Index() {
   const [reviewIndex, setReviewIndex] = useState(0);
   const navigate = useNavigate();
 
-  // Auto rotate hero brand tabs
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveBrandTab((prev) => {
@@ -144,49 +138,47 @@ function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-[#d97706] selection:text-white">
+    <div className="min-h-screen bg-[#f6f4ee] text-[#1a130f] font-sans selection:bg-[#b45309] selection:text-white">
       <Header />
 
       <main>
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* HERO SECTION — Dynamic Interactive Architectural Hero */}
+        {/* HERO SECTION — MB Finishing Tech Exact Palette         */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-slate-100 via-slate-50 to-white pt-10 pb-16 sm:py-20 border-b border-slate-200">
-          {/* Subtle Grid Background */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000006_1px,transparent_1px),linear-gradient(to_bottom,#00000006_1px,transparent_1px)] bg-[size:48px_48px]" />
+        <section className="relative overflow-hidden bg-gradient-to-b from-[#f4f1eb] via-[#f6f4ee] to-[#f6f4ee] pt-10 pb-16 sm:py-20 border-b border-[#e7e5e4]">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1a130f06_1px,transparent_1px),linear-gradient(to_bottom,#1a130f06_1px,transparent_1px)] bg-[size:48px_48px]" />
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
-            {/* Top Live Ticker & Search Row */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/80 pb-6 mb-8">
+            {/* Top Bar Status */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#e7e5e4] pb-6 mb-8">
               <div className="flex items-center gap-3">
                 <span className="flex h-2.5 w-2.5 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600" />
                 </span>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#0f2a4a]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#1a130f]">
                   Makarba Warehouse Active · 1,500+ Original Parts Ready
                 </span>
               </div>
 
-              {/* Quick Hero Search Input */}
               <form onSubmit={handleHeroSearchSubmit} className="flex items-center gap-2">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#6b5e54]" />
                   <input
                     type="text"
                     placeholder="Quick Search Part No (e.g. S7-1200, GOT2000)..."
                     value={heroSearch}
                     onChange={(e) => setHeroSearch(e.target.value)}
-                    className="w-64 sm:w-80 rounded-xl border border-slate-300 bg-white pl-9 pr-3 py-2 text-xs text-[#0f2a4a] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0f2a4a]/20 focus:border-[#0f2a4a] shadow-sm"
+                    className="w-64 sm:w-80 rounded-xl border border-[#e7e5e4] bg-white pl-9 pr-3 py-2 text-xs text-[#1a130f] placeholder-[#6b5e54] focus:outline-none focus:ring-2 focus:ring-[#1a130f]/20 focus:border-[#1a130f] shadow-sm"
                   />
                 </div>
-                <button type="submit" className="rounded-xl bg-[#0f2a4a] px-4 py-2 text-xs font-bold text-white hover:bg-[#0a1e36] transition-colors shadow">
+                <button type="submit" className="rounded-xl bg-[#1a130f] px-4 py-2 text-xs font-bold text-white hover:bg-[#b45309] transition-colors shadow">
                   Find
                 </button>
               </form>
             </div>
 
-            {/* Brand Tab Selector Pill Strip */}
+            {/* Brand Tabs */}
             <div className="flex overflow-x-auto gap-2 pb-2 mb-8 scrollbar-none">
               {heroBrandTabs.map((tab) => (
                 <button
@@ -194,8 +186,8 @@ function Index() {
                   onClick={() => setActiveBrandTab(tab)}
                   className={`shrink-0 rounded-xl px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                     activeBrandTab.id === tab.id
-                      ? "bg-[#0f2a4a] text-white shadow-lg shadow-[#0f2a4a]/20 scale-105"
-                      : "bg-white text-[#0f2a4a] border border-slate-200 hover:bg-slate-100"
+                      ? "bg-[#1a130f] text-white shadow-lg scale-105"
+                      : "bg-white text-[#1a130f] border border-[#e7e5e4] hover:bg-[#f4f1eb]"
                   }`}
                 >
                   {tab.name} Automation
@@ -203,9 +195,8 @@ function Index() {
               ))}
             </div>
 
-            {/* Main Hero Dynamic Content */}
+            {/* Content Split */}
             <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
-              {/* Left Column: Staggered Content */}
               <div className="lg:col-span-7 space-y-5">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -216,15 +207,15 @@ function Index() {
                     transition={{ duration: 0.3 }}
                     className="space-y-4"
                   >
-                    <span className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-amber-50 px-3.5 py-1 text-xs font-extrabold uppercase tracking-widest text-[#d97706] shadow-sm">
-                      <Sparkles className="h-3.5 w-3.5" /> {activeBrandTab.badge}
+                    <span className="inline-flex items-center gap-2 rounded-full border border-[#b45309]/30 bg-[#f4f1eb] px-3.5 py-1 text-xs font-extrabold uppercase tracking-widest text-[#b45309] shadow-sm">
+                      <Sparkles className="h-3.5 w-3.5 text-[#b45309]" /> {activeBrandTab.badge}
                     </span>
 
-                    <h1 className="font-display text-3xl font-extrabold text-[#0f2a4a] sm:text-5xl leading-[1.1] tracking-tight">
+                    <h1 className="font-display text-3xl font-extrabold text-[#1a130f] sm:text-5xl leading-[1.1] tracking-tight">
                       {activeBrandTab.title}
                     </h1>
 
-                    <p className="text-base text-slate-600 leading-relaxed max-w-xl sm:text-lg">
+                    <p className="text-base text-[#6b5e54] leading-relaxed max-w-xl sm:text-lg">
                       {activeBrandTab.desc}
                     </p>
                   </motion.div>
@@ -233,37 +224,36 @@ function Index() {
                 <div className="flex flex-wrap items-center gap-4 pt-2">
                   <button
                     onClick={() => openQuote(activeBrandTab.title, activeBrandTab.highlightPart)}
-                    className="group rounded-xl bg-[#0f2a4a] px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-xl hover:bg-[#0a1e36] transition-all flex items-center gap-2"
+                    className="group rounded-xl bg-[#1a130f] px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-xl hover:bg-[#b45309] transition-all flex items-center gap-2"
                   >
-                    Get Price Quote <ArrowRight className="h-4 w-4 text-[#d97706] transition-transform group-hover:translate-x-1" />
+                    Get Price Quote <ArrowRight className="h-4 w-4 text-amber-400 group-hover:text-white transition-transform group-hover:translate-x-1" />
                   </button>
 
                   <a
                     href={`tel:${company.phoneRaw}`}
-                    className="rounded-xl border border-slate-300 bg-white px-7 py-4 text-xs font-bold uppercase tracking-wider text-[#0f2a4a] hover:border-[#0f2a4a] hover:bg-slate-50 transition-all shadow-sm flex items-center gap-2"
+                    className="rounded-xl border border-[#e7e5e4] bg-white px-7 py-4 text-xs font-bold uppercase tracking-wider text-[#1a130f] hover:border-[#1a130f] hover:bg-[#f4f1eb] transition-all shadow-sm flex items-center gap-2"
                   >
-                    <Phone className="h-4 w-4 text-[#d97706]" /> {company.phone}
+                    <Phone className="h-4 w-4 text-[#b45309]" /> {company.phone}
                   </a>
                 </div>
 
-                {/* Micro Guarantee Icons */}
-                <div className="grid grid-cols-3 gap-3 pt-6 border-t border-slate-200">
-                  <div className="flex items-center gap-2 text-xs font-bold text-[#0f2a4a]">
-                    <ShieldCheck className="h-4 w-4 text-[#d97706] shrink-0" />
+                <div className="grid grid-cols-3 gap-3 pt-6 border-t border-[#e7e5e4]">
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#1a130f]">
+                    <ShieldCheck className="h-4 w-4 text-[#b45309] shrink-0" />
                     <span>100% Genuine OEM</span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs font-bold text-[#0f2a4a]">
-                    <Truck className="h-4 w-4 text-[#d97706] shrink-0" />
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#1a130f]">
+                    <Truck className="h-4 w-4 text-[#b45309] shrink-0" />
                     <span>24-48 Hr Dispatch</span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs font-bold text-[#0f2a4a]">
-                    <Award className="h-4 w-4 text-[#d97706] shrink-0" />
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#1a130f]">
+                    <Award className="h-4 w-4 text-[#b45309] shrink-0" />
                     <span>1 Year Warranty</span>
                   </div>
                 </div>
               </div>
 
-              {/* Right Column: Animated Interactive 3D Showcase Card */}
+              {/* Showcase Card */}
               <div className="lg:col-span-5">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -272,10 +262,10 @@ function Index() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
-                    className="relative overflow-hidden rounded-3xl bg-[#0a1e36] p-6 sm:p-8 shadow-2xl text-white border border-white/10"
+                    className="relative overflow-hidden rounded-3xl bg-[#140d09] p-6 sm:p-8 shadow-2xl text-white border border-white/10"
                   >
                     <div className="flex items-center justify-between border-b border-white/15 pb-4 mb-5">
-                      <div className="text-[11px] font-extrabold uppercase tracking-widest text-[#d97706]">
+                      <div className="text-[11px] font-extrabold uppercase tracking-widest text-[#b45309]">
                         Verified Stock Item
                       </div>
                       <span className="rounded-full bg-emerald-500/20 border border-emerald-500/40 px-3 py-0.5 text-[10px] font-bold uppercase text-emerald-400">
@@ -292,11 +282,11 @@ function Index() {
                           className="h-full w-full object-contain transition-transform duration-500 hover:scale-105"
                         />
                       </div>
-                      <div className="mt-3 pt-3 border-t border-slate-100">
-                        <div className="font-display text-sm font-bold text-[#0f2a4a] uppercase">
+                      <div className="mt-3 pt-3 border-t border-[#e7e5e4]">
+                        <div className="font-display text-sm font-bold text-[#1a130f] uppercase">
                           {activeBrandTab.name} Hardware Module
                         </div>
-                        <div className="text-xs font-mono font-bold text-[#d97706] mt-0.5">
+                        <div className="text-xs font-mono font-bold text-[#b45309] mt-0.5">
                           PN: {activeBrandTab.highlightPart}
                         </div>
                       </div>
@@ -306,7 +296,7 @@ function Index() {
                       <span>Dispatch: Makarba, Ahmedabad</span>
                       <button
                         onClick={() => openQuote(activeBrandTab.name, activeBrandTab.highlightPart)}
-                        className="text-[#d97706] font-bold uppercase hover:underline flex items-center gap-1"
+                        className="text-[#b45309] font-bold uppercase hover:underline flex items-center gap-1"
                       >
                         Inquire Now <ArrowUpRight className="h-3.5 w-3.5" />
                       </button>
@@ -319,9 +309,9 @@ function Index() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* INFINITE MARQUEE BRAND STRIP                           */}
+        {/* INFINITE BRAND MARQUEE                                  */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="border-b border-slate-200 bg-[#0a1e36] py-5 overflow-hidden text-white">
+        <section className="border-b border-[#e7e5e4] bg-[#140d09] py-5 overflow-hidden text-white">
           <div className="animate-marquee flex items-center gap-12 whitespace-nowrap">
             {[...brands, ...brands, ...brands].map((b, idx) => (
               <div
@@ -329,8 +319,8 @@ function Index() {
                 onClick={() => navigate({ to: "/products", search: { q: b } as any })}
                 className="flex items-center gap-3 cursor-pointer group"
               >
-                <span className="h-2 w-2 rounded-full bg-[#d97706] group-hover:scale-125 transition-transform" />
-                <span className="font-display text-sm font-extrabold uppercase tracking-widest text-slate-200 group-hover:text-white transition-colors">
+                <span className="h-2 w-2 rounded-full bg-[#b45309] group-hover:scale-125 transition-transform" />
+                <span className="font-display text-sm font-extrabold uppercase tracking-widest text-[#f6f4ee] group-hover:text-white transition-colors">
                   {b}
                 </span>
               </div>
@@ -339,22 +329,21 @@ function Index() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* CATALOG PREVIEW (User Request #5: 1-line or preview 4)  */}
+        {/* CATALOG PREVIEW (MB Finishing Tech Sand Theme)          */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24 bg-slate-50 border-b border-slate-200">
+        <section className="py-16 sm:py-24 bg-[#f4f1eb] border-b border-[#e7e5e4]">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
               <div>
                 <span className="eyebrow">INVENTORY CATALOG</span>
-                <h2 className="mt-1 font-display text-2xl sm:text-4xl font-extrabold text-[#0f2a4a]">
+                <h2 className="mt-1 font-display text-2xl sm:text-4xl font-extrabold text-[#1a130f]">
                   Explore Original Hardware
                 </h2>
-                <p className="mt-2 text-xs sm:text-sm text-slate-600">
+                <p className="mt-2 text-xs sm:text-sm text-[#6b5e54]">
                   Showing selected high-demand PLCs, HMIs, VFDs & Sensors.
                 </p>
               </div>
 
-              {/* Brand Filter Pill Selector */}
               <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none">
                 {["All", "Siemens", "Mitsubishi", "Omron", "Allen Bradley"].map((b) => (
                   <button
@@ -362,8 +351,8 @@ function Index() {
                     onClick={() => setCatalogBrandFilter(b)}
                     className={`shrink-0 rounded-xl px-4 py-2 text-xs font-bold uppercase transition-all ${
                       catalogBrandFilter === b
-                        ? "bg-[#0f2a4a] text-white shadow"
-                        : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
+                        ? "bg-[#1a130f] text-white shadow"
+                        : "bg-white text-[#1a130f] border border-[#e7e5e4] hover:bg-[#f6f4ee]"
                     }`}
                   >
                     {b}
@@ -372,41 +361,38 @@ function Index() {
               </div>
             </div>
 
-            {/* 4 Product Preview Grid */}
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {previewProducts.map((p, idx) => (
                 <ProductCard key={p.id} product={p} index={idx} />
               ))}
             </div>
 
-            {/* Full Products Button (User Request #5) */}
             <div className="mt-10 text-center">
               <Link
                 to="/products"
-                className="inline-flex items-center gap-2 rounded-xl bg-[#0f2a4a] px-8 py-4 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#0a1e36] transition-all shadow-lg hover:shadow-xl"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#1a130f] px-8 py-4 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#b45309] transition-all shadow-lg hover:shadow-xl"
               >
-                View Full {allProducts.length}+ Products Catalog <ArrowRight className="h-4 w-4 text-[#d97706]" />
+                View Full {allProducts.length}+ Products Catalog <ArrowRight className="h-4 w-4 text-amber-400" />
               </Link>
             </div>
           </div>
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* ARCHITECTURAL BENTO GRID — Supply Infrastructure       */}
+        {/* SUPPLY NETWORK BENTO GRID                               */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="py-20 sm:py-24 bg-white">
+        <section className="py-20 sm:py-24 bg-[#f6f4ee]">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <span className="eyebrow">SUPPLY INFRASTRUCTURE</span>
-              <h2 className="mt-2 font-display text-3xl font-extrabold text-[#0f2a4a] sm:text-4xl">
+              <h2 className="mt-2 font-display text-3xl font-extrabold text-[#1a130f] sm:text-4xl">
                 Connected Industrial Network
               </h2>
-              <p className="mt-2 text-sm text-slate-600">
+              <p className="mt-2 text-sm text-[#6b5e54]">
                 Supplying OEM hardware to over 10,000+ manufacturing ecosystem partners across India.
               </p>
             </div>
 
-            {/* 6 Connected Network Counter Cards */}
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6 mb-12">
               {networkStats.map((st, i) => (
                 <motion.div
@@ -415,20 +401,19 @@ function Index() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: i * 0.05 }}
-                  className="rounded-2xl border border-slate-200 bg-slate-50/80 p-5 text-center shadow-sm hover:border-[#d97706] hover:bg-white transition-all"
+                  className="rounded-2xl border border-[#e7e5e4] bg-white p-5 text-center shadow-sm hover:border-[#b45309] transition-all"
                 >
-                  <div className="text-[11px] font-bold uppercase text-slate-500">{st.label}</div>
-                  <div className="mt-2 font-display text-2xl sm:text-3xl font-extrabold text-[#0f2a4a]">{st.value}</div>
-                  <div className="mt-1 text-[9px] font-bold text-[#d97706] uppercase tracking-wider">Verified Stock</div>
+                  <div className="text-[11px] font-bold uppercase text-[#6b5e54]">{st.label}</div>
+                  <div className="mt-2 font-display text-2xl sm:text-3xl font-extrabold text-[#1a130f]">{st.value}</div>
+                  <div className="mt-1 text-[9px] font-bold text-[#b45309] uppercase tracking-wider">Verified Stock</div>
                 </motion.div>
               ))}
             </div>
 
-            {/* Bento Grid */}
             <div className="grid gap-6 lg:grid-cols-12">
-              <div className="lg:col-span-8 rounded-3xl bg-[#0a1e36] p-8 text-white flex flex-col justify-between shadow-xl relative overflow-hidden">
+              <div className="lg:col-span-8 rounded-3xl bg-[#140d09] p-8 text-white flex flex-col justify-between shadow-xl relative overflow-hidden">
                 <div>
-                  <span className="rounded-full bg-[#d97706] px-3.5 py-1 text-[10px] font-extrabold uppercase tracking-widest text-white">
+                  <span className="rounded-full bg-[#b45309] px-3.5 py-1 text-[10px] font-extrabold uppercase tracking-widest text-white">
                     Direct Warehouse Hub
                   </span>
                   <h3 className="mt-4 font-display text-2xl sm:text-4xl font-extrabold uppercase leading-tight">
@@ -442,7 +427,7 @@ function Index() {
                   <span>Proprietor: <strong>{company.owner}</strong></span>
                   <button
                     onClick={() => openQuote("General Inquiry", "")}
-                    className="rounded-xl bg-[#d97706] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#b45309] transition-colors"
+                    className="rounded-xl bg-[#b45309] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#d97706] transition-colors"
                   >
                     Contact Sales Desk
                   </button>
@@ -450,22 +435,22 @@ function Index() {
               </div>
 
               <div className="lg:col-span-4 space-y-6">
-                <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm hover:shadow-md transition-all">
-                  <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center mb-4">
-                    <ShieldCheck className="h-5 w-5 text-[#0f2a4a]" />
+                <div className="rounded-3xl border border-[#e7e5e4] bg-white p-7 shadow-sm hover:shadow-md transition-all">
+                  <div className="h-10 w-10 rounded-xl bg-[#f4f1eb] flex items-center justify-center mb-4">
+                    <ShieldCheck className="h-5 w-5 text-[#1a130f]" />
                   </div>
-                  <h4 className="font-display text-base font-bold uppercase text-[#0f2a4a]">100% Genuine OEM Guarantee</h4>
-                  <p className="mt-2 text-xs text-slate-600 leading-relaxed">
+                  <h4 className="font-display text-base font-bold uppercase text-[#1a130f]">100% Genuine OEM Guarantee</h4>
+                  <p className="mt-2 text-xs text-[#6b5e54] leading-relaxed">
                     Every PLC, HMI, and drive includes official factory seal, serial number validation, and 12-month coverage.
                   </p>
                 </div>
 
-                <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm hover:shadow-md transition-all">
-                  <div className="h-10 w-10 rounded-xl bg-amber-50 flex items-center justify-center mb-4">
-                    <Truck className="h-5 w-5 text-[#d97706]" />
+                <div className="rounded-3xl border border-[#e7e5e4] bg-white p-7 shadow-sm hover:shadow-md transition-all">
+                  <div className="h-10 w-10 rounded-xl bg-[#f4f1eb] flex items-center justify-center mb-4">
+                    <Truck className="h-5 w-5 text-[#b45309]" />
                   </div>
-                  <h4 className="font-display text-base font-bold uppercase text-[#0f2a4a]">Pan-India Breakdown Express</h4>
-                  <p className="mt-2 text-xs text-slate-600 leading-relaxed">
+                  <h4 className="font-display text-base font-bold uppercase text-[#1a130f]">Pan-India Breakdown Express</h4>
+                  <p className="mt-2 text-xs text-[#6b5e54] leading-relaxed">
                     Urgent 24-48 hour courier dispatch to manufacturing units across Gujarat, Maharashtra, South, and North India.
                   </p>
                 </div>
@@ -475,18 +460,17 @@ function Index() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* SERVING KEY INDUSTRIES (Interactive Tab Layout)        */}
+        {/* SERVING KEY INDUSTRIES                                 */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="py-20 sm:py-24 bg-slate-50 border-t border-slate-200">
+        <section className="py-20 sm:py-24 bg-[#f4f1eb] border-t border-[#e7e5e4]">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="text-center max-w-2xl mx-auto mb-10">
               <span className="eyebrow">ENGINEERED SOLUTIONS</span>
-              <h2 className="mt-1 font-display text-3xl font-extrabold text-[#0f2a4a] sm:text-4xl">
+              <h2 className="mt-1 font-display text-3xl font-extrabold text-[#1a130f] sm:text-4xl">
                 Serving Key Industries
               </h2>
             </div>
 
-            {/* Industry Selector Tabs */}
             <div className="flex overflow-x-auto gap-2 pb-2 mb-8 justify-start lg:justify-center scrollbar-none">
               {keyIndustries.map((ind) => (
                 <button
@@ -494,8 +478,8 @@ function Index() {
                   onClick={() => setActiveIndustry(ind)}
                   className={`shrink-0 rounded-xl px-5 py-3 text-xs font-bold uppercase tracking-wider transition-all ${
                     activeIndustry.id === ind.id
-                      ? "bg-[#0f2a4a] text-white shadow-lg scale-105"
-                      : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
+                      ? "bg-[#1a130f] text-white shadow-lg scale-105"
+                      : "bg-white text-[#1a130f] border border-[#e7e5e4] hover:bg-[#f6f4ee]"
                   }`}
                 >
                   {ind.title}
@@ -503,7 +487,6 @@ function Index() {
               ))}
             </div>
 
-            {/* Active Industry Detail Card */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndustry.id}
@@ -511,31 +494,31 @@ function Index() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.3 }}
-                className="rounded-3xl border border-slate-200 bg-white p-8 shadow-lg"
+                className="rounded-3xl border border-[#e7e5e4] bg-white p-8 shadow-lg"
               >
                 <div className="grid gap-8 lg:grid-cols-12 items-center">
                   <div className="lg:col-span-7 space-y-4">
-                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#d97706]">
+                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#b45309]">
                       Targeted Industry Hardware
                     </span>
-                    <h3 className="font-display text-2xl sm:text-3xl font-extrabold uppercase text-[#0f2a4a]">
+                    <h3 className="font-display text-2xl sm:text-3xl font-extrabold uppercase text-[#1a130f]">
                       {activeIndustry.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[#6b5e54] leading-relaxed">
                       {activeIndustry.desc}
                     </p>
                     <button
                       onClick={() => openQuote(activeIndustry.title, "")}
-                      className="inline-flex items-center gap-2 rounded-xl bg-[#0f2a4a] px-6 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#0a1e36] transition-colors"
+                      className="inline-flex items-center gap-2 rounded-xl bg-[#1a130f] px-6 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#b45309] transition-colors"
                     >
-                      Inquire Solution <ArrowRight className="h-4 w-4 text-[#d97706]" />
+                      Inquire Solution <ArrowRight className="h-4 w-4 text-amber-400" />
                     </button>
                   </div>
                   <div className="lg:col-span-5 flex justify-center">
                     <img
                       src={activeIndustry.image}
                       alt={activeIndustry.title}
-                      className="h-48 sm:h-56 w-full max-w-xs object-contain rounded-2xl bg-slate-50 p-4 border border-slate-200"
+                      className="h-48 sm:h-56 w-full max-w-xs object-contain rounded-2xl bg-[#f6f4ee] p-4 border border-[#e7e5e4]"
                     />
                   </div>
                 </div>
@@ -545,30 +528,30 @@ function Index() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* CLIENT TESTIMONIALS                                    */}
+        {/* TESTIMONIALS                                           */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="py-20 sm:py-24 bg-white">
+        <section className="py-20 sm:py-24 bg-[#f6f4ee]">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="grid gap-10 lg:grid-cols-5 lg:items-center">
               <div className="lg:col-span-2">
                 <span className="eyebrow">CLIENT VERIFICATION</span>
-                <h2 className="mt-2 font-display text-3xl font-extrabold text-[#0f2a4a]">
+                <h2 className="mt-2 font-display text-3xl font-extrabold text-[#1a130f]">
                   What Engineers Say
                 </h2>
-                <p className="mt-3 text-xs text-slate-600 leading-relaxed">
+                <p className="mt-3 text-xs text-[#6b5e54] leading-relaxed">
                   Trusted by plant managers and OEM builders across Gujarat & India.
                 </p>
 
                 <div className="mt-6 flex items-center gap-3">
                   <button onClick={() => setReviewIndex((prev) => (prev - 1 + reviews.length) % reviews.length)}
-                    className="h-10 w-10 rounded-xl border border-slate-200 flex items-center justify-center text-[#0f2a4a] hover:bg-slate-100 transition-colors">
+                    className="h-10 w-10 rounded-xl border border-[#e7e5e4] bg-white flex items-center justify-center text-[#1a130f] hover:bg-[#f4f1eb] transition-colors">
                     <ChevronLeft className="h-5 w-5" />
                   </button>
                   <button onClick={() => setReviewIndex((prev) => (prev + 1) % reviews.length)}
-                    className="h-10 w-10 rounded-xl border border-slate-200 flex items-center justify-center text-[#0f2a4a] hover:bg-slate-100 transition-colors">
+                    className="h-10 w-10 rounded-xl border border-[#e7e5e4] bg-white flex items-center justify-center text-[#1a130f] hover:bg-[#f4f1eb] transition-colors">
                     <ChevronRight className="h-5 w-5" />
                   </button>
-                  <span className="text-xs font-bold text-slate-400 ml-2">{reviewIndex + 1} / {reviews.length}</span>
+                  <span className="text-xs font-bold text-[#6b5e54] ml-2">{reviewIndex + 1} / {reviews.length}</span>
                 </div>
               </div>
 
@@ -578,17 +561,17 @@ function Index() {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="rounded-3xl bg-slate-50 border border-slate-200 p-8 sm:p-10 shadow-sm"
+                  className="rounded-3xl bg-white border border-[#e7e5e4] p-8 sm:p-10 shadow-sm"
                 >
-                  <div className="flex text-[#d97706] mb-4">
+                  <div className="flex text-[#b45309] mb-4">
                     {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
                   </div>
                   <p className="text-sm sm:text-base text-slate-700 leading-relaxed italic font-medium">
                     "{reviews[reviewIndex].quote}"
                   </p>
-                  <div className="mt-6 pt-4 border-t border-slate-200">
-                    <div className="font-display text-sm font-bold uppercase text-[#0f2a4a]">{reviews[reviewIndex].author}</div>
-                    <div className="text-xs text-[#d97706] font-bold mt-0.5">{reviews[reviewIndex].company}</div>
+                  <div className="mt-6 pt-4 border-t border-[#e7e5e4]">
+                    <div className="font-display text-sm font-bold uppercase text-[#1a130f]">{reviews[reviewIndex].author}</div>
+                    <div className="text-xs text-[#b45309] font-bold mt-0.5">{reviews[reviewIndex].company}</div>
                   </div>
                 </motion.div>
               </div>
@@ -597,11 +580,11 @@ function Index() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* CTA BANNER — Steel Navy & Gold                          */}
+        {/* CTA BANNER                                             */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="bg-[#0a1e36] py-20 text-white border-t border-slate-800">
+        <section className="bg-[#140d09] py-20 text-white border-t border-white/10">
           <div className="mx-auto max-w-4xl px-4 text-center">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#d97706]">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#b45309]">
               Plant Breakdown or Urgent Automation Order?
             </span>
             <h2 className="mt-2 font-display text-3xl font-extrabold uppercase text-white sm:text-4xl">
@@ -609,7 +592,7 @@ function Index() {
             </h2>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <button onClick={() => openQuote("General Inquiry", "")}
-                className="rounded-xl bg-[#d97706] px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-lg hover:bg-[#b45309] transition-all">
+                className="rounded-xl bg-[#b45309] px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-lg hover:bg-[#d97706] transition-all">
                 Request Instant Quote
               </button>
               <a href={`tel:${company.phoneRaw}`}
