@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   Phone,
@@ -23,9 +23,6 @@ import {
   Star,
   User,
   Quote,
-  Sparkles,
-  Layers,
-  Flame,
 } from "lucide-react";
 import heroImage from "@/assets/hero-automation.jpg";
 import { Header } from "@/components/Header";
@@ -33,13 +30,11 @@ import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
 import { brands, categories, company, allProducts } from "@/data/catalog";
 import { InquiryModal } from "@/components/InquiryModal";
-import { submitInquiry } from "@/lib/supabase";
-import { toast } from "sonner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Concept Automation Technologies | Siemens, Mitsubishi, Omron, P+F & AB Stock" },
+      { title: "Concept Automation Technologies | PLC, HMI & VFD Supplier" },
       {
         name: "description",
         content:
@@ -50,495 +45,460 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+// Naksh 1:1 Hero Carousel Slides
 const heroSlides = [
   {
-    tag: "Bosch Rexroth Partner",
-    title: "Bosch Rexroth Industrial Drives & Motion Control",
-    subtitle: "Advanced hydraulic servo valves, IndraDrive VFD inverters, and high-torque compact motors in stock for express dispatch.",
-    cta: "Explore Rexroth Range",
-    brandQuery: "Bosch",
+    title: "Rexroth A Bosch Company",
+    subtitle: "Driving industrial excellence with advanced motion control, hydraulics, and drive solutions from Bosch Rexroth.",
+    cta: "Explore Rexroth",
+    bgClass: "from-blue-950 via-slate-900 to-ink",
   },
   {
-    tag: "Siemens SIMATIC Core",
-    title: "Siemens SIMATIC S7-1500 & Comfort Panels",
-    subtitle: "Original 100% genuine S7-1200, S7-1500 CPUs, ET200SP I/O racks, and SINAMICS V20/G120 VFD drives in Ahmedabad stock.",
-    cta: "Explore Siemens Catalog",
-    brandQuery: "Siemens",
+    title: "Siemens SIMATIC Industrial Automation",
+    subtitle: "High-performance S7-1200, S7-1500 PLCs, Comfort HMIs, and SINAMICS frequency drives in stock.",
+    cta: "Explore Siemens",
+    bgClass: "from-slate-950 via-teal-950 to-ink",
   },
   {
-    tag: "Mitsubishi Electric",
-    title: "Mitsubishi MELSEC FX5U & GOT2000 HMI",
-    subtitle: "High-speed compact controllers, GOT2000 multi-touch screens, and FREQROL D700/E700 AC motor drives for maximum uptime.",
-    cta: "Explore Mitsubishi Catalog",
-    brandQuery: "Mitsubishi",
+    title: "Mitsubishi Electric Automation Solutions",
+    subtitle: "MELSEC FX5U controllers, GOT2000 touch screens, and FREQROL AC motor drives for maximum uptime.",
+    cta: "Explore Mitsubishi",
+    bgClass: "from-slate-950 via-red-950 to-ink",
   },
   {
-    tag: "Allen Bradley & Omron",
-    title: "Allen Bradley ControlLogix & Omron CJ1W PLC",
-    subtitle: "CompactLogix 5380 safety automation platforms, Omron CP1L controllers, and Pepperl+Fuchs ultrasonic sensors.",
-    cta: "Explore All OEM Brands",
-    brandQuery: "Omron",
+    title: "Schneider & Allen Bradley Automation",
+    subtitle: "Modicon controllers, PanelView HMIs, and CompactLogix 5380 safety automation platforms.",
+    cta: "Explore Catalog",
+    bgClass: "from-slate-950 via-indigo-950 to-ink",
   },
 ];
 
+// Naksh 1:1 Network Stats (6 Counter Cards)
 const networkStats = [
-  { label: "Connected OEM Suppliers", value: "842+" },
-  { label: "Connected Industrial Traders", value: "6,452+" },
-  { label: "Panel Builders & OEMs", value: "2,145+" },
-  { label: "Manufacturing End Users", value: "1,796+" },
-  { label: "Automation Solution Providers", value: "710+" },
-  { label: "Certified System Integrators", value: "539+" },
+  { label: "Connected OEM", value: "842+" },
+  { label: "Connected Traders", value: "6,452+" },
+  { label: "Connected Panel Builders", value: "2,145+" },
+  { label: "Connected End Users", value: "1,796+" },
+  { label: "Connected Solution Providers", value: "710+" },
+  { label: "Connected System Integrators", value: "539+" },
 ];
 
+// Naksh 1:1 Serving Key Industries
 const keyIndustries = [
   {
     id: "pharma",
-    title: "Pharma & Life Sciences",
+    title: "Pharma Industry",
     desc: "Cleanroom automation, batch processing data logging, 21 CFR Part 11 compliance, and precision tablet pressing PLC panels.",
-    badge: "21 CFR Compliant",
+    image: "https://cpimg.tistatic.com/09164979/b/4/Siemens-Logo-6ED1052-1FB08-0BA1-PLC.jpg",
   },
   {
     id: "textile",
-    title: "Textile & Packaging",
+    title: "Textile & Packaging Industries",
     desc: "High-speed multi-axis motion synchronization, tension control VFD inverters, and automatic wrapping SCADA interfaces.",
-    badge: "High Speed Motion",
+    image: "https://cpimg.tistatic.com/09377052/b/4/FR-CS84-295-60-MITSUBISHI-VFD.jpg",
   },
   {
     id: "automotive",
     title: "Automotive Manufacturing",
     desc: "Robotic welding line racks, assembly line PLC controllers, safety light curtains, and industrial Ethernet fieldbus IO.",
-    badge: "Robotic Racks",
+    image: "https://cpimg.tistatic.com/09377302/b/4/CompactLogix-5380.jpg",
   },
   {
     id: "plastic",
-    title: "Plastics & Extrusion",
-    desc: "Extruder vector drives, precise melt temperature PID control modules, and heavy-duty optical shaft encoders.",
-    badge: "PID Control",
+    title: "Plastic & Paper Industries",
+    desc: "Extruder vector drives, precise melt temperature PID control modules, and heavy-duty shaft encoders.",
+    image: "https://cpimg.tistatic.com/09512948/b/4/PAPPERL-FUCHS-UC2000-30GM-IUR2-V15.jpg",
   },
   {
     id: "machine",
-    title: "Machine & Plant Building",
+    title: "Machine & Plant Engineering",
     desc: "Turnkey electrical control panel manufacturing, customized PLC program suites, and HMI touch screen development.",
-    badge: "Turnkey Panels",
+    image: "https://cpimg.tistatic.com/09377030/b/4/GS2110-WTBD-N-Mitsubishi-HMI-10-inch.jpg",
   },
 ];
 
-const testimonials = [
+// Naksh Testimonials Review Cards
+const reviews = [
   {
-    name: "Rajesh Patel",
-    company: "Sun Pharma Systems Ltd",
-    role: "Automation Lead",
-    comment: "Concept Automation Technologies delivered 12 units of Siemens SIMATIC S7-1500 CPUs within 24 hours to our plant in Sanand. 100% original OEM stock with official warranty.",
-    rating: 5,
+    quote: "Concept Automation supplied us genuine Siemens S7-1200 CPUs and TP1200 HMIs within 24 hours during a critical plant breakdown. Exceptional service!",
+    author: "Mr. R. K. Patel",
+    company: "Pharma Machine OEM, Ahmedabad",
+    stars: 5,
   },
   {
-    name: "Vikram Mehta",
-    company: "Apex Textile Machinery",
-    role: "Chief Engineer",
-    comment: "Outstanding inventory of Mitsubishi FREQROL VFDs and GOT2000 HMIs. Their technical guidance on parameter setup saved us 3 days of downtime.",
-    rating: 5,
+    quote: "We regularly source Mitsubishi FREQROL VFDs and GOT touch screens from Mr. Gaurang. Always original stock with complete warranty.",
+    author: "Mr. Vikram Shah",
+    company: "Packaging Systems India, Vadodara",
+    stars: 5,
   },
   {
-    name: "Anand Sharma",
-    company: "Gujarat Plastics Pvt Ltd",
-    role: "Plant Manager",
-    comment: "Best supplier in Makarba, Ahmedabad for Pepperl+Fuchs ultrasonic sensors and Omron CJ1W PLCs. Best prices and immediate GST invoices.",
-    rating: 5,
+    quote: "Fast response on hard-to-find Allen Bradley CompactLogix parts. Their technical team verified the exact cross-reference for our line.",
+    author: "Mr. Amit Verma",
+    company: "Automotive Ancillary Pvt Ltd, Pune",
+    stars: 5,
   },
 ];
 
 function Index() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [activeTab, setActiveTab] = useState<string>("All");
-  const [selectedIndustry, setSelectedIndustry] = useState(0);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [activeIndustry, setActiveIndustry] = useState(keyIndustries[0]);
+  const [selectedBrand, setSelectedBrand] = useState("All");
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
-  const [inquiryProduct, setInquiryProduct] = useState("");
+  const [modalProduct, setModalProduct] = useState({ name: "", part: "" });
   const navigate = useNavigate();
 
-  // Hero Carousel Timer
+  // Auto rotate hero slides
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+      setSlideIndex((prev) => (prev + 1) % heroSlides.length);
     }, 6000);
     return () => clearInterval(timer);
   }, []);
 
-  // Quick Quote Form State
-  const [quickForm, setQuickForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    part: "",
-    message: "",
+  const slide = heroSlides[slideIndex];
+
+  const filteredProducts = allProducts.filter((p) => {
+    return selectedBrand === "All" || p.brand.toLowerCase() === selectedBrand.toLowerCase();
   });
-  const [formLoading, setFormLoading] = useState(false);
-  const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const handleQuickSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!quickForm.name || !quickForm.phone || !quickForm.email) {
-      toast.error("Please provide your Name, Email, and Phone number.");
-      return;
-    }
-
-    setFormLoading(true);
-    const res = await submitInquiry({
-      name: quickForm.name,
-      email: quickForm.email,
-      phone: quickForm.phone,
-      company: quickForm.company,
-      product_name: quickForm.part ? `Quote for Part: ${quickForm.part}` : "General Homepage Inquiry",
-      part_number: quickForm.part,
-      message: quickForm.message,
-    });
-    setFormLoading(false);
-
-    if (res.success) {
-      setFormSubmitted(true);
-      toast.success("Quote Request Sent!", {
-        description: "Our engineering desk in Makarba, Ahmedabad will contact you with official pricing.",
-      });
-    }
+  const openQuote = (name: string = "", part: string = "") => {
+    setModalProduct({ name, part });
+    setInquiryModalOpen(true);
   };
 
-  // Filtered Showcase Products (1 Clean Row of 4 Products)
-  const featuredProducts = useMemo(() => {
-    if (activeTab === "All") return allProducts.slice(0, 4);
-    return allProducts.filter((p) => p.type.toLowerCase() === activeTab.toLowerCase()).slice(0, 4);
-  }, [activeTab]);
-
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <main>
-        {/* ========================================================================= */}
-        {/* HERO SECTION - SOFT LIGHT MODE / CYBER DARK MODE                          */}
-        {/* ========================================================================= */}
-        <section className="relative overflow-hidden border-b border-border py-16 lg:py-24 bg-gradient-to-b from-sky-50/80 via-white to-slate-50 dark:from-slate-950 dark:via-[#0B0F19] dark:to-[#080C14]">
-          <div className="relative mx-auto max-w-7xl px-6">
+        {/* Naksh 1:1 Hero Carousel Section with Fixed Uniform Height */}
+        <section className={`relative overflow-hidden border-b border-border bg-gradient-to-r ${slide.bgClass} text-white min-h-[520px] lg:min-h-[580px] flex items-center py-16 lg:py-20 transition-all duration-700`}>
+          <div className="absolute inset-0 z-0 opacity-20">
+            <img src={heroImage} alt="Industrial Automation" className="h-full w-full object-cover object-center" />
+            <div className="absolute inset-0 bg-black/50" />
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-7xl px-6 w-full">
             <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
-              
-              {/* Hero Left Content */}
-              <div className="lg:col-span-7 space-y-6">
-                <div className="inline-flex items-center gap-2 rounded-full bg-sky-100 text-sky-800 dark:bg-cyan-500/10 dark:text-cyan-400 px-4 py-1.5 text-xs font-bold border border-sky-300 dark:border-cyan-500/30">
-                  <Sparkles className="h-3.5 w-3.5 animate-spin text-sky-600 dark:text-cyan-400" />
-                  <span>{heroSlides[currentSlide].tag}</span>
+              <div className="lg:col-span-8 flex flex-col justify-between min-h-[380px]">
+                <div>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-accent">
+                    <Zap className="h-3.5 w-3.5" /> Concept Automation Technologies
+                  </span>
+
+                  <div className="min-h-[120px] sm:min-h-[140px] flex items-center mt-3">
+                    <h1 className="font-display text-4xl font-extrabold uppercase tracking-tight sm:text-6xl lg:text-7xl leading-none text-white">
+                      {slide.title}
+                    </h1>
+                  </div>
+
+                  <p className="mt-2 text-base text-white/80 leading-relaxed max-w-2xl min-h-[50px] flex items-center">
+                    {slide.subtitle}
+                  </p>
                 </div>
 
-                <h1 className="font-display text-4xl font-extrabold uppercase tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl leading-[1.08]">
-                  {heroSlides[currentSlide].title.split(" ")[0]}{" "}
-                  <span className="gradient-text-cyan">
-                    {heroSlides[currentSlide].title.split(" ").slice(1, 3).join(" ")}
-                  </span>{" "}
-                  {heroSlides[currentSlide].title.split(" ").slice(3).join(" ")}
-                </h1>
-
-                <p className="max-w-2xl text-base text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  {heroSlides[currentSlide].subtitle}
-                </p>
-
-                {/* Hero Action Buttons */}
-                <div className="flex flex-wrap items-center gap-4 pt-2">
-                  <Link
-                    to="/products"
-                    search={{ q: heroSlides[currentSlide].brandQuery }}
-                    className="inline-flex items-center gap-2.5 rounded-xl bg-sky-600 dark:bg-gradient-to-r dark:from-cyan-500 dark:to-blue-600 px-6 py-3.5 font-display text-sm font-extrabold uppercase tracking-wider text-white dark:text-slate-950 shadow-lg transition-all hover:scale-[1.03] active:scale-95"
-                  >
-                    {heroSlides[currentSlide].cta} <ArrowRight className="h-4 w-4" />
-                  </Link>
-
+                <div className="mt-6 flex flex-wrap items-center gap-4">
                   <button
-                    onClick={() => setInquiryModalOpen(true)}
-                    className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-slate-800/80 px-6 py-3.5 font-display text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm"
+                    onClick={() => openQuote(slide.title, "")}
+                    className="rounded-lg bg-accent px-7 py-3.5 font-display text-xs font-bold uppercase tracking-wider text-accent-foreground shadow-lg hover:bg-accent/90 transition-all"
                   >
-                    <MessageSquare className="h-4 w-4 text-sky-600 dark:text-cyan-400" /> Request Instant Quote
+                    {slide.cta}
+                  </button>
+                  <button
+                    onClick={() => openQuote("General Inquiry", "")}
+                    className="rounded-lg border border-white/30 bg-white/10 px-7 py-3.5 font-display text-xs font-bold uppercase tracking-wider text-white hover:bg-white/20 transition-all"
+                  >
+                    Get Free Quote
+                  </button>
+                </div>
+              </div>
+
+              {/* Naksh Slide Counter & Controls */}
+              <div className="lg:col-span-4 flex flex-col items-start lg:items-end justify-between min-h-[380px]">
+                <div className="font-mono text-5xl font-extrabold tracking-tighter text-white/90">
+                  0{slideIndex + 1} <span className="text-xl text-white/40">/ 0{heroSlides.length}</span>
+                </div>
+
+                <div className="mt-6 flex items-center gap-3">
+                  <button
+                    onClick={() => setSlideIndex((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)}
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white hover:bg-accent hover:text-accent-foreground transition-all"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={() => setSlideIndex((prev) => (prev + 1) % heroSlides.length)}
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white hover:bg-accent hover:text-accent-foreground transition-all"
+                  >
+                    <ChevronRight className="h-5 w-5" />
                   </button>
                 </div>
 
-                {/* Hero Carousel Navigation Indicators */}
-                <div className="flex items-center gap-3 pt-6">
-                  {heroSlides.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentSlide(idx)}
-                      className={`h-2 rounded-full transition-all duration-500 ${
-                        currentSlide === idx ? "w-10 bg-sky-600 dark:bg-cyan-400" : "w-2 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400"
-                      }`}
-                      aria-label={`Go to slide ${idx + 1}`}
-                    />
-                  ))}
-                  <span className="ml-2 text-xs font-mono text-slate-500">
-                    0{currentSlide + 1} / 0{heroSlides.length}
+                {/* Floating Support Card inside Hero */}
+                <div className="mt-8 w-full rounded-xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-accent">Direct Sales Desk</div>
+                  <a href={`tel:${company.phoneRaw}`} className="mt-1 block font-mono text-base font-bold text-white hover:text-accent">
+                    📞 {company.phone}
+                  </a>
+                  <div className="mt-1 text-[11px] text-white/70">Makarba, Ahmedabad · Fast Dispatch</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Featured Brands Logo Strip (Naksh 1:1) */}
+        <section className="border-b border-border bg-card py-10">
+          <div className="mx-auto max-w-7xl px-6">
+            <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground block text-center mb-6">
+              Featured Brands & Partners
+            </span>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-5">
+              {brands.map((b) => (
+                <div
+                  key={b}
+                  onClick={() => {
+                    setSelectedBrand(b);
+                    navigate({ to: "/products" });
+                  }}
+                  className="card-surface flex h-20 items-center justify-center rounded-xl border border-border bg-background p-4 text-center cursor-pointer transition-all hover:-translate-y-1 hover:border-accent/50 hover:shadow-lg"
+                >
+                  <span className="font-display text-base font-extrabold uppercase tracking-wider text-foreground">
+                    {b}
                   </span>
                 </div>
-              </div>
-
-              {/* Hero Right Visual Showcase Card */}
-              <div className="lg:col-span-5">
-                <div className="glass-card relative overflow-hidden rounded-3xl p-6 border border-slate-200 dark:border-cyan-500/30 shadow-xl animate-float bg-white dark:bg-slate-900">
-                  <div className="relative aspect-4/3 overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                    <img
-                      src={heroImage}
-                      alt="Industrial PLC Automation Hardware Setup"
-                      className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-                      width={600}
-                      height={450}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent dark:from-slate-950 dark:via-slate-950/20" />
-                    
-                    <div className="absolute bottom-4 left-4 right-4 rounded-xl bg-white/95 dark:bg-slate-950/90 p-4 border border-slate-200 dark:border-cyan-500/30 backdrop-blur-xl shadow-md">
-                      <div className="flex items-center justify-between text-xs font-bold text-sky-700 dark:text-cyan-400 uppercase tracking-wider">
-                        <span className="flex items-center gap-1.5">
-                          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-                          Ready Stock in Ahmedabad
-                        </span>
-                        <span className="text-slate-500 dark:text-slate-400 font-mono">199+ Part Numbers</span>
-                      </div>
-                      <p className="mt-1.5 text-xs text-slate-700 dark:text-slate-300">
-                        Siemens, Mitsubishi, Omron, Allen Bradley, Pepperl+Fuchs & Delta Hardware.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Feature Badges Row */}
-                  <div className="mt-6 grid grid-cols-3 gap-3">
-                    <div className="rounded-xl bg-slate-50 dark:bg-slate-900/80 p-3 text-center border border-slate-200 dark:border-slate-800">
-                      <ShieldCheck className="mx-auto h-5 w-5 text-sky-600 dark:text-cyan-400 mb-1" />
-                      <span className="block text-[11px] font-bold text-slate-800 dark:text-slate-200">100% OEM</span>
-                      <span className="block text-[9px] text-slate-500 dark:text-slate-400">Genuine Guarantee</span>
-                    </div>
-                    <div className="rounded-xl bg-slate-50 dark:bg-slate-900/80 p-3 text-center border border-slate-200 dark:border-slate-800">
-                      <Truck className="mx-auto h-5 w-5 text-sky-600 dark:text-cyan-400 mb-1" />
-                      <span className="block text-[11px] font-bold text-slate-800 dark:text-slate-200">Pan-India</span>
-                      <span className="block text-[9px] text-slate-500 dark:text-slate-400">Express Delivery</span>
-                    </div>
-                    <div className="rounded-xl bg-slate-50 dark:bg-slate-900/80 p-3 text-center border border-slate-200 dark:border-slate-800">
-                      <Award className="mx-auto h-5 w-5 text-amber-500 mb-1" />
-                      <span className="block text-[11px] font-bold text-slate-800 dark:text-slate-200">12 Months</span>
-                      <span className="block text-[9px] text-slate-500 dark:text-slate-400">Official Warranty</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* OEM Brands Bar - Enlarged & Prominent */}
-          <div className="mt-16 border-t border-slate-200 dark:border-slate-800/80 bg-white/80 dark:bg-slate-950/80 py-10 backdrop-blur-md">
-            <div className="mx-auto max-w-7xl px-6">
-              <span className="block text-center text-sm sm:text-base font-extrabold uppercase tracking-[0.2em] text-sky-700 dark:text-cyan-400 mb-6">
-                Core Stocked Industrial Brands
-              </span>
-              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-                {brands.map((b) => (
-                  <Link
-                    key={b}
-                    to="/products"
-                    search={{ q: b }}
-                    className="glass-card flex items-center gap-3 rounded-2xl px-6 py-3.5 text-sm sm:text-base font-extrabold text-slate-800 dark:text-slate-100 hover:text-sky-600 dark:hover:text-cyan-400 hover:scale-105 transition-all bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-md hover:shadow-xl"
-                  >
-                    <span className="h-3 w-3 rounded-full bg-sky-500 dark:bg-cyan-400 animate-pulse" />
-                    {b}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-
-        {/* ========================================================================= */}
-        {/* TABBED HARDWARE SHOWCASE & FEATURED CATALOG GRID                           */}
-        {/* ========================================================================= */}
-        <section className="py-20 bg-slate-50/50 dark:bg-[#080C14] border-b border-border">
-          <div className="mx-auto max-w-7xl px-6">
-            
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-              <div>
-                <span className="eyebrow">Inventory Catalog</span>
-                <h2 className="mt-2 section-title text-3xl sm:text-4xl text-slate-900 dark:text-white">
-                  Featured Industrial Hardware
-                </h2>
-                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 max-w-xl">
-                  In-stock Siemens, Mitsubishi, Omron, Delta & Pepperl+Fuchs controllers, HMIs, VFDs & industrial sensors ready for dispatch.
-                </p>
-              </div>
-
-              {/* Hardware Type Tabs Filter */}
-              <div className="flex flex-wrap gap-2 rounded-2xl bg-white dark:bg-slate-900 p-1.5 border border-slate-200 dark:border-slate-800 shadow-sm">
-                {["All", "PLC", "HMI", "VFD", "Sensors"].map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`rounded-xl px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all ${
-                      activeTab === tab
-                        ? "bg-sky-600 dark:bg-cyan-500 text-white dark:text-slate-950 shadow-md"
-                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Product Cards Grid */}
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {featuredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-
-            <div className="mt-12 text-center">
-              <Link
-                to="/products"
-                className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-slate-900 px-8 py-4 font-display text-xs font-extrabold uppercase tracking-wider text-sky-600 dark:text-cyan-400 border border-slate-200 dark:border-cyan-500/30 hover:border-sky-500 dark:hover:border-cyan-500 transition-all shadow-md"
-              >
-                View Full 199+ Product Catalog <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-        </section>
-
-
-        {/* ========================================================================= */}
-        {/* NETWORK & TRUST COUNTERS                                                   */}
-        {/* ========================================================================= */}
-        <section className="py-20 bg-white dark:bg-gradient-to-b dark:from-[#080C14] dark:to-[#0B0F19] border-b border-border">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="eyebrow">Pan-India Network</span>
-              <h2 className="mt-2 section-title text-3xl sm:text-4xl text-slate-900 dark:text-white">
-                Trusted Automation Supply Ecosystem
-              </h2>
-              <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
-                Directly supplying factory automation products from Makarba, Ahmedabad to 10,000+ panel builders, OEMs & manufacturing plants.
-              </p>
-            </div>
-
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {networkStats.map((stat, idx) => (
-                <div
-                  key={idx}
-                  className="glass-card group relative overflow-hidden rounded-2xl p-8 border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/60 hover:border-sky-500 dark:hover:border-cyan-500/40"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="font-display text-4xl font-extrabold text-sky-600 dark:text-cyan-400 tracking-tight">
-                      {stat.value}
-                    </span>
-                    <Building className="h-6 w-6 text-slate-400 dark:text-slate-600 group-hover:text-sky-600 dark:group-hover:text-cyan-400 transition-colors" />
-                  </div>
-                  
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-200">{stat.label}</h3>
-                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Verified buyers & official trading channels across India.</p>
-                </div>
               ))}
             </div>
           </div>
         </section>
 
-
-        {/* ========================================================================= */}
-        {/* INDUSTRIES SERVED INTERACTIVE TABBED SECTION                               */}
-        {/* ========================================================================= */}
-        <section className="py-20 bg-slate-50/50 dark:bg-[#080C14] border-b border-border">
+        {/* About Us Section (1:1 Naksh Technology Shape & Layout) */}
+        <section className="py-20 bg-surface/50 dark:bg-background overflow-hidden border-t border-border">
           <div className="mx-auto max-w-7xl px-6">
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="eyebrow">Industry Solutions</span>
-              <h2 className="mt-2 section-title text-3xl sm:text-4xl text-slate-900 dark:text-white">
-                Serving Key Manufacturing Sectors
-              </h2>
-              <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
-                Customized PLC automation architectures & field hardware for specialized industrial applications.
-              </p>
-            </div>
+            <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
+              {/* Left Column: Premium Dark Engineering Console Showcase */}
+              <div className="lg:col-span-6 relative">
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0a2540] via-[#091e3a] to-[#003b73] p-6 sm:p-8 shadow-2xl border border-blue-500/20 text-white">
+                  {/* Subtle Grid Pattern Overlay */}
+                  <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
-            <div className="grid gap-8 lg:grid-cols-12 items-center">
-              {/* Tabs Column */}
-              <div className="lg:col-span-5 space-y-3">
-                {keyIndustries.map((ind, idx) => (
-                  <button
-                    key={ind.id}
-                    onClick={() => setSelectedIndustry(idx)}
-                    className={`w-full text-left rounded-2xl p-5 transition-all border ${
-                      selectedIndustry === idx
-                        ? "bg-white dark:bg-slate-800/90 border-sky-500 dark:border-cyan-500/50 shadow-md text-slate-900 dark:text-white"
-                        : "bg-slate-100/60 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-900"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-display text-base font-bold uppercase">{ind.title}</span>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-sky-700 dark:text-cyan-400 bg-sky-100 dark:bg-cyan-950 px-2 py-0.5 rounded border border-sky-200 dark:border-cyan-500/30">
-                        {ind.badge}
+                  {/* Header Status Bar */}
+                  <div className="relative z-10 flex items-center justify-between border-b border-white/15 pb-4 mb-6">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-white/90">
+                        Operational Inventory · Makarba, Ahmedabad
                       </span>
                     </div>
-                  </button>
-                ))}
+                    <span className="rounded-full bg-orange-500/20 border border-orange-500/40 px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest text-orange-400">
+                      100% Genuine OEM
+                    </span>
+                  </div>
+
+                  {/* 2 Showcase Product Cards */}
+                  <div className="relative z-10 grid grid-cols-2 gap-4">
+                    {/* Product Card 1 */}
+                    <div className="group rounded-2xl bg-white p-4 shadow-xl border border-white/20 transition-all duration-300 hover:-translate-y-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="rounded bg-blue-600 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white">
+                          Siemens VFD
+                        </span>
+                        <ShieldCheck className="h-3.5 w-3.5 text-blue-600" />
+                      </div>
+                      <div className="h-44 sm:h-48 w-full flex items-center justify-center p-2">
+                        <img
+                          src="https://cpimg.tistatic.com/09164988/b/4/Siemens-S120-Drive-6SL3120-1TE21-8AD0-S120-VFD.jpg"
+                          alt="SINAMICS S120 Servo"
+                          referrerPolicy="no-referrer"
+                          className="h-full w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="mt-2 text-center pt-2 border-t border-gray-100">
+                        <div className="font-display text-xs font-bold text-gray-900 uppercase">SINAMICS S120 Servo</div>
+                        <div className="text-[10px] text-gray-500 font-mono">6SL3120-1TE21</div>
+                      </div>
+                    </div>
+
+                    {/* Product Card 2 */}
+                    <div className="group rounded-2xl bg-white p-4 shadow-xl border border-white/20 transition-all duration-300 hover:-translate-y-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="rounded bg-orange-600 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white">
+                          Siemens PLC
+                        </span>
+                        <ShieldCheck className="h-3.5 w-3.5 text-orange-600" />
+                      </div>
+                      <div className="h-44 sm:h-48 w-full flex items-center justify-center p-2">
+                        <img
+                          src="https://cpimg.tistatic.com/09164979/b/4/Siemens-Logo-6ED1052-1FB08-0BA1-PLC.jpg"
+                          alt="SIMATIC LOGO! 8 CPU"
+                          referrerPolicy="no-referrer"
+                          className="h-full w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="mt-2 text-center pt-2 border-t border-gray-100">
+                        <div className="font-display text-xs font-bold text-gray-900 uppercase">SIMATIC LOGO! 8 CPU</div>
+                        <div className="text-[10px] text-gray-500 font-mono">6ED1052-1FB08</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom Technical Metrics Bar */}
+                  <div className="relative z-10 mt-6 pt-4 border-t border-white/15 grid grid-cols-3 gap-2 text-center">
+                    <div>
+                      <div className="font-display text-base font-extrabold text-white">1,500+</div>
+                      <div className="text-[9px] uppercase tracking-wider text-white/70">Parts Ready</div>
+                    </div>
+                    <div>
+                      <div className="font-display text-base font-extrabold text-orange-400">24-48 HR</div>
+                      <div className="text-[9px] uppercase tracking-wider text-white/70">Dispatch</div>
+                    </div>
+                    <div>
+                      <div className="font-display text-base font-extrabold text-white">PAN-INDIA</div>
+                      <div className="text-[9px] uppercase tracking-wider text-white/70">Global Export</div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Detail Card Column */}
-              <div className="lg:col-span-7">
-                <div className="glass-card rounded-3xl p-8 border border-slate-200 dark:border-cyan-500/30 bg-white dark:bg-slate-900 relative overflow-hidden shadow-lg">
-                  <span className="eyebrow text-xs">Sector Overview</span>
-                  <h3 className="mt-2 font-display text-2xl font-bold uppercase text-slate-900 dark:text-white">
-                    {keyIndustries[selectedIndustry].title}
-                  </h3>
-                  <p className="mt-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                    {keyIndustries[selectedIndustry].desc}
-                  </p>
+              {/* Right Column: Naksh Exact Typography & Arrow Lists */}
+              <div className="lg:col-span-6 space-y-4">
+                <span className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#0066b2] dark:text-accent">
+                  ABOUT US
+                </span>
+                
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-[#091e3a] dark:text-white leading-tight font-display uppercase">
+                  {company.name}
+                </h2>
 
-                  <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
-                    <span className="text-xs text-sky-700 dark:text-cyan-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500" /> Ready Stock & Engineering Support
-                    </span>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Concept Automation Technologies, located in Ahmedabad, India, is a top supplier of Siemens, Mitsubishi, Omron, Delta & Allen Bradley automation products. We offer a wide range of solutions, including PLCs, AC Drives, Servo Systems, HMIs, SCADA systems, and IPCs. Our products boost efficiency and productivity while providing tailored solutions for maximum performance and reliability.
+                </p>
 
-                    <button
-                      onClick={() => setInquiryModalOpen(true)}
-                      className="inline-flex items-center gap-2 rounded-xl bg-sky-600 dark:bg-cyan-500 px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-white dark:text-slate-950 hover:bg-sky-500 dark:hover:bg-cyan-400 transition-colors shadow-sm"
-                    >
-                      Inquire Sector Products <ArrowRight className="h-3.5 w-3.5" />
-                    </button>
+                {/* Feature Checklist with Arrow Icons (Naksh 1:1) */}
+                <div className="space-y-3 pt-2">
+                  <div className="flex items-center gap-3 text-xs sm:text-sm font-semibold text-foreground">
+                    <ArrowRight className="h-4 w-4 text-[#0066b2] dark:text-accent shrink-0" />
+                    <span>Genuine 100% Original OEM Stock</span>
                   </div>
+                  <div className="flex items-center gap-3 text-xs sm:text-sm font-semibold text-foreground">
+                    <ArrowRight className="h-4 w-4 text-[#0066b2] dark:text-accent shrink-0" />
+                    <span>Technical Selection & Cross-Reference Assistance</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs sm:text-sm font-semibold text-foreground">
+                    <ArrowRight className="h-4 w-4 text-[#0066b2] dark:text-accent shrink-0" />
+                    <span>Custom Automation Panel & Retrofit Solutions</span>
+                  </div>
+                </div>
+
+                <div className="pt-4">
+                  <Link
+                    to="/about"
+                    className="inline-flex items-center gap-2 rounded-lg bg-[#004b8d] hover:bg-[#003b73] px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-md transition-all"
+                  >
+                    Read More <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-
-        {/* ========================================================================= */}
-        {/* CUSTOMER REVIEWS & TESTIMONIALS                                            */}
-        {/* ========================================================================= */}
-        <section className="py-20 bg-white dark:bg-gradient-to-b dark:from-[#080C14] dark:to-[#0B0F19] border-b border-border">
+        {/* Naksh 6-Card Network Stats (Connected Counter Strip) */}
+        <section className="border-y border-border bg-surface py-12">
           <div className="mx-auto max-w-7xl px-6">
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="eyebrow">Client Feedback</span>
-              <h2 className="mt-2 section-title text-3xl sm:text-4xl text-slate-900 dark:text-white">
-                What Industry Leaders Say
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+              {networkStats.map((st) => (
+                <div key={st.label} className="rounded-xl border border-border bg-card p-4 text-center shadow-sm">
+                  <div className="text-xs font-bold uppercase text-muted-foreground">{st.label}</div>
+                  <div className="mt-2 font-display text-3xl font-extrabold text-foreground">{st.value}</div>
+                  <div className="mt-1 text-[10px] font-semibold text-accent uppercase tracking-wider">Trust Our Services</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Serving Key Industries Section (Naksh 1:1 Tabbed Layout) */}
+        <section className="py-20 bg-background">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <span className="eyebrow text-accent font-bold uppercase tracking-widest text-xs">OUR SERVICES</span>
+              <h2 className="mt-1 font-display text-3xl font-extrabold uppercase tracking-tight text-foreground sm:text-4xl">
+                Serving Key Industries
+              </h2>
+            </div>
+
+            {/* Industry Selector Cards */}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              {keyIndustries.map((ind) => (
+                <div
+                  key={ind.id}
+                  onClick={() => setActiveIndustry(ind)}
+                  className={`cursor-pointer rounded-2xl border p-5 text-center transition-all ${
+                    activeIndustry.id === ind.id
+                      ? "border-primary bg-primary text-primary-foreground shadow-xl scale-105"
+                      : "border-border bg-card text-card-foreground hover:border-accent/40"
+                  }`}
+                >
+                  <div className="font-display text-sm font-bold uppercase">{ind.title}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Selected Industry Detail Card */}
+            <div className="mt-8 rounded-2xl border border-border bg-card p-8 shadow-lg">
+              <div className="grid gap-8 lg:grid-cols-12 items-center">
+                <div className="lg:col-span-7">
+                  <span className="text-xs font-bold uppercase tracking-wider text-accent">Industry Solution</span>
+                  <h3 className="mt-1 font-display text-2xl font-bold uppercase text-foreground">
+                    {activeIndustry.title}
+                  </h3>
+                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                    {activeIndustry.desc}
+                  </p>
+                  <button
+                    onClick={() => openQuote(activeIndustry.title, "")}
+                    className="mt-6 inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-accent-foreground hover:bg-accent/90"
+                  >
+                    Inquire Solution <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
+                <div className="lg:col-span-5 flex justify-center">
+                  <img
+                    src={activeIndustry.image}
+                    alt={activeIndustry.title}
+                    className="h-48 w-full object-contain rounded-xl bg-white p-4 border border-border"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Client Reviews & Testimonials Carousel */}
+        <section className="py-16 bg-surface border-t border-border">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <span className="eyebrow text-accent font-bold uppercase tracking-widest text-xs">Testimonials</span>
+              <h2 className="mt-1 font-display text-3xl font-extrabold uppercase tracking-tight text-foreground">
+                What Our Clients Say
               </h2>
             </div>
 
             <div className="grid gap-6 md:grid-cols-3">
-              {testimonials.map((t, idx) => (
-                <div key={idx} className="glass-card rounded-2xl p-6 border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/60 flex flex-col justify-between">
+              {reviews.map((rev, idx) => (
+                <div key={idx} className="rounded-2xl border border-border bg-card p-6 shadow-sm flex flex-col justify-between">
                   <div>
-                    <div className="flex items-center gap-1 text-amber-500 mb-4">
-                      {[...Array(t.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-amber-500" />
+                    <div className="flex text-amber-500 mb-3">
+                      {[...Array(rev.stars)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-current" />
                       ))}
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic mb-6">"{t.comment}"</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed italic">"{rev.quote}"</p>
                   </div>
-
-                  <div className="border-t border-slate-200 dark:border-slate-800 pt-4 flex items-center justify-between">
-                    <div>
-                      <span className="block text-xs font-bold text-slate-900 dark:text-white">{t.name}</span>
-                      <span className="block text-[10px] text-sky-600 dark:text-cyan-400">{t.role} — {t.company}</span>
-                    </div>
-                    <User className="h-7 w-7 rounded-full bg-slate-200 dark:bg-slate-800 p-1.5 text-slate-600 dark:text-slate-400" />
+                  <div className="mt-6 pt-4 border-t border-border/50">
+                    <div className="font-display text-sm font-bold uppercase text-foreground">{rev.author}</div>
+                    <div className="text-[11px] text-accent font-semibold">{rev.company}</div>
                   </div>
                 </div>
               ))}
@@ -546,108 +506,26 @@ function Index() {
           </div>
         </section>
 
-
-        {/* ========================================================================= */}
-        {/* DIRECT QUOTE FORM SECTION                                                 */}
-        {/* ========================================================================= */}
-        <section className="py-20 bg-slate-50 dark:bg-slate-950 border-b border-border relative overflow-hidden">
-          <div className="relative mx-auto max-w-4xl px-6">
-            <div className="glass-card rounded-3xl p-8 sm:p-12 border border-slate-200 dark:border-cyan-500/30 bg-white dark:bg-slate-900 shadow-xl">
-              <div className="text-center max-w-xl mx-auto mb-8">
-                <span className="eyebrow">Direct Sales Desk</span>
-                <h2 className="mt-2 section-title text-3xl text-slate-900 dark:text-white">
-                  Request Official Price & Delivery Quote
-                </h2>
-                <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
-                  Get instant availability and pricing directly from Concept Automation Technologies in Makarba, Ahmedabad.
-                </p>
-              </div>
-
-              {formSubmitted ? (
-                <div className="rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 p-8 text-center border border-emerald-200 dark:border-emerald-500/30">
-                  <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-600 dark:text-emerald-400 mb-3" />
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">Quote Request Received!</h3>
-                  <p className="mt-2 text-xs text-slate-600 dark:text-slate-300">
-                    Our sales desk will email/call you with official pricing and dispatch details shortly.
-                  </p>
-                  <button
-                    onClick={() => setFormSubmitted(false)}
-                    className="mt-6 rounded-xl bg-emerald-600 text-white px-6 py-2.5 font-display text-xs font-bold uppercase"
-                  >
-                    Submit Another Inquiry
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleQuickSubmit} className="space-y-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Your Name *</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. Mr. Rajesh Patel"
-                        value={quickForm.name}
-                        onChange={(e) => setQuickForm({ ...quickForm, name: e.target.value })}
-                        className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Phone / WhatsApp *</label>
-                      <input
-                        type="tel"
-                        required
-                        placeholder="e.g. +91 98980 12345"
-                        value={quickForm.phone}
-                        onChange={(e) => setQuickForm({ ...quickForm, phone: e.target.value })}
-                        className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Work Email *</label>
-                      <input
-                        type="email"
-                        required
-                        placeholder="e.g. rajesh@company.com"
-                        value={quickForm.email}
-                        onChange={(e) => setQuickForm({ ...quickForm, email: e.target.value })}
-                        className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Part Number / Required Model</label>
-                      <input
-                        type="text"
-                        placeholder="e.g. 6ES7214-1AG40-0XB0, FR-CS84..."
-                        value={quickForm.part}
-                        onChange={(e) => setQuickForm({ ...quickForm, part: e.target.value })}
-                        className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Message / Requirements</label>
-                    <textarea
-                      rows={3}
-                      placeholder="Specify required quantity, location, or urgency..."
-                      value={quickForm.message}
-                      onChange={(e) => setQuickForm({ ...quickForm, message: e.target.value })}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={formLoading}
-                    className="w-full rounded-xl bg-sky-600 dark:bg-gradient-to-r dark:from-cyan-500 dark:via-blue-600 dark:to-indigo-600 py-4 font-display text-sm font-extrabold uppercase tracking-wider text-white dark:text-slate-950 shadow-lg hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50"
-                  >
-                    {formLoading ? "Sending Quote Request..." : "Submit Quote Request"}
-                  </button>
-                </form>
-              )}
+        {/* Call to Action Banner (Naksh 1:1) */}
+        <section className="border-t border-border bg-ink py-16 text-ink-foreground">
+          <div className="mx-auto max-w-7xl px-6 text-center">
+            <span className="text-xs font-bold uppercase tracking-widest text-accent">Looking for reliable Automation Solutions?</span>
+            <h2 className="mt-2 font-display text-3xl font-extrabold uppercase tracking-tight text-white md:text-4xl">
+              Get Instant Part Pricing & Engineering Assistance
+            </h2>
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <button
+                onClick={() => openQuote("General Inquiry", "")}
+                className="inline-flex items-center gap-2 rounded-lg bg-accent px-8 py-3.5 font-display text-xs font-bold uppercase tracking-wider text-accent-foreground shadow-lg hover:bg-accent/90 transition-all"
+              >
+                Get In Touch
+              </button>
+              <a
+                href={`tel:${company.phoneRaw}`}
+                className="inline-flex items-center gap-2 rounded-lg border border-white/30 bg-white/5 px-8 py-3.5 font-display text-xs font-bold uppercase tracking-wider text-white hover:bg-white/10 transition-colors"
+              >
+                Call {company.phone}
+              </a>
             </div>
           </div>
         </section>
@@ -658,7 +536,8 @@ function Index() {
       <InquiryModal
         isOpen={inquiryModalOpen}
         onClose={() => setInquiryModalOpen(false)}
-        productName={inquiryProduct}
+        productName={modalProduct.name}
+        partNumber={modalProduct.part}
       />
     </div>
   );

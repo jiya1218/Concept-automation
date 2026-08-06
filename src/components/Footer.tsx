@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Phone, MapPin, User, Mail, Send, CheckCircle2, MessageSquare, ExternalLink, ArrowRight, ShieldCheck } from "lucide-react";
+import { Phone, MapPin, User, Mail, Send, CheckCircle2, MessageSquare, ExternalLink, ArrowRight } from "lucide-react";
 import { company, brands } from "@/data/catalog";
 import { subscribeNewsletter } from "@/lib/supabase";
 import { toast } from "sonner";
@@ -39,23 +39,22 @@ export function Footer() {
 
   return (
     <>
-      <footer className="mt-24 bg-slate-900 text-slate-200 dark:bg-slate-950 dark:text-slate-300 border-t border-slate-800 transition-colors">
-        {/* Sleek Cyan/Blue Top Bar */}
-        <div className="h-1 w-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600" />
+      <footer className="mt-24 bg-ink text-ink-foreground border-t border-border">
+        <div className="accent-bar h-1 w-full bg-accent" />
 
         {/* Newsletter Banner */}
-        <div className="border-b border-slate-800 bg-slate-950/60 py-8">
-          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 md:flex-row">
+        <div className="border-b border-white/10 bg-white/5">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 md:flex-row">
             <div>
               <h3 className="font-display text-lg font-bold uppercase tracking-wider text-white">
                 Subscribe for OEM Stock & Price Updates
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-white/70">
                 Get monthly stock availability reports for Siemens, Mitsubishi, Omron, P+F & Allen Bradley.
               </p>
             </div>
             {subscribed ? (
-              <div className="flex items-center gap-2 rounded-xl bg-emerald-500/20 px-4 py-2 text-xs font-semibold text-emerald-400 border border-emerald-500/30">
+              <div className="flex items-center gap-2 rounded-md bg-emerald-500/20 px-4 py-2 text-xs font-semibold text-emerald-400 border border-emerald-500/30">
                 <CheckCircle2 className="h-4 w-4" /> Thank you for subscribing!
               </div>
             ) : (
@@ -66,11 +65,11 @@ export function Footer() {
                   placeholder="Enter work email..."
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-900 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+                  className="w-full rounded-md border border-white/20 bg-black/40 px-3.5 py-2 text-xs text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-accent"
                 />
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-1.5 shrink-0 rounded-xl bg-cyan-500 px-5 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-slate-950 hover:bg-cyan-400 transition-colors shadow-md"
+                  className="inline-flex items-center gap-1 shrink-0 rounded-md bg-accent px-4 py-2 font-display text-xs font-bold uppercase tracking-wider text-accent-foreground hover:bg-accent/90"
                 >
                   <Send className="h-3.5 w-3.5" /> Join
                 </button>
@@ -82,32 +81,26 @@ export function Footer() {
         {/* Footer Navigation Columns */}
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-2 lg:grid-cols-5">
           {/* Col 1: Brand Info */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-4">
-              <img
-                src="/logo.jpg"
-                alt="Concept Automation Technologies logo"
-                className="h-16 w-16 sm:h-20 sm:w-20 rounded-2xl object-contain bg-white p-1.5 border border-slate-200 dark:border-slate-800 shadow-lg"
-                width={80}
-                height={80}
-              />
-              <span className="font-display text-lg sm:text-xl font-extrabold uppercase leading-tight text-white">
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded bg-accent flex items-center justify-center font-display font-black text-accent-foreground text-lg">
+                CAT
+              </div>
+              <span className="font-display text-base font-bold uppercase leading-tight text-white">
                 Concept Automation
                 <br />
                 Technologies
               </span>
             </div>
-            <p className="text-xs leading-relaxed text-slate-400">
+            <p className="mt-4 text-xs leading-relaxed text-white/75">
               Importer, exporter, trader and supplier of factory automation products — PLC, HMI, VFD, DC drives, servo systems and industrial sensors in Ahmedabad.
             </p>
-            <p className="text-xs uppercase tracking-widest text-cyan-400 font-bold flex items-center gap-1.5 font-mono">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" /> GST: {company.gst}
-            </p>
+            <p className="mt-4 text-xs uppercase tracking-widest text-accent font-semibold">GST: {company.gst}</p>
             
-            <div className="flex flex-wrap gap-2.5 pt-1">
+            <div className="mt-4 flex flex-wrap gap-2">
               <button
                 onClick={() => setInquiryOpen(true)}
-                className="inline-flex items-center gap-2 rounded-xl bg-cyan-500/10 px-4 py-2 text-xs font-bold uppercase tracking-wider text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500 hover:text-slate-950 transition-all"
+                className="inline-flex items-center gap-2 rounded bg-accent/20 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-accent border border-accent/40 hover:bg-accent hover:text-accent-foreground transition-all"
               >
                 <MessageSquare className="h-3.5 w-3.5" /> Direct Inquiry
               </button>
@@ -115,54 +108,54 @@ export function Footer() {
                 href={`https://wa.me/${company.whatsapp.replace(/[^0-9]/g, "")}?text=Hello%20Concept%20Automation%20team,%20I%20need%20a%20price%20quotation.`}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-500/10 px-4 py-2 text-xs font-bold uppercase tracking-wider text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500 hover:text-white transition-all"
+                className="inline-flex items-center gap-1.5 rounded bg-emerald-500/20 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500 hover:text-white transition-all"
               >
                 WhatsApp Us
               </a>
             </div>
           </div>
 
-          {/* Col 2: Quick Navigation */}
+          {/* Col 2: Quick Links */}
           <div>
-            <h3 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-cyan-400">
+            <h3 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-accent">
               Quick Navigation
             </h3>
-            <ul className="mt-4 space-y-2.5 text-xs text-slate-400">
+            <ul className="mt-4 space-y-2.5 text-xs text-white/80">
               <li>
-                <Link to="/" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="h-3 w-3 text-cyan-500/60" /> Home Page
+                <Link to="/" className="hover:text-accent transition-colors flex items-center gap-1.5">
+                  <ArrowRight className="h-3 w-3 text-accent/60" /> Home Page
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="h-3 w-3 text-cyan-500/60" /> Company Profile
+                <Link to="/about" className="hover:text-accent transition-colors flex items-center gap-1.5">
+                  <ArrowRight className="h-3 w-3 text-accent/60" /> Company Profile
                 </Link>
               </li>
               <li>
-                <Link to="/products" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="h-3 w-3 text-cyan-500/60" /> Complete Catalog
+                <Link to="/products" className="hover:text-accent transition-colors flex items-center gap-1.5">
+                  <ArrowRight className="h-3 w-3 text-accent/60" /> Complete Catalog
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                  <ArrowRight className="h-3 w-3 text-cyan-500/60" /> Contact & Location
+                <Link to="/contact" className="hover:text-accent transition-colors flex items-center gap-1.5">
+                  <ArrowRight className="h-3 w-3 text-accent/60" /> Contact & Location
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Col 3: Popular Hardware */}
+          {/* Col 3: Popular Categories */}
           <div>
-            <h3 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-cyan-400">
+            <h3 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-accent">
               Popular Hardware
             </h3>
-            <ul className="mt-4 space-y-2 text-xs text-slate-400">
+            <ul className="mt-4 space-y-2 text-xs text-white/80">
               {POPULAR_CATEGORIES.map((cat) => (
                 <li key={cat.name}>
                   <Link
                     to="/products"
                     search={{ q: cat.query }}
-                    className="hover:text-cyan-400 transition-colors block text-[11px]"
+                    className="hover:text-accent transition-colors block text-[11px]"
                   >
                     {cat.name}
                   </Link>
@@ -171,9 +164,9 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 4: OEM Brands & Headquarters */}
+          {/* Col 4: Core Brands & Contact */}
           <div>
-            <h3 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-cyan-400">
+            <h3 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-accent">
               OEM Brands
             </h3>
             <div className="mt-3 flex flex-wrap gap-1.5 text-xs">
@@ -182,50 +175,50 @@ export function Footer() {
                   key={brand}
                   to="/products"
                   search={{ q: brand }}
-                  className="rounded-lg bg-slate-800/80 px-2 py-1 text-[11px] text-slate-300 hover:bg-cyan-500 hover:text-slate-950 transition-colors"
+                  className="rounded bg-white/10 px-2 py-1 text-[11px] text-white/90 hover:bg-accent hover:text-accent-foreground transition-colors"
                 >
                   {brand}
                 </Link>
               ))}
             </div>
 
-            <h3 className="mt-6 font-display text-xs font-bold uppercase tracking-[0.2em] text-cyan-400">
+            <h3 className="mt-6 font-display text-xs font-bold uppercase tracking-[0.2em] text-accent">
               Headquarters
             </h3>
-            <ul className="mt-3 space-y-2 text-xs text-slate-400">
+            <ul className="mt-3 space-y-2.5 text-xs text-white/80">
               <li className="flex items-start gap-2">
-                <MapPin className="h-3.5 w-3.5 shrink-0 text-cyan-400 mt-0.5" />
+                <MapPin className="h-3.5 w-3.5 shrink-0 text-accent mt-0.5" />
                 <a
                   href="https://maps.google.com/?q=Titanium+Business+Park+Makarba+Ahmedabad"
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:text-cyan-400 leading-snug transition-colors flex items-center gap-1"
+                  className="hover:text-accent leading-snug transition-colors flex items-center gap-1"
                 >
                   <span>Makarba, Ahmedabad</span>
-                  <ExternalLink className="h-2.5 w-2.5 text-slate-500" />
+                  <ExternalLink className="h-2.5 w-2.5 text-white/40" />
                 </a>
               </li>
               <li className="flex items-center gap-2">
-                <Phone className="h-3.5 w-3.5 shrink-0 text-cyan-400" />
-                <a href={`tel:${company.phoneRaw}`} className="hover:text-cyan-400 font-mono text-[11px]">
+                <Phone className="h-3.5 w-3.5 shrink-0 text-accent" />
+                <a href={`tel:${company.phoneRaw}`} className="hover:text-accent font-mono text-[11px]">
                   {company.phone}
                 </a>
               </li>
               <li className="flex items-center gap-2">
-                <Mail className="h-3.5 w-3.5 shrink-0 text-cyan-400" />
-                <a href={`mailto:${company.email}`} className="hover:text-cyan-400 font-mono text-[11px]">
+                <Mail className="h-3.5 w-3.5 shrink-0 text-accent" />
+                <a href={`mailto:${company.email}`} className="hover:text-accent font-mono text-[11px]">
                   {company.email}
                 </a>
               </li>
-              <li className="flex items-center gap-2 text-[11px] text-slate-400">
-                <User className="h-3.5 w-3.5 shrink-0 text-cyan-400" />
+              <li className="flex items-center gap-2 text-[11px] text-white/60">
+                <User className="h-3.5 w-3.5 shrink-0 text-accent" />
                 <span>{company.proprietor}</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-slate-800 bg-slate-950 py-4 text-center text-xs text-slate-500">
+        <div className="border-t border-white/10 bg-black/40 py-4 text-center text-xs text-white/60">
           <p>© {new Date().getFullYear()} Concept Automation Technologies. All rights reserved.</p>
         </div>
       </footer>

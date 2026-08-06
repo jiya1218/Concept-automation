@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, CheckCircle2, ShieldCheck, Truck, Globe, MessageSquare, Phone, Send, Check, Sparkles, Award } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ShieldCheck, Truck, Globe, MessageSquare, Phone, Send, Check } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
@@ -60,13 +60,13 @@ function ProductDetailPage() {
     return getSvgDataUrl(title, brand);
   };
   const description = product ? product.description : (category ? `${category.name} supplied by Concept Automation Technologies Makarba, Ahmedabad. Fast Pan-India dispatch.` : "Original OEM factory automation hardware.");
-  const availability = product?.stock !== false ? "In Stock - Ready to Dispatch" : "Available on Order";
-  const warranty = "12 Months Official Warranty";
+  const availability = product?.stock !== false ? "In Stock" : "Available on Order";
+  const warranty = "1 Year OEM Warranty";
   const origin = "Germany / Japan";
   const specs = product?.specifications || [
     { label: "Category", value: category?.name || "Automation Hardware" },
     { label: "Brand", value: category?.brand || brand || "Genuine OEM" },
-    { label: "Dispatch Location", value: "Makarba, Ahmedabad, Gujarat" },
+    { label: "Location", value: "Makarba, Ahmedabad, Gujarat" },
     { label: "Warranty", value: "1 Year Official Warranty" },
   ];
 
@@ -98,47 +98,45 @@ function ProductDetailPage() {
     if (res.success) {
       setSubmitted(true);
       toast.success("Inquiry Submitted Successfully!", {
-        description: "Our engineering desk in Makarba, Ahmedabad will send you an official quotation shortly.",
+        description: "Our engineering team will send you an official quotation shortly.",
       });
     }
   };
 
-  const related = allProducts.filter((p) => p.brand.toLowerCase() === brand.toLowerCase() && p.name !== title).slice(0, 4);
+  const related = allProducts.filter((p) => p.brand === brand && p.name !== title).slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <main>
-        {/* Breadcrumb Bar */}
-        <section className="border-b border-border bg-slate-50 dark:bg-slate-950 py-4">
+        {/* Breadcrumb Header */}
+        <section className="border-b border-border bg-card py-6">
           <div className="mx-auto max-w-7xl px-6 flex items-center justify-between">
             <Link
               to="/products"
-              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-cyan-400 hover:underline"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-accent"
             >
-              <ArrowLeft className="h-4 w-4" /> Back to Products Catalog
+              <ArrowLeft className="h-4 w-4" /> Back to Catalog
             </Link>
-            <span className="text-xs text-slate-600 dark:text-slate-400 font-semibold">
-              Manufacturer: <span className="text-slate-900 dark:text-white font-bold">{brand}</span>
+            <span className="text-xs text-muted-foreground font-semibold">
+              Category: <span className="text-accent">{brand}</span>
             </span>
           </div>
         </section>
 
-        {/* Product Details Workspace */}
+        {/* Product Details & Specs */}
         <section className="mx-auto max-w-7xl px-6 py-12">
           <div className="grid gap-12 lg:grid-cols-2">
-            
-            {/* Left: Product Image Box */}
+            {/* Image Preview & Key Badges */}
             <div>
-              <div className="glass-card relative aspect-square overflow-hidden rounded-3xl p-8 border border-slate-200 dark:border-slate-800 flex items-center justify-center bg-white dark:bg-slate-900 shadow-lg">
-                <span className="absolute left-4 top-4 z-10 rounded-full bg-sky-100 dark:bg-cyan-500/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-sky-800 dark:text-cyan-400 border border-sky-300 dark:border-cyan-500/40">
+              <div className="relative aspect-square overflow-hidden rounded-xl border border-border bg-white p-8 dark:bg-black/20 shadow-md">
+                <span className="absolute left-4 top-4 z-10 rounded bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wider text-accent-foreground">
                   {brand}
                 </span>
-                <span className="absolute right-4 top-4 z-10 flex items-center gap-1.5 rounded-full bg-emerald-100 dark:bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-800 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-500/40">
+                <span className="absolute right-4 top-4 z-10 flex items-center gap-1.5 rounded bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                   <Check className="h-3.5 w-3.5" /> {availability}
                 </span>
-
                 <img
                   src={getImageSrc()}
                   alt={title}
@@ -146,89 +144,90 @@ function ProductDetailPage() {
                   onError={() => {
                     setErrorCount((prev) => prev + 1);
                   }}
-                  className="h-full w-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-500 hover:scale-105"
+                  className="h-full w-full object-contain"
                 />
               </div>
 
-              {/* Trust Badges */}
+              {/* Trust Cards */}
               <div className="mt-6 grid grid-cols-3 gap-3">
-                <div className="glass-card rounded-2xl p-4 text-center border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-                  <ShieldCheck className="mx-auto h-5 w-5 text-sky-600 dark:text-cyan-400 mb-1" />
-                  <div className="text-[11px] font-bold text-slate-900 dark:text-slate-200">{warranty}</div>
+                <div className="rounded-lg border border-border bg-card p-3 text-center">
+                  <ShieldCheck className="mx-auto h-5 w-5 text-accent" />
+                  <div className="mt-1 text-[11px] font-bold text-foreground">{warranty}</div>
                 </div>
-                <div className="glass-card rounded-2xl p-4 text-center border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-                  <Globe className="mx-auto h-5 w-5 text-sky-600 dark:text-cyan-400 mb-1" />
-                  <div className="text-[11px] font-bold text-slate-900 dark:text-slate-200">Origin: {origin}</div>
+                <div className="rounded-lg border border-border bg-card p-3 text-center">
+                  <Globe className="mx-auto h-5 w-5 text-accent" />
+                  <div className="mt-1 text-[11px] font-bold text-foreground">Origin: {origin}</div>
                 </div>
-                <div className="glass-card rounded-2xl p-4 text-center border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-                  <Truck className="mx-auto h-5 w-5 text-emerald-500 mb-1" />
-                  <div className="text-[11px] font-bold text-slate-900 dark:text-slate-200">Express Dispatch</div>
+                <div className="rounded-lg border border-border bg-card p-3 text-center">
+                  <Truck className="mx-auto h-5 w-5 text-accent" />
+                  <div className="mt-1 text-[11px] font-bold text-foreground">Express Dispatch</div>
                 </div>
               </div>
             </div>
 
-            {/* Right: Technical Specs & Inquiry Form */}
-            <div className="space-y-6">
-              <div>
-                <span className="eyebrow">{brand} Industrial Automation</span>
-                <h1 className="mt-2 font-display text-3xl font-extrabold uppercase text-slate-900 dark:text-white sm:text-4xl">
-                  {title}
-                </h1>
+            {/* Overview, Technical Specs & Inquiry Form */}
+            <div>
+              <span className="eyebrow text-accent font-bold uppercase tracking-widest text-xs">{brand} Industrial Automation</span>
+              <h1 className="mt-1 font-display text-3xl font-extrabold uppercase tracking-tight text-foreground sm:text-4xl">
+                {title}
+              </h1>
 
-                {partNumber && (
-                  <div className="mt-2 text-sm font-mono text-slate-600 dark:text-slate-400">
-                    OEM Part Number: <strong className="text-sky-600 dark:text-cyan-400">{partNumber}</strong>
-                  </div>
-                )}
-
-                <p className="mt-4 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-                  {description}
-                </p>
-              </div>
-
-              {/* Specs Table */}
-              <div className="glass-card rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
-                <div className="bg-slate-100 dark:bg-slate-900/80 px-5 py-3 border-b border-slate-200 dark:border-slate-800 font-display text-xs font-bold uppercase tracking-wider text-sky-700 dark:text-cyan-400 flex items-center gap-2">
-                  <Sparkles className="h-3.5 w-3.5" /> Technical Specifications
+              {partNumber && (
+                <div className="mt-2 text-sm font-mono text-muted-foreground">
+                  OEM Part Number: <strong className="text-accent">{partNumber}</strong>
                 </div>
-                <table className="w-full text-left text-xs">
-                  <tbody>
-                    {specs.map((item, idx) => (
-                      <tr key={idx} className={idx % 2 === 0 ? "bg-slate-50/50 dark:bg-slate-900/40" : "bg-white dark:bg-slate-900/80"}>
-                        <td className="px-5 py-3 font-semibold text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800/40 w-1/3">
-                          {item.label}
-                        </td>
-                        <td className="px-5 py-3 font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800/40">
-                          {item.value}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              )}
+
+              <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+                {description}
+              </p>
+
+              {/* Technical Specifications Table */}
+              <div className="mt-6">
+                <h3 className="font-display text-sm font-bold uppercase tracking-wider text-foreground mb-3 border-b border-border pb-2">
+                  Technical Specifications
+                </h3>
+                <div className="overflow-hidden rounded-lg border border-border bg-card">
+                  <table className="w-full text-left text-xs">
+                    <tbody>
+                      {specs.map((item, idx) => (
+                        <tr key={idx} className={idx % 2 === 0 ? "bg-background/40" : "bg-card"}>
+                          <td className="px-4 py-2.5 font-semibold text-muted-foreground border-r border-border/50 w-1/3">
+                            {item.label}
+                          </td>
+                          <td className="px-4 py-2.5 font-medium text-foreground">{item.value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
-              {/* Embedded Price Quote Form */}
-              <div className="glass-card rounded-2xl p-6 border border-orange-200 dark:border-orange-500/30 bg-orange-50/40 dark:bg-slate-900 shadow-sm">
-                <h3 className="font-display text-base font-bold uppercase text-slate-900 dark:text-white flex items-center gap-2">
-                  <MessageSquare className="h-4 w-4 text-orange-500" /> Get Official Price & Delivery Quote
+              {/* Inline Quotation Form */}
+              <div className="mt-8 rounded-xl border border-accent/30 bg-accent/5 p-6">
+                <h3 className="font-display text-lg font-bold uppercase tracking-wide text-foreground">
+                  Get Official Price & Delivery Quotation
                 </h3>
-                <p className="mt-1 text-xs text-slate-600 dark:text-slate-400 mb-4">Direct response from Concept Automation Technologies sales desk.</p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Direct response from Concept Automation Technologies sales desk.
+                </p>
 
                 {submitted ? (
-                  <div className="rounded-xl bg-emerald-100 dark:bg-emerald-500/20 p-4 text-center border border-emerald-300 dark:border-emerald-500/40 text-emerald-800 dark:text-emerald-400 text-xs font-bold">
-                    <CheckCircle2 className="mx-auto h-6 w-6 mb-1 text-emerald-600" />
-                    Quote request submitted for {title}! We will email/call you shortly.
+                  <div className="mt-4 rounded-lg bg-emerald-500/10 p-4 text-center border border-emerald-500/20">
+                    <CheckCircle2 className="mx-auto h-8 w-8 text-emerald-500" />
+                    <div className="mt-2 text-sm font-bold text-foreground">Quotation Request Received!</div>
+                    <p className="text-xs text-muted-foreground">We will email and call you shortly.</p>
                   </div>
                 ) : (
-                  <form onSubmit={handleInquirySubmit} className="space-y-3">
-                    <div className="grid gap-3 sm:grid-cols-2">
+                  <form onSubmit={handleInquirySubmit} className="mt-4 space-y-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <input
                         type="text"
                         required
                         placeholder="Your Name *"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3.5 py-2.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
+                        className="rounded border border-input bg-background px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
                       />
                       <input
                         type="tel"
@@ -236,18 +235,17 @@ function ProductDetailPage() {
                         placeholder="Phone / WhatsApp *"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3.5 py-2.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
+                        className="rounded border border-input bg-background px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
                       />
                     </div>
-                    
-                    <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <input
                         type="email"
                         required
                         placeholder="Work Email *"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3.5 py-2.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
+                        className="rounded border border-input bg-background px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
                       />
                       <input
                         type="number"
@@ -255,40 +253,46 @@ function ProductDetailPage() {
                         placeholder="Quantity Required"
                         value={formData.quantity}
                         onChange={(e) => setFormData({ ...formData, quantity: parseInt(e.target.value) || 1 })}
-                        className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3.5 py-2.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 dark:focus:border-cyan-500 focus:outline-none"
+                        className="rounded border border-input bg-background px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
                       />
                     </div>
-
+                    <textarea
+                      rows={2}
+                      placeholder="Delivery City / Additional Notes..."
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="w-full rounded border border-input bg-background px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+                    />
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full rounded-xl bg-orange-500 dark:bg-gradient-to-r dark:from-orange-500 dark:to-amber-500 py-3 font-display text-xs font-extrabold uppercase tracking-wider text-white dark:text-slate-950 shadow-md hover:bg-orange-600 transition-all disabled:opacity-50"
+                      className="w-full flex items-center justify-center gap-2 rounded bg-accent px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-accent-foreground hover:bg-accent/90 transition-colors disabled:opacity-50"
                     >
-                      {loading ? "Submitting Inquiry..." : "Submit Price Quote Request"}
+                      {loading ? "Submitting..." : <><Send className="h-3.5 w-3.5" /> Submit Official Inquiry</>}
                     </button>
                   </form>
                 )}
               </div>
-
             </div>
           </div>
+        </section>
 
-          {/* Related Brand Products */}
-          {related.length > 0 && (
-            <div className="mt-16 border-t border-border pt-12">
-              <span className="eyebrow text-xs">More {brand} Stock</span>
-              <h2 className="mt-1 font-display text-2xl font-bold uppercase text-slate-900 dark:text-white mb-6">
-                Related {brand} Products
+        {/* Related Products */}
+        {related.length > 0 && (
+          <section className="border-t border-border bg-surface py-12">
+            <div className="mx-auto max-w-7xl px-6">
+              <span className="eyebrow text-accent font-bold uppercase tracking-widest text-xs">Similar Automation Parts</span>
+              <h2 className="mt-1 font-display text-2xl font-bold uppercase text-foreground">
+                More {brand} Stock Items
               </h2>
-
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {related.map((p) => (
-                  <ProductCard key={p.id} product={p} />
+              <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {related.map((item) => (
+                  <ProductCard key={item.id} product={item} />
                 ))}
               </div>
             </div>
-          )}
-        </section>
+          </section>
+        )}
       </main>
 
       <Footer />
