@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { CheckCircle2, MessageSquare, ShieldCheck, Award, Building, Warehouse } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { CheckCircle2, ArrowRight, ShieldCheck, Award, Building, Warehouse, Globe2, MessageSquare } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { brands, company } from "@/data/catalog";
@@ -24,48 +24,48 @@ function About() {
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A]">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <main>
         {/* Banner */}
-        <section className="border-b border-slate-800 bg-[#0F172A] text-white py-12 sm:py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <span className="text-xs font-extrabold uppercase tracking-widest text-sky-400">About Concept Automation</span>
-            <h1 className="mt-2 font-display text-3xl sm:text-5xl font-extrabold uppercase tracking-tight text-white">
+        <section className="border-b border-border bg-ink text-ink-foreground py-14">
+          <div className="mx-auto max-w-7xl px-6">
+            <span className="eyebrow text-accent font-bold uppercase tracking-widest text-xs">About Concept Automation</span>
+            <h1 className="mt-2 font-display text-4xl font-extrabold uppercase tracking-tight text-white sm:text-5xl">
               Company Profile & Capability
             </h1>
-            <p className="mt-3 max-w-2xl text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+            <p className="mt-3 max-w-2xl text-sm text-white/80 leading-relaxed">
               Importer, exporter, stockist and supplier of premium factory automation products in Ahmedabad, Gujarat.
             </p>
           </div>
         </section>
 
-        <section className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:grid-cols-3">
+        <section className="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-8">
             <div>
-              <h2 className="font-display text-xl sm:text-2xl font-extrabold uppercase tracking-tight text-slate-900">
+              <h2 className="font-display text-2xl font-bold uppercase tracking-wide text-foreground">
                 Who We Are
               </h2>
-              <p className="mt-4 leading-relaxed text-xs sm:text-sm text-slate-600">
-                Concept Automation Technologies is a premier importer, exporter, trader, and stockist of high-grade factory automation hardware. Under the leadership of <strong className="text-slate-900">{company.owner}</strong> ({company.role}), our company has grown to become a cornerstone in the global industrial control supply chain.
+              <p className="mt-4 leading-relaxed text-xs text-muted-foreground">
+                Concept Automation Technologies is a premier importer, exporter, trader, and stockist of high-grade factory automation hardware. Under the leadership of <strong className="text-foreground">{company.owner}</strong> ({company.role}), our company has grown to become a cornerstone in the global industrial control supply chain.
               </p>
-              <p className="mt-3 leading-relaxed text-xs sm:text-sm text-slate-600">
-                We specialize in supplying programmable logic controllers (PLCs), human-machine interfaces (HMIs), variable frequency drives (VFDs), DC drives, servo positioning systems, and industrial sensors from the world's most trusted OEMs: <strong className="text-slate-900">Siemens, Mitsubishi, Allen Bradley, Omron, Delta, Schneider, Fuji, Proface, Danfoss, and Pepperl+Fuchs</strong>.
+              <p className="mt-3 leading-relaxed text-xs text-muted-foreground">
+                We specialize in supplying programmable logic controllers (PLCs), human-machine interfaces (HMIs), variable frequency drives (VFDs), DC drives, servo positioning systems, and industrial sensors from the world's most trusted OEMs: <strong className="text-foreground">Siemens, Mitsubishi, Allen Bradley, Omron, Delta, Schneider, Fuji, Proface, Danfoss, and Pepperl+Fuchs</strong>.
               </p>
             </div>
 
             <div>
-              <h2 className="font-display text-xl sm:text-2xl font-extrabold uppercase tracking-tight text-slate-900">
+              <h2 className="font-display text-2xl font-bold uppercase tracking-wide text-foreground">
                 Our Infrastructure & Warehouse
               </h2>
-              <p className="mt-4 leading-relaxed text-xs sm:text-sm text-slate-600">
-                Located at Titanium Business Park in Makarba, Ahmedabad, our modern facility houses an extensive inventory of critical components. This enables us to maintain fast turnaround times, fulfilling urgent breakdown requirements for manufacturing units across pharmaceutical, textile, packaging, machine tools, plastic, and food & beverage industries.
+              <p className="mt-4 leading-relaxed text-xs text-muted-foreground">
+                Located at Titanium Business Park in Makarba, Ahmedabad, our modern facility houses a extensive inventory of critical components. This enables us to maintain fast turnaround times, fulfilling urgent breakdown requirements for manufacturing units across pharmaceutical, textile, packaging, machine tools, plastic, and food & beverage industries.
               </p>
             </div>
 
             <div>
-              <h2 className="font-display text-xl sm:text-2xl font-extrabold uppercase tracking-tight text-slate-900">
+              <h2 className="font-display text-2xl font-bold uppercase tracking-wide text-foreground">
                 Key Competitive Pillars
               </h2>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -75,11 +75,11 @@ function About() {
                   { title: "Technical Expertise", text: "In-house engineering guidance for product selection and parameter setup." },
                   { title: "Global Export Network", text: "Seamless shipping across India, Middle East, Southeast Asia, and globally." },
                 ].map((item) => (
-                  <div key={item.title} className="industrial-card rounded-2xl p-5 bg-white">
-                    <div className="flex items-center gap-2 font-display text-xs sm:text-sm font-bold uppercase text-slate-900">
-                      <CheckCircle2 className="h-4 w-4 text-sky-700" /> {item.title}
+                  <div key={item.title} className="rounded-lg border border-border bg-card p-4">
+                    <div className="flex items-center gap-2 font-display text-sm font-bold uppercase text-foreground">
+                      <CheckCircle2 className="h-4 w-4 text-accent" /> {item.title}
                     </div>
-                    <p className="mt-2 text-xs text-slate-500">{item.text}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{item.text}</p>
                   </div>
                 ))}
               </div>
@@ -88,48 +88,48 @@ function About() {
 
           {/* Business Info Sidebar */}
           <aside className="space-y-6">
-            <div className="industrial-card rounded-2xl p-6 bg-white shadow-sm">
-              <h3 className="font-display text-sm font-extrabold uppercase tracking-wider text-slate-900 border-b border-slate-100 pb-3">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+              <h3 className="font-display text-base font-bold uppercase tracking-wide text-foreground border-b border-border pb-3">
                 Corporate Credentials
               </h3>
               <dl className="mt-4 space-y-3 text-xs">
                 <div>
-                  <dt className="text-slate-500 font-semibold">Business Name</dt>
-                  <dd className="font-bold text-slate-900 mt-0.5">{company.name}</dd>
+                  <dt className="text-muted-foreground font-semibold">Business Name</dt>
+                  <dd className="font-bold text-foreground mt-0.5">{company.name}</dd>
                 </div>
                 <div>
-                  <dt className="text-slate-500 font-semibold">GSTIN Registration</dt>
-                  <dd className="font-mono font-bold text-sky-700 mt-0.5">{company.gst}</dd>
+                  <dt className="text-muted-foreground font-semibold">GSTIN Registration</dt>
+                  <dd className="font-mono font-bold text-accent mt-0.5">{company.gst}</dd>
                 </div>
                 <div>
-                  <dt className="text-slate-500 font-semibold">Proprietor</dt>
-                  <dd className="font-bold text-slate-900 mt-0.5">{company.owner}</dd>
+                  <dt className="text-muted-foreground font-semibold">Proprietor</dt>
+                  <dd className="font-bold text-foreground mt-0.5">{company.owner}</dd>
                 </div>
                 <div>
-                  <dt className="text-slate-500 font-semibold">Business Type</dt>
-                  <dd className="font-medium text-slate-900 mt-0.5">Importer, Exporter, Trader & Stockist</dd>
+                  <dt className="text-muted-foreground font-semibold">Business Type</dt>
+                  <dd className="font-medium text-foreground mt-0.5">Importer, Exporter, Trader & Stockist</dd>
                 </div>
                 <div>
-                  <dt className="text-slate-500 font-semibold">Location</dt>
-                  <dd className="font-medium text-slate-900 mt-0.5">{company.address}</dd>
+                  <dt className="text-muted-foreground font-semibold">Location</dt>
+                  <dd className="font-medium text-foreground mt-0.5">{company.address}</dd>
                 </div>
               </dl>
 
               <button
                 onClick={() => setInquiryOpen(true)}
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-sky-700 px-4 py-3 font-display text-xs font-bold uppercase tracking-wider text-white hover:bg-sky-800 shadow-sm"
+                className="mt-6 flex w-full items-center justify-center gap-2 rounded bg-accent px-4 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-accent-foreground hover:bg-accent/90"
               >
                 <MessageSquare className="h-4 w-4" /> Request Quotation
               </button>
             </div>
 
-            <div className="rounded-2xl bg-[#0F172A] p-6 text-white border border-slate-800">
-              <h3 className="font-display text-xs font-extrabold uppercase tracking-wider text-sky-400">
+            <div className="rounded-xl border border-border bg-ink p-6 text-white">
+              <h3 className="font-display text-sm font-bold uppercase tracking-wider text-accent">
                 OEM Brands Handled
               </h3>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {brands.map((b) => (
-                  <span key={b} className="rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-200">
+                  <span key={b} className="rounded bg-white/10 px-2.5 py-1 text-xs font-semibold">
                     {b}
                   </span>
                 ))}
