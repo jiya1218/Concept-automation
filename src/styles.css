@@ -40,7 +40,7 @@
   --radius: 0.75rem;
 
   /* ════════════════════════════════════════════════════════════════ */
-  /* EXACT MB FINISHING TECH COLOR PALETTE                            */
+  /* MB FINISHING TECH COLOR PALETTE                                  */
   /* ════════════════════════════════════════════════════════════════ */
   
   --background: #f6f4ee;
@@ -60,7 +60,7 @@
   --accent-foreground: #ffffff;
 
   --muted: #f4f1eb;
-  --muted-foreground: #475569; /* Slate 600 for sharp readability */
+  --muted-foreground: #334155; /* Sharp readable slate */
   --border: #e7e5e4;
   --input: #e7e5e4;
   --ring: #1a130f;
@@ -119,7 +119,6 @@
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     font-weight: 800;
-    color: #1a130f;
     letter-spacing: -0.025em;
   }
 }

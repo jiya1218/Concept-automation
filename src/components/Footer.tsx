@@ -36,13 +36,13 @@ export function Footer() {
 
   return (
     <>
-      {/* Dark Footer — Deep Industrial Navy / Charcoal */}
-      <footer className="bg-[#0a1e36] text-white border-t border-slate-800">
+      {/* SOLID BLACK FOOTER — #000000 / #140d09 */}
+      <footer className="bg-[#140d09] text-white border-t border-white/10">
         {/* Ochre Gold Top Accent Bar */}
         <div className="h-1.5 w-full bg-[#b45309]" />
 
         {/* Newsletter Banner */}
-        <div className="border-b border-slate-800 bg-[#0f2a4a]">
+        <div className="border-b border-white/10 bg-black/60">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-8 sm:px-6 md:flex-row">
             <div>
               <h3 className="font-display text-base sm:text-lg font-extrabold uppercase tracking-wider text-white">
@@ -64,7 +64,7 @@ export function Footer() {
                   placeholder="Your work email..."
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-xl border border-white/20 bg-black/40 px-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#b45309]"
+                  className="w-full rounded-xl border border-white/20 bg-black/50 px-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#b45309]"
                 />
                 <button
                   type="submit"
@@ -79,7 +79,7 @@ export function Footer() {
 
         {/* Navigation Columns */}
         <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 sm:grid-cols-2 lg:grid-cols-5">
-          {/* Col 1: Brand Info */}
+          {/* Col 1 */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
               <img
@@ -117,12 +117,12 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Col 2: Quick Navigation */}
+          {/* Col 2 */}
           <div>
             <h3 className="text-xs font-extrabold uppercase tracking-[0.15em] text-[#b45309] mb-4">
               Quick Navigation
             </h3>
-            <ul className="space-y-2.5 text-xs font-semibold text-slate-200">
+            <ul className="space-y-2.5 text-xs font-semibold text-white">
               {[
                 { to: "/", label: "Home" },
                 { to: "/about", label: "Company Profile" },
@@ -138,12 +138,12 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 3: Popular Hardware */}
+          {/* Col 3 */}
           <div>
             <h3 className="text-xs font-extrabold uppercase tracking-[0.15em] text-[#b45309] mb-4">
               Popular Hardware
             </h3>
-            <ul className="space-y-2 text-xs font-semibold text-slate-200">
+            <ul className="space-y-2 text-xs font-semibold text-white">
               {POPULAR_CATEGORIES.map((cat) => (
                 <li key={cat.name}>
                   <Link to="/products" search={{ q: cat.query }}
@@ -155,7 +155,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 4: OEM Brands & HQ */}
+          {/* Col 4 */}
           <div>
             <h3 className="text-xs font-extrabold uppercase tracking-[0.15em] text-[#b45309] mb-3">
               OEM Brands
@@ -172,7 +172,7 @@ export function Footer() {
             <h3 className="text-xs font-extrabold uppercase tracking-[0.15em] text-[#b45309] mb-3">
               Headquarters
             </h3>
-            <ul className="space-y-2 text-xs font-semibold text-slate-200">
+            <ul className="space-y-2 text-xs font-semibold text-white">
               <li className="flex items-start gap-2">
                 <MapPin className="h-3.5 w-3.5 shrink-0 text-[#b45309] mt-0.5" />
                 <a href="https://maps.google.com/?q=Titanium+Business+Park+Makarba+Ahmedabad" target="_blank" rel="noreferrer"
@@ -192,8 +192,8 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom Copyright */}
-        <div className="border-t border-slate-800 bg-black/40 py-4 text-center text-xs font-semibold text-slate-400">
+        {/* Bottom Bar */}
+        <div className="border-t border-white/10 bg-black/80 py-4 text-center text-xs font-semibold text-slate-400">
           <p>© {new Date().getFullYear()} Concept Automation Technologies. All rights reserved.</p>
         </div>
       </footer>
