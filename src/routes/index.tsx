@@ -83,73 +83,73 @@ function Index() {
 
       <main>
         {/* ═══════════════════════════════════════════════════════ */}
-        {/* SECTION 1: HERO — Stripe-inspired massive typography   */}
+        {/* SECTION 1: HERO — Bright Modern Light Palette          */}
         {/* ═══════════════════════════════════════════════════════ */}
-        <section className="relative overflow-hidden bg-stone-950 min-h-[90vh] flex items-center">
-          {/* Background */}
-          <div className="absolute inset-0">
-            <img src={heroImage} alt="" className="h-full w-full object-cover opacity-[0.08]" />
-            <div className="absolute inset-0 bg-gradient-to-br from-stone-950 via-stone-900/95 to-stone-950" />
+        <section className="relative overflow-hidden bg-gradient-to-b from-stone-100 via-stone-50 to-white min-h-[85vh] flex items-center border-b border-stone-200">
+          {/* Subtle Background Pattern & Soft Overlay */}
+          <div className="absolute inset-0 z-0">
+            <img src={heroImage} alt="" className="h-full w-full object-cover opacity-[0.06] mix-blend-multiply" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-50/60 via-transparent to-transparent" />
           </div>
 
           {/* Decorative grid lines */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff04_1px,transparent_1px),linear-gradient(to_bottom,#ffffff04_1px,transparent_1px)] bg-[size:80px_80px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000005_1px,transparent_1px),linear-gradient(to_bottom,#00000005_1px,transparent_1px)] bg-[size:64px_64px]" />
 
-          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
+          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
             {/* Top badge */}
             <div className="animate-fade-in">
-              <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/25 bg-amber-500/10 px-4 py-1.5 text-[11px] font-semibold tracking-[0.15em] text-amber-400 uppercase">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50/80 px-4 py-1.5 text-[11px] font-bold tracking-[0.15em] text-amber-700 uppercase shadow-sm">
+                <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
                 Trusted Industrial Automation Partner
               </span>
             </div>
 
             {/* Giant headline */}
-            <h1 className="mt-8 font-display text-[clamp(2.2rem,6vw,5rem)] font-extrabold leading-[1.05] tracking-tight text-white max-w-4xl animate-slide-left">
+            <h1 className="mt-6 font-display text-[clamp(2.4rem,6vw,5.2rem)] font-extrabold leading-[1.05] tracking-tight text-stone-900 max-w-4xl animate-slide-left">
               {slide.title}
             </h1>
 
-            <p className="mt-6 text-lg text-stone-400 leading-relaxed max-w-xl animate-fade-up stagger-1 sm:text-xl">
+            <p className="mt-5 text-lg text-stone-600 leading-relaxed max-w-xl animate-fade-up stagger-1 sm:text-xl font-normal">
               {slide.subtitle}
             </p>
 
             {/* CTA row */}
-            <div className="mt-10 flex flex-wrap items-center gap-4 animate-fade-up stagger-2">
+            <div className="mt-8 flex flex-wrap items-center gap-4 animate-fade-up stagger-2">
               <button
                 onClick={() => openQuote(slide.title, "")}
-                className="group rounded-2xl bg-amber-500 px-8 py-4 text-sm font-bold text-stone-950 shadow-lg shadow-amber-500/20 hover:bg-amber-400 transition-all flex items-center gap-2"
+                className="group rounded-2xl bg-stone-950 px-8 py-4 text-sm font-bold text-white shadow-lg hover:bg-amber-600 transition-all flex items-center gap-2"
               >
                 {slide.cta} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </button>
               <button
                 onClick={() => openQuote("General Inquiry", "")}
-                className="rounded-2xl border border-white/15 bg-white/5 px-8 py-4 text-sm font-semibold text-white hover:bg-white/10 transition-all backdrop-blur-sm"
+                className="rounded-2xl border border-stone-300 bg-white px-8 py-4 text-sm font-semibold text-stone-800 hover:border-stone-400 hover:bg-stone-50 transition-all shadow-sm"
               >
                 Get Free Quote
               </button>
               <a
                 href={`tel:${company.phoneRaw}`}
-                className="flex items-center gap-2 text-sm text-stone-400 hover:text-amber-400 transition-colors ml-2"
+                className="flex items-center gap-2 text-sm font-semibold text-stone-600 hover:text-amber-600 transition-colors ml-2"
               >
-                <Phone className="h-4 w-4" /> {company.phone}
+                <Phone className="h-4 w-4 text-amber-600" /> {company.phone}
               </a>
             </div>
 
             {/* Slide dots */}
-            <div className="mt-12 flex items-center gap-2">
+            <div className="mt-10 flex items-center gap-2">
               {heroSlides.map((_, i) => (
                 <button key={i} onClick={() => setSlideIndex(i)}
-                  className={`h-1 rounded-full transition-all duration-500 ${i === slideIndex ? "w-10 bg-amber-500" : "w-3 bg-white/20 hover:bg-white/40"}`} />
+                  className={`h-1.5 rounded-full transition-all duration-500 ${i === slideIndex ? "w-10 bg-amber-600" : "w-3 bg-stone-300 hover:bg-stone-400"}`} />
               ))}
             </div>
 
-            {/* Brand logos cloud — Stripe style */}
-            <div className="mt-14 border-t border-white/10 pt-8 animate-fade-up stagger-3">
-              <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-stone-500 mb-5">Official Partners & Brands We Stock</p>
+            {/* Brand logos cloud */}
+            <div className="mt-12 border-t border-stone-200/80 pt-6 animate-fade-up stagger-3">
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400 mb-4">Official Partners & Brands We Stock</p>
               <div className="flex flex-wrap gap-x-8 gap-y-3">
                 {brands.map((b) => (
                   <Link key={b} to="/products" search={{ q: b }}
-                    className="text-sm font-bold text-stone-500 hover:text-amber-400 transition-colors cursor-pointer">
+                    className="text-sm font-bold text-stone-600 hover:text-amber-600 transition-colors cursor-pointer">
                     {b}
                   </Link>
                 ))}
