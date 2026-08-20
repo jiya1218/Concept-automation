@@ -189,11 +189,12 @@ function DashboardView({ onLogout }: DashboardViewProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [selectedCustomFilter, setSelectedCustomFilter] = useState("All");
+  const [selectedTypeFilter, setSelectedTypeFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, selectedBrand, selectedStockFilter, selectedCustomFilter]);
+  }, [searchQuery, selectedBrand, selectedStockFilter, selectedCustomFilter, selectedTypeFilter]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -470,6 +471,16 @@ function DashboardView({ onLogout }: DashboardViewProps) {
         ? true
         : isModifiedOrCustom;
 
+      const matchesType = selectedTypeFilter === "All" || (() => {
+        const pType = (p.type || "").toLowerCase().trim();
+        const pCat = (p.category || "").toLowerCase().trim();
+        const sType = selectedTypeFilter.toLowerCase().trim();
+        if (sType === "sensors" || sType === "sensor") {
+          return pType.includes("sensor") || pCat.includes("sensor");
+        }
+        return pType === sType || pType.includes(sType) || pCat.includes(sType);
+      })();
+
       const name = p.name || "";
       const partNum = p.partNumber || "";
       const brand = p.brand || "";
@@ -482,9 +493,9 @@ function DashboardView({ onLogout }: DashboardViewProps) {
         searchableText.includes(cleanQuery) ||
         searchQuery.toLowerCase().trim().split(/\s+/).every(term => searchableText.includes(term));
 
-      return matchBrand && matchStock && matchCustom && matchSearch;
+      return matchBrand && matchStock && matchCustom && matchesType && matchSearch;
     });
-  }, [mergedProducts, selectedBrand, selectedStockFilter, selectedCustomFilter, searchQuery, dbProducts]);
+  }, [mergedProducts, selectedBrand, selectedStockFilter, selectedCustomFilter, selectedTypeFilter, searchQuery, dbProducts]);
 
   // Pagination Configuration
   const ITEMS_PER_PAGE = 15;
@@ -718,13 +729,28 @@ function DashboardView({ onLogout }: DashboardViewProps) {
               </select>
             </div>
 
-            {searchQuery || selectedBrand !== "All" || selectedStockFilter !== "All" || selectedCustomFilter !== "All" ? (
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-extrabold uppercase text-slate-500">Type:</span>
+              <select
+                value={selectedTypeFilter}
+                onChange={(e) => setSelectedTypeFilter(e.target.value)}
+                className="rounded-xl border border-[#e7e5e4] bg-white px-3 py-2 text-xs font-bold text-[#1a130f] focus:border-[#1a130f] focus:outline-none"
+              >
+                <option value="All">All Types</option>
+                {productTypesList.map((t) => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
+            </div>
+ 
+            {searchQuery || selectedBrand !== "All" || selectedStockFilter !== "All" || selectedCustomFilter !== "All" || selectedTypeFilter !== "All" ? (
               <button
                 onClick={() => {
                   setSearchQuery("");
                   setSelectedBrand("All");
                   setSelectedStockFilter("All");
                   setSelectedCustomFilter("All");
+                  setSelectedTypeFilter("All");
                 }}
                 className="rounded-xl border border-[#e7e5e4] bg-stone-100 hover:bg-stone-200 px-3 py-2 text-xs font-bold text-[#1a130f] transition-all cursor-pointer"
               >
