@@ -21,10 +21,17 @@ export const Route = createFileRoute("/admin")({
 });
 
 // Access credentials from environment variables or use fallback defaults
-const ADMIN_USER = import.meta.env.VITE_ADMIN_USERNAME || "admin";
-const ADMIN_PASS = import.meta.env.VITE_ADMIN_PASSWORD || "concept@admin123";
+const ADMIN_USER = import.meta.env['VITE_ADMIN_USERNAME'] || "admin";
+const ADMIN_PASS = import.meta.env['VITE_ADMIN_PASSWORD'] || "concept@admin123";
 
 const productTypesList = ["PLC", "HMI", "VFD", "Servo", "Sensor", "Power Supply", "Software"] as const;
+
+async function sha256(message: string): Promise<string> {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 function AdminPortal() {
   const [username, setUsername] = useState("");
@@ -41,14 +48,42 @@ function AdminPortal() {
     setIsLoadingAuth(false);
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (username.trim() === ADMIN_USER && password === ADMIN_PASS) {
-      sessionStorage.setItem("concept_admin_auth", "true");
-      setIsAuthenticated(true);
-      toast.success("Logged in successfully!");
-    } else {
-      toast.error("Invalid username or password.");
+    setIsLoadingAuth(true);
+    toast.loading("Authenticating...", { id: "authToast" });
+    
+    try {
+      const settings = await getGlobalSettings();
+      const expectedUsername = settings['admin_username'] || ADMIN_USER;
+      const expectedPasswordHash = settings['admin_password_hash'];
+      
+      let isPasswordValid = false;
+      if (expectedPasswordHash) {
+        const enteredHash = await sha256(password);
+        isPasswordValid = enteredHash === expectedPasswordHash;
+      } else {
+        isPasswordValid = password === ADMIN_PASS;
+      }
+      
+      if (username.trim() === expectedUsername && isPasswordValid) {
+        sessionStorage.setItem("concept_admin_auth", "true");
+        setIsAuthenticated(true);
+        toast.success("Logged in successfully!", { id: "authToast" });
+      } else {
+        toast.error("Invalid username or password.", { id: "authToast" });
+      }
+    } catch (err) {
+      console.error("Login auth error:", err);
+      if (username.trim() === ADMIN_USER && password === ADMIN_PASS) {
+        sessionStorage.setItem("concept_admin_auth", "true");
+        setIsAuthenticated(true);
+        toast.success("Logged in successfully (offline fallback)!", { id: "authToast" });
+      } else {
+        toast.error("Authentication failed. Please verify credentials.", { id: "authToast" });
+      }
+    } finally {
+      setIsLoadingAuth(false);
     }
   };
 
@@ -196,6 +231,49 @@ function DashboardView({ onLogout }: DashboardViewProps) {
     setCurrentPage(1);
   }, [searchQuery, selectedBrand, selectedStockFilter, selectedCustomFilter, selectedTypeFilter]);
 
+  // Account settings state
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  useEffect(() => {
+    if (isSettingsOpen && globalSettings) {
+      setNewUsername(globalSettings['admin_username'] || ADMIN_USER);
+      setNewPassword("");
+      setConfirmPassword("");
+    }
+  }, [isSettingsOpen, globalSettings]);
+
+  const handleSaveAccountSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newUsername.trim()) {
+      toast.error("Username cannot be empty.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+    if (newPassword.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      return;
+    }
+
+    toast.loading("Updating credentials...", { id: "saveAccountSettings" });
+    const userRes = await saveGlobalSetting("admin_username", newUsername.trim());
+    const passHash = await sha256(newPassword);
+    const passRes = await saveGlobalSetting("admin_password_hash", passHash);
+
+    if (userRes.success && passRes.success) {
+      toast.success("Credentials updated successfully!", { id: "saveAccountSettings" });
+      setIsSettingsOpen(false);
+      queryClient.invalidateQueries({ queryKey: ["globalSettings"] });
+    } else {
+      toast.error("Failed to update credentials.", { id: "saveAccountSettings" });
+    }
+  };
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -277,8 +355,10 @@ function DashboardView({ onLogout }: DashboardViewProps) {
 
   const handleUpdateSpecField = (idx: number, key: "label" | "value", val: string) => {
     const updated = [...specifications];
-    updated[idx][key] = val;
-    setSpecifications(updated);
+    if (updated[idx]) {
+      updated[idx][key] = val;
+      setSpecifications(updated);
+    }
   };
 
   const handleRemoveSpecField = (idx: number) => {
@@ -380,7 +460,7 @@ function DashboardView({ onLogout }: DashboardViewProps) {
     };
 
     const dbMatch = dbProducts.find((dbp) => dbp.slug === p.slug);
-    if (dbMatch) dbPayload.id = dbMatch.id;
+    if (dbMatch && dbMatch.id) dbPayload.id = dbMatch.id;
 
     toast.loading("Removing product...", { id: `del-${p.slug}` });
     const res = await saveProductOverride(dbPayload);
@@ -440,7 +520,7 @@ function DashboardView({ onLogout }: DashboardViewProps) {
       dbPayload.is_custom = false;
       // Fetch matching DB item ID if it was already modified before
       const dbMatch = dbProducts.find(dbp => dbp.slug === p.slug);
-      if (dbMatch) dbPayload.id = dbMatch.id;
+      if (dbMatch && dbMatch.id) dbPayload.id = dbMatch.id;
     }
 
     toast.loading("Saving stock...", { id: `inline-${p.slug}` });
@@ -583,6 +663,13 @@ function DashboardView({ onLogout }: DashboardViewProps) {
                 </span>
               </label>
             </div>
+            <button
+              onClick={() => setIsSettingsOpen(true)}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-[#e7e5e4] bg-white px-3 py-2.5 text-xs font-bold uppercase tracking-wider text-[#1a130f] hover:bg-stone-50 transition-all cursor-pointer shadow-sm"
+              title="Admin Credentials Settings"
+            >
+              <SlidersHorizontal className="h-4 w-4 text-stone-600" /> Credentials
+            </button>
             <button
               onClick={handleOpenAdd}
               className="inline-flex items-center gap-1.5 rounded-xl bg-[#1a130f] px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#b45309] transition-all shadow-md cursor-pointer"
@@ -1463,6 +1550,79 @@ function DashboardView({ onLogout }: DashboardViewProps) {
 
               </form>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Account Settings Modal */}
+      {isSettingsOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center font-sans">
+          <div className="absolute inset-0 bg-stone-900/60 backdrop-blur-sm transition-opacity" onClick={() => setIsSettingsOpen(false)} />
+          
+          <div className="relative w-full max-w-md bg-white rounded-3xl p-6 shadow-2xl animate-fade-in border border-[#e7e5e4] mx-4">
+            <div className="flex justify-between items-center border-b border-[#e7e5e4] pb-4 mb-4">
+              <div>
+                <h3 className="text-sm font-extrabold text-[#1a130f]">Admin Account Settings</h3>
+                <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Change login username and password</p>
+              </div>
+              <button onClick={() => setIsSettingsOpen(false)} className="rounded-full p-1 hover:bg-stone-100 transition-colors">
+                <X className="h-4 w-4 text-slate-400" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveAccountSettings} className="space-y-4">
+              <div>
+                <label className="text-[11px] font-bold text-[#1a130f] block mb-1">New Username *</label>
+                <input
+                  type="text"
+                  required
+                  value={newUsername}
+                  onChange={(e) => setNewUsername(e.target.value)}
+                  placeholder="e.g. admin"
+                  className="w-full rounded-xl border border-[#e7e5e4] bg-white px-3 py-2.5 text-xs text-[#1a130f] font-semibold focus:border-[#1a130f] focus:outline-none shadow-sm"
+                />
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-[#1a130f] block mb-1">New Password *</label>
+                <input
+                  type="password"
+                  required
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Enter secure new password"
+                  className="w-full rounded-xl border border-[#e7e5e4] bg-white px-3 py-2.5 text-xs text-[#1a130f] font-semibold focus:border-[#1a130f] focus:outline-none shadow-sm"
+                />
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-[#1a130f] block mb-1">Confirm New Password *</label>
+                <input
+                  type="password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Re-enter new password"
+                  className="w-full rounded-xl border border-[#e7e5e4] bg-white px-3 py-2.5 text-xs text-[#1a130f] font-semibold focus:border-[#1a130f] focus:outline-none shadow-sm"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-4 border-t border-[#e7e5e4]">
+                <button
+                  type="button"
+                  onClick={() => setIsSettingsOpen(false)}
+                  className="rounded-xl border border-[#e7e5e4] bg-white px-4 py-2 text-xs font-bold text-[#1a130f] hover:bg-stone-50 transition-all cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="rounded-xl bg-[#1a130f] hover:bg-[#b45309] text-white px-4 py-2 text-xs font-bold transition-all cursor-pointer shadow-md"
+                >
+                  Save Settings
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

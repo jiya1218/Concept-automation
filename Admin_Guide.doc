@@ -1,0 +1,249 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset="utf-8">
+<title>Concept Automation - Website & Admin Portal User Guide</title>
+<style>
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #1a130f;
+  line-height: 1.6;
+  margin: 40px;
+}
+h1 {
+  font-size: 22pt;
+  color: #1a130f;
+  border-bottom: 2px solid #b45309;
+  padding-bottom: 8px;
+  margin-top: 0;
+}
+h2 {
+  font-size: 15pt;
+  color: #b45309;
+  margin-top: 35px;
+  border-bottom: 1px solid #e7e5e4;
+  padding-bottom: 4px;
+}
+h3 {
+  font-size: 11pt;
+  color: #1a130f;
+  margin-top: 20px;
+  font-weight: bold;
+}
+p, li {
+  font-size: 10.5pt;
+  color: #44403c;
+}
+ul, ol {
+  margin-top: 5px;
+  margin-bottom: 15px;
+  padding-left: 20px;
+}
+li {
+  margin-bottom: 6px;
+}
+.note-box {
+  background-color: #eff6ff;
+  border-left: 5px solid #2563eb;
+  padding: 12px 18px;
+  margin: 18px 0;
+  border-radius: 4px;
+}
+.warning-box {
+  background-color: #fffbeb;
+  border-left: 5px solid #d97706;
+  padding: 12px 18px;
+  margin: 18px 0;
+  border-radius: 4px;
+}
+.info-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20px 0;
+}
+.info-table th {
+  background-color: #f5f5f4;
+  border: 1px solid #e7e5e4;
+  padding: 8px 12px;
+  font-size: 10pt;
+  font-weight: bold;
+  text-align: left;
+  color: #1a130f;
+}
+.info-table td {
+  border: 1px solid #e7e5e4;
+  padding: 8px 12px;
+  font-size: 9.5pt;
+  color: #44403c;
+}
+.step-number {
+  font-weight: bold;
+  color: #b45309;
+}
+.badge {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 8pt;
+  font-weight: bold;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.badge-custom { background-color: #dbeafe; color: #1e40af; }
+.badge-modified { background-color: #fef3c7; color: #92400e; }
+.badge-hidden { background-color: #ffe4e6; color: #9f1239; }
+</style>
+</head>
+<body>
+
+<h1>Website & Admin Portal User Guide</h1>
+<p>Welcome to your website administration guide! This document explains how your public storefront catalog works, how to access the hidden administrator panel, and how to manage your inventory and login credentials easily. No technical knowledge is required.</p>
+
+<div class="note-box">
+  <strong>Note:</strong> All updates made in the admin panel are saved to your live database. Changes reflect on the website immediately for all visitors.
+</div>
+
+<hr style="border: 0; border-top: 1px solid #e7e5e4; margin: 30px 0;" />
+
+<h2>1. How Your Website & Catalog Work</h2>
+<p>Your website serves as an online catalog where visitors can browse industrial automation hardware. Since you are not selling items directly with online checkout, the storefront works as follows:</p>
+<ul>
+  <li><strong>Product Browsing:</strong> Customers can view details, brand categories, and specifications for various hardware items (PLCs, HMIs, VFDs, Sensors, etc.).</li>
+  <li><strong>Inquiry & Quote Form:</strong> On every product page and card, there is a prominent <strong>"Get Quote"</strong> button. When clicked, it opens a short form asking the customer for their Name, Email, Phone, Company, and message.</li>
+  <li><strong>Receiving Leads:</strong> When a customer submits an inquiry, their details are sent directly to your database, allowing you to follow up with a price proposal and establish personal contact.</li>
+</ul>
+
+<h2>2. How to Access the Admin Panel</h2>
+<p>The Admin Panel is integrated directly into the website but remains hidden so that ordinary customers cannot access it.</p>
+<ol>
+  <li>Open your web browser and go to your admin URL: 
+    <br/>
+    <code style="color:#b45309; font-size:11pt; font-weight:bold; background-color:#faf9f6; padding:4px 8px; border-radius:4px; display:inline-block; margin: 5px 0;">https://concept-automation.vercel.app/admin</code>
+  </li>
+  <li>You will be presented with a secure login card. Enter the administrator credentials:
+    <table class="info-table" style="max-width: 400px; margin-top: 10px;">
+      <tr>
+        <th>Field</th>
+        <th>Default Credential</th>
+      </tr>
+      <tr>
+        <td><strong>Username</strong></td>
+        <td>admin</td>
+      </tr>
+      <tr>
+        <td><strong>Password</strong></td>
+        <td>concept@admin123</td>
+      </tr>
+    </table>
+  </li>
+  <li>Click the <strong>Log In</strong> button. Upon successful authentication, you will be redirected to the Catalog Administration Control Panel.</li>
+</ol>
+
+<div class="warning-box">
+  <strong>Warning:</strong> Keep these credentials secure. Only authorized operators should know the admin login details. If you change the credentials, make a note of the new username/password to avoid being locked out.
+</div>
+
+<h2>3. Navigating the Admin Dashboard</h2>
+<p>The dashboard has been optimized to offer a clean view where you can find and modify items quickly.</p>
+
+<h3>Summary Metrics Cards (Clickable Filters)</h3>
+<p>At the top of the dashboard, you will see four metrics cards showing total counts. You can **click** on these cards to automatically filter the product list below them:</p>
+<ul>
+  <li><strong>Total Catalog:</strong> Displays all products. Clicking this card resets all active filters.</li>
+  <li><strong>In Stock:</strong> Displays only products currently marked as available.</li>
+  <li><strong>Out of Stock:</strong> Displays only products with a stock quantity of 0.</li>
+  <li><strong>Custom / Overrides:</strong> Displays only custom products you added manually, or default catalog products that you have modified.</li>
+</ul>
+
+<h3>Search and Selection Filters</h3>
+<p>Below the metrics, you can use the filters bar to refine the list:</p>
+<ul>
+  <li><strong>Search Bar:</strong> Type any manufacturer, model name, category, or specific part number (like <i>UB500</i> or <i>6ES7214</i>). The search bar supports partial keyword lookups and exact codes.</li>
+  <li><strong>Brand Filter Dropdown:</strong> Filters the list to display only items from a specific brand (e.g. Siemens, Mitsubishi, Omron, Delta).</li>
+  <li><strong>Stock Status Filter Dropdown:</strong> Filters the list to show all, only in-stock, or only out-of-stock items.</li>
+  <li><strong>Type Filter Dropdown:</strong> Filters by hardware category (PLC, HMI, VFD, Sensor, etc.).</li>
+</ul>
+
+<h3>Page Navigation (Pagination)</h3>
+<p>To avoid displaying a long list, the products list displays **15 products per page**. Use the page selector buttons (<i>Previous, Page numbers, Next</i>) at the bottom right of the list card to navigate cleanly.</p>
+
+<h3>Global Option: "Show Stock on Web" Switch</h3>
+<p>Next to the "Add Product" button, there is a toggle switch labeled <strong>"Show Stock on Web"</strong>. This controls stock visibility globally across the website:</p>
+<ul>
+  <li><strong>Toggled ON:</strong> Visitors will see green "In Stock" or red "Out of Stock" badges and quantities on the storefront.</li>
+  <li><strong>Toggled OFF (Recommended):</strong> Hides all stock availability badges and counts from the public website completely. This is ideal since you sell via quotation and custom contact.</li>
+  <li><strong>Local Storage Backup:</strong> In case the remote database setting table is not created, updates save in your browser locally, allowing the toggle to continue functioning on your device!</li>
+</ul>
+
+<h2>4. Managing Your Inventory</h2>
+<p>Here is how to perform inventory updates on the dashboard:</p>
+
+<h3>A. Adding a New Product</h3>
+<ol>
+  <li>Click the black <strong>+ Add Product</strong> button in the top right.</li>
+  <li>Fill out the basic info fields:
+    <ul>
+      <li><strong>Product Name:</strong> The descriptive name of the item.</li>
+      <li><strong>Part Number:</strong> The exact model number (e.g., <i>ABC001</i>). Customers search using this exact field.</li>
+      <li><strong>Brand:</strong> Select from the dropdown or select "Custom Brand" to type in a new manufacturer.</li>
+      <li><strong>Category:</strong> General label (e.g. <i>Siemens PLC</i> or <i>SENSORS</i>).</li>
+      <li><strong>Product Type:</strong> Select the classification (PLC, HMI, VFD, Sensor, etc.).</li>
+      <li><strong>In Stock Quantity:</strong> The count of items you currently hold. If greater than 0, the item status is automatically marked "In Stock".</li>
+    </ul>
+  </li>
+  <li><strong>Product Image Upload (Direct):</strong> 
+    <ul>
+      <li>Click the dashed area labeled <strong>"Upload Image File"</strong> to select a photo from your computer. It uploads directly to secure image storage and links it.</li>
+      <li>If you prefer to link a web photo URL, click <i>"Or paste an image URL instead"</i> below the box.</li>
+    </ul>
+  </li>
+  <li><strong>Save:</strong> Click <strong>Save Details</strong>. The product link slug is created automatically behind the scenes.</li>
+</ol>
+
+<h3>B. Modifying/Editing an Existing Product</h3>
+<ul>
+  <li>Click the **Edit** icon (pencil symbol) next to any product in the list.</li>
+  <li>Modify the names, brand details, category, description, specifications table, or replace the image.</li>
+  <li>Click **Save Details** to apply the changes.</li>
+</ul>
+
+<h3>C. Quick Stock Updates (Inline Sizing)</h3>
+<p>You do not need to open the edit form to update stock status or quantities. You can update them directly inside the list:</p>
+<ul>
+  <li><strong>Stock Switch:</strong> Click the green slider switch in the list row to toggle between In-Stock and Out-of-Stock instantly.</li>
+  <li><strong>Qty Number box:</strong> Click the quantity number input box to type in a new count.</li>
+  <li><strong>Save:</strong> If you make an inline change, a green checkmark button will appear. Click the **Save (checkmark)** button to save the stock change.</li>
+</ul>
+
+<h3>D. Deleting or Hiding a Product</h3>
+<p>Depending on whether a product is a built-in default or custom added, deletions behave as follows:</p>
+<ul>
+  <li><strong>Custom Added Products:</strong> Clicking the red **Trash** icon permanently deletes the product row from the database catalog.</li>
+  <li><strong>Default Website Products:</strong> Default catalog products cannot be deleted permanently because they are built into the initial site files. Instead, clicking the red **Trash** icon will **hide the product from the website**.
+    <ul>
+      <li>The product will immediately disappear from the public website storefront.</li>
+      <li>In your admin panel, the row will turn semi-transparent (dimmed) with a line-through, displaying a <span class="badge badge-hidden">Hidden from Web</span> tag.</li>
+      <li><strong>Restoring:</strong> If you ever wish to make a deleted default product visible again, simply click the yellow **Restore (curved arrow symbol)** button. It will instantly reappear on the website.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2>5. Changing Admin Credentials (Username & Password)</h2>
+<p>You can change the credentials required to log into the Admin Panel directly from the dashboard to keep your control panel secure.</p>
+<ol>
+  <li>Log into the Admin Panel using your current credentials.</li>
+  <li>Click the **Credentials** button (represented by a sliders icon) next to the "Add Product" button.</li>
+  <li>An **Admin Account Settings** pop-up modal will appear.</li>
+  <li>Enter your **New Username** and a **New Password** (passwords must be at least 6 characters long).</li>
+  <li>Re-type the new password in the **Confirm New Password** field to verify.</li>
+  <li>Click **Save Settings**.</li>
+</ol>
+
+<div class="note-box">
+  <strong>Security Note:</strong> When you change the password, it is hashed using industry-standard cryptography (SHA-256) before being sent to Supabase. This means that even in the database, the password is completely encrypted and readable by no one.
+</div>
+
+<div class="warning-box">
+  <strong>Important:</strong> Once saved successfully, the old login credentials (including the defaults like <i>admin / concept@admin123</i>) will no longer work. You must log in using your newly defined details.
+</div>
+
+</body>
+</html>
