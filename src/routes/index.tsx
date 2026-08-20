@@ -27,6 +27,8 @@ import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
 import { brands, company, allProducts } from "@/data/catalog";
 import { InquiryModal } from "@/components/InquiryModal";
+import { useQuery } from "@tanstack/react-query";
+import { getDbProducts, mergeProducts } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -120,10 +122,20 @@ function Index() {
     return () => clearInterval(timer);
   }, []);
 
+  const { data: dbProducts = [] } = useQuery({
+    queryKey: ["dbProducts"],
+    queryFn: getDbProducts,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const mergedProducts = useMemo(() => {
+    return mergeProducts(allProducts, dbProducts);
+  }, [dbProducts]);
+
   const previewProducts = useMemo(() => {
-    if (catalogBrandFilter === "All") return allProducts.slice(0, 4);
-    return allProducts.filter((p) => p.brand.toLowerCase() === catalogBrandFilter.toLowerCase()).slice(0, 4);
-  }, [catalogBrandFilter]);
+    if (catalogBrandFilter === "All") return mergedProducts.slice(0, 4);
+    return mergedProducts.filter((p) => p.brand.toLowerCase() === catalogBrandFilter.toLowerCase()).slice(0, 4);
+  }, [catalogBrandFilter, mergedProducts]);
 
   const openQuote = (name = "", part = "") => {
     setModalProduct({ name, part });
@@ -376,7 +388,7 @@ function Index() {
                 to="/products"
                 className="inline-flex items-center gap-2 rounded-xl bg-[#1a130f] px-8 py-4 text-xs font-extrabold uppercase tracking-wider text-white hover:bg-[#b45309] transition-all shadow-lg hover:shadow-xl"
               >
-                View Full {allProducts.length}+ Products Catalog <ArrowRight className="h-4 w-4 text-amber-400" />
+                View Full {mergedProducts.length}+ Products Catalog <ArrowRight className="h-4 w-4 text-amber-400" />
               </Link>
             </div>
           </div>

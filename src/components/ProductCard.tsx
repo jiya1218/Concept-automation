@@ -4,6 +4,8 @@ import { MessageSquare, ArrowRight, Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { InquiryModal } from "./InquiryModal";
 import { getProxiedImageUrl, getFallbackImageUrl, getSvgDataUrl } from "@/lib/imageHelper";
+import { useQuery } from "@tanstack/react-query";
+import { getGlobalSettings } from "@/lib/products";
 
 interface ProductCardProps {
   product: {
@@ -24,6 +26,12 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const [errorCount, setErrorCount] = useState(0);
   const navigate = useNavigate();
   const slug = product.slug || product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+  const { data: settings = { show_stock_status: true } } = useQuery({
+    queryKey: ["globalSettings"],
+    queryFn: getGlobalSettings,
+    staleTime: 1000 * 60 * 10,
+  });
 
   const getImageSrc = () => {
     if (errorCount === 0) return getProxiedImageUrl(product.image);
@@ -52,7 +60,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           <span className="absolute left-2 top-2 z-10 rounded bg-[#1a130f] px-2 py-0.5 text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider text-white shadow-sm">
             {product.brand || product.category.split(" ")[0]}
           </span>
-          {product.availability && (
+          {settings.show_stock_status && (product.availability || (product as any).stock) && (
             <span className="absolute right-2 top-2 z-10 hidden sm:flex items-center gap-1 rounded bg-emerald-50 px-2 py-0.5 text-[9px] font-bold text-emerald-700 border border-emerald-200">
               <Check className="h-2.5 w-2.5" /> Stock
             </span>

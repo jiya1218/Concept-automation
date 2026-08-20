@@ -6,6 +6,8 @@ import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
 import { allProducts, brands, categories } from "@/data/catalog";
 import { InquiryModal } from "@/components/InquiryModal";
+import { useQuery } from "@tanstack/react-query";
+import { getDbProducts, mergeProducts } from "@/lib/products";
 
 export const Route = createFileRoute("/products/")({
   head: () => ({
@@ -26,6 +28,16 @@ function Products() {
   const [selectedType, setSelectedType] = useState<string>("All");
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
 
+  const { data: dbProducts = [] } = useQuery({
+    queryKey: ["dbProducts"],
+    queryFn: getDbProducts,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const mergedProducts = useMemo(() => {
+    return mergeProducts(allProducts, dbProducts);
+  }, [dbProducts]);
+
   useEffect(() => {
     if (searchParams.q) setSearchQuery(searchParams.q);
   }, [searchParams.q]);
@@ -33,21 +45,39 @@ function Products() {
   const brandCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     brands.forEach((b) => {
-      counts[b] = allProducts.filter((p) => p.brand.toLowerCase() === b.toLowerCase()).length;
+      counts[b] = mergedProducts.filter((p) => p.brand.toLowerCase() === b.toLowerCase()).length;
     });
     return counts;
-  }, []);
+  }, [mergedProducts]);
 
   const filteredProducts = useMemo(() => {
     const searchTerms = searchQuery.toLowerCase().trim().split(/\s+/).filter(Boolean);
-    return allProducts.filter((product) => {
+    return mergedProducts.filter((product) => {
       const matchesBrand = selectedBrand === "All" || product.brand.toLowerCase() === selectedBrand.toLowerCase();
-      const matchesType = selectedType === "All" || product.type === selectedType;
-      const searchableText = `${product.name} ${product.partNumber} ${product.brand} ${product.category} ${product.type} ${product.description}`.toLowerCase();
-      const matchesSearch = searchTerms.length === 0 || searchTerms.every((term) => searchableText.includes(term));
+      const matchesType = selectedType === "All" || (() => {
+        const pType = (product.type || "").toLowerCase().trim();
+        const pCat = (product.category || "").toLowerCase().trim();
+        const sType = selectedType.toLowerCase().trim();
+        if (sType === "sensors" || sType === "sensor") {
+          return pType.includes("sensor") || pCat.includes("sensor");
+        }
+        return pType === sType || pType.includes(sType) || pCat.includes(sType);
+      })();
+      const name = product.name || "";
+      const partNum = product.partNumber || "";
+      const brand = product.brand || "";
+      const cat = product.category || "";
+      const ptype = product.type || "";
+      const desc = product.description || "";
+      
+      const searchableText = `${name} ${partNum} ${brand} ${cat} ${ptype} ${desc}`.toLowerCase();
+      const cleanQuery = searchQuery.toLowerCase().trim();
+      const matchesSearch = searchTerms.length === 0 || 
+        searchableText.includes(cleanQuery) || 
+        searchTerms.every((term) => searchableText.includes(term));
       return matchesBrand && matchesType && matchesSearch;
     });
-  }, [selectedBrand, selectedType, searchQuery]);
+  }, [selectedBrand, selectedType, searchQuery, mergedProducts]);
 
   const resetFilters = () => {
     setSelectedBrand("All");
@@ -68,7 +98,7 @@ function Products() {
               Industrial Automation Products
             </h1>
             <p className="mt-1 text-xs text-slate-300 max-w-lg mx-auto font-medium">
-              {allProducts.length}+ genuine OEM products from {brands.length} global manufacturers. Ready for dispatch.
+              {mergedProducts.length}+ genuine OEM products from {brands.length} global manufacturers. Ready for dispatch.
             </p>
           </div>
         </div>
@@ -140,7 +170,7 @@ function Products() {
                     : "bg-white text-[#1a130f] border border-[#e7e5e4] hover:bg-[#f6f4ee]"
                 }`}
               >
-                All Brands ({allProducts.length})
+                All Brands ({mergedProducts.length})
               </button>
               {brands.map((b) => (
                 <button

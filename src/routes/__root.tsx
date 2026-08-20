@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { ThemeProvider } from "../lib/theme";
+import { Toaster } from "../components/ui/sonner";
 
 
 function NotFoundComponent() {
@@ -123,6 +124,7 @@ function RootComponent() {
       <ThemeProvider>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
+        <Toaster />
       </ThemeProvider>
     </QueryClientProvider>
   );

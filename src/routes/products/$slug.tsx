@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, CheckCircle2, ShieldCheck, Truck, Globe, MessageSquare, Check } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ShieldCheck, Truck, Globe, MessageSquare, Check, X } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
@@ -8,15 +8,22 @@ import { allProducts, categories, company } from "@/data/catalog";
 import { submitInquiry } from "@/lib/supabase";
 import { toast } from "sonner";
 import { getProxiedImageUrl, getFallbackImageUrl, getSvgDataUrl } from "@/lib/imageHelper";
+import { getDbProducts, mergeProducts, getGlobalSettings } from "@/lib/products";
+import { useQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/products/$slug")({
-  loader: ({ params }) => {
-    const product = allProducts.find(
+  loader: async ({ context: { queryClient }, params }) => {
+    const dbProducts = await queryClient.ensureQueryData({
+      queryKey: ["dbProducts"],
+      queryFn: getDbProducts,
+    });
+    const merged = mergeProducts(allProducts, dbProducts);
+    const product = merged.find(
       (p) => p.slug === params.slug || p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") === params.slug
     );
     const category = categories.find((c) => c.slug === params.slug);
     if (!product && !category) throw notFound();
-    return { product, category };
+    return { product, category, mergedProducts: merged };
   },
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [{ title: "Product Not Found | Concept Automation Technologies" }] };
@@ -29,10 +36,16 @@ export const Route = createFileRoute("/products/$slug")({
 });
 
 function ProductDetailPage() {
-  const { product, category } = Route.useLoaderData();
+  const { product, category, mergedProducts } = Route.useLoaderData();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorCount, setErrorCount] = useState(0);
+
+  const { data: settings = { show_stock_status: true } } = useQuery({
+    queryKey: ["globalSettings"],
+    queryFn: getGlobalSettings,
+    staleTime: 1000 * 60 * 10,
+  });
 
   const title = product ? product.name : (category?.name || "Product Detail");
   const brand = product ? product.brand : (category?.brand || "OEM Hardware");
@@ -72,7 +85,7 @@ function ProductDetailPage() {
     }
   };
 
-  const related = allProducts.filter((p) => p.brand.toLowerCase() === brand.toLowerCase() && p.name !== title).slice(0, 4);
+  const related = mergedProducts.filter((p) => p.brand.toLowerCase() === brand.toLowerCase() && p.name !== title).slice(0, 4);
 
   return (
     <div className="min-h-screen bg-background">
@@ -100,9 +113,29 @@ function ProductDetailPage() {
                 <span className="absolute left-4 top-4 z-10 rounded-full bg-stone-900 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">
                   {brand}
                 </span>
-                <span className="absolute right-4 top-4 z-10 flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-semibold text-emerald-700 border border-emerald-200">
-                  <Check className="h-3 w-3" /> In Stock
-                </span>
+                {settings.show_stock_status && (
+                  product ? (
+                    <span className={`absolute right-4 top-4 z-10 flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-semibold border ${
+                      product.stock 
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
+                        : "bg-rose-50 text-rose-700 border-rose-200"
+                    }`}>
+                      {product.stock ? (
+                        <>
+                          <Check className="h-3 w-3" /> {product.stockCount ? `${product.stockCount} In Stock` : "In Stock"}
+                        </>
+                      ) : (
+                        <>
+                          <X className="h-3 w-3" /> Out of Stock
+                        </>
+                      )}
+                    </span>
+                  ) : (
+                    <span className="absolute right-4 top-4 z-10 flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-semibold text-emerald-700 border border-emerald-200">
+                      <Check className="h-3 w-3" /> OEM Hardware
+                    </span>
+                  )
+                )}
                 <img
                   src={getImageSrc()}
                   alt={title}
