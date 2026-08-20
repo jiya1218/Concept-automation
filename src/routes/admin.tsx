@@ -333,9 +333,12 @@ function DashboardView({ onLogout }: DashboardViewProps) {
 
   const handleDeleteRevert = async (p: ExtendedProduct) => {
     const isCustom = p.isCustom;
+    const isDeleted = p.isDeleted;
     const msg = isCustom 
       ? `Are you sure you want to permanently delete "${p.name}"?`
-      : `Are you sure you want to revert "${p.name}" to default static values? (This will clear custom stock updates)`;
+      : isDeleted
+        ? `Are you sure you want to restore "${p.name}" back onto the website?`
+        : `Are you sure you want to revert "${p.name}" to default static values? (This will clear custom stock updates)`;
     
     if (!window.confirm(msg)) return;
 
@@ -343,10 +346,49 @@ function DashboardView({ onLogout }: DashboardViewProps) {
     const res = await deleteProductOverride(p.slug);
 
     if (res.success) {
-      toast.success(isCustom ? "Product deleted." : "Reverted to catalog defaults.", { id: "delProduct" });
+      const successMsg = isCustom 
+        ? "Product deleted." 
+        : isDeleted 
+          ? "Product restored to website catalog." 
+          : "Reverted to catalog defaults.";
+      toast.success(successMsg, { id: "delProduct" });
       queryClient.invalidateQueries({ queryKey: ["dbProducts"] });
     } else {
       toast.error(`Action failed: ${res.error}`, { id: "delProduct" });
+    }
+  };
+
+  const handleDeleteStatic = async (p: ExtendedProduct) => {
+    if (!window.confirm(`Are you sure you want to remove "${p.name}" (Part: ${p.partNumber}) from the website catalog?`)) {
+      return;
+    }
+
+    const dbPayload: Partial<DbProduct> = {
+      name: p.name,
+      part_number: p.partNumber || "",
+      brand: p.brand || "",
+      category: p.category || "",
+      type: p.type || "",
+      description: p.description || "",
+      image: p.image || "",
+      slug: p.slug,
+      stock: p.stock,
+      stock_count: p.stockCount,
+      is_custom: false,
+      is_deleted: true,
+    };
+
+    const dbMatch = dbProducts.find((dbp) => dbp.slug === p.slug);
+    if (dbMatch) dbPayload.id = dbMatch.id;
+
+    toast.loading("Removing product...", { id: `del-${p.slug}` });
+    const res = await saveProductOverride(dbPayload);
+
+    if (res.success) {
+      toast.success("Product removed from website catalog.", { id: `del-${p.slug}` });
+      queryClient.invalidateQueries({ queryKey: ["dbProducts"] });
+    } else {
+      toast.error(`Action failed: ${res.error}`, { id: `del-${p.slug}` });
     }
   };
 
@@ -720,7 +762,7 @@ function DashboardView({ onLogout }: DashboardViewProps) {
                   const hasInlineChanges = inline !== undefined;
 
                   return (
-                    <tr key={p.slug} className="hover:bg-stone-50/50 transition-colors">
+                    <tr key={p.slug} className={`hover:bg-stone-50/50 transition-colors ${p.isDeleted ? "opacity-60 bg-red-50/30 line-through decoration-red-500/40" : ""}`}>
                       <td className="p-4">
                         <div className="h-16 w-16 overflow-hidden rounded-lg border border-stone-200 bg-white p-1 flex items-center justify-center shadow-sm">
                           <img
@@ -737,8 +779,15 @@ function DashboardView({ onLogout }: DashboardViewProps) {
                         {p.partNumber || "—"}
                       </td>
                       <td className="p-4 space-y-1">
-                        <div className="font-bold text-[#1a130f] text-sm line-clamp-1">{p.name}</div>
-                        <div className="flex flex-wrap items-center gap-2">
+                        <div className="font-bold text-[#1a130f] text-sm line-clamp-1 flex items-center gap-2">
+                          {p.name}
+                          {p.isDeleted && (
+                            <span className="rounded bg-rose-100 border border-rose-200 px-1.5 py-0.5 text-[8px] font-extrabold uppercase text-rose-700 tracking-wider line-clamp-1 no-underline">
+                              Hidden from Web
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2 no-underline">
                           <span className="rounded bg-stone-100 border border-stone-200 px-1.5 py-0.5 text-[9px] font-extrabold text-[#1a130f]">
                             {p.brand}
                           </span>
@@ -750,8 +799,12 @@ function DashboardView({ onLogout }: DashboardViewProps) {
                               Custom Added
                             </span>
                           ) : dbProducts.some(dbp => dbp.slug === p.slug) ? (
-                            <span className="rounded bg-amber-50 border border-amber-200 px-1.5 py-0.5 text-[9px] font-bold text-amber-700" title="Overriding default details">
-                              Modified
+                            <span className={`rounded border px-1.5 py-0.5 text-[9px] font-bold ${
+                              p.isDeleted
+                                ? "bg-rose-50 border-rose-200 text-rose-700"
+                                : "bg-amber-50 border-amber-200 text-amber-800"
+                            }`}>
+                              {p.isDeleted ? "Deleted Override" : "Modified Defaults"}
                             </span>
                           ) : (
                             <span className="rounded bg-slate-50 border border-slate-200 px-1.5 py-0.5 text-[9px] font-bold text-slate-500">
@@ -794,13 +847,15 @@ function DashboardView({ onLogout }: DashboardViewProps) {
                               <Check className="h-3.5 w-3.5" />
                             </button>
                           )}
-                          <button
-                            onClick={() => handleOpenEdit(p)}
-                            className="inline-flex items-center justify-center h-7 w-7 rounded-lg bg-slate-100 text-[#1a130f] hover:bg-slate-200 border border-stone-200 transition-colors"
-                            title="Edit Details"
-                          >
-                            <Edit className="h-3.5 w-3.5" />
-                          </button>
+                          {!p.isDeleted && (
+                            <button
+                              onClick={() => handleOpenEdit(p)}
+                              className="inline-flex items-center justify-center h-7 w-7 rounded-lg bg-slate-100 text-[#1a130f] hover:bg-slate-200 border border-stone-200 transition-colors"
+                              title="Edit Details"
+                            >
+                              <Edit className="h-3.5 w-3.5" />
+                            </button>
+                          )}
                           {p.isCustom ? (
                             <button
                               onClick={() => handleDeleteRevert(p)}
@@ -810,15 +865,26 @@ function DashboardView({ onLogout }: DashboardViewProps) {
                               <Trash2 className="h-3.5 w-3.5" />
                             </button>
                           ) : (
-                            dbProducts.some(dbp => dbp.slug === p.slug) && (
-                              <button
-                                onClick={() => handleDeleteRevert(p)}
-                                className="inline-flex items-center justify-center h-7 w-7 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition-colors"
-                                title="Revert Stock/Details"
-                              >
-                                <RotateCcw className="h-3.5 w-3.5" />
-                              </button>
-                            )
+                            <>
+                              {!p.isDeleted && (
+                                <button
+                                  onClick={() => handleDeleteStatic(p)}
+                                  className="inline-flex items-center justify-center h-7 w-7 rounded-lg bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 transition-colors"
+                                  title="Delete Product"
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" />
+                                </button>
+                              )}
+                              {dbProducts.some(dbp => dbp.slug === p.slug) && (
+                                <button
+                                  onClick={() => handleDeleteRevert(p)}
+                                  className="inline-flex items-center justify-center h-7 w-7 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition-colors"
+                                  title={p.isDeleted ? "Restore Product" : "Revert Stock/Details"}
+                                >
+                                  <RotateCcw className="h-3.5 w-3.5" />
+                                </button>
+                              )}
+                            </>
                           )}
                         </div>
                       </td>
@@ -843,7 +909,7 @@ function DashboardView({ onLogout }: DashboardViewProps) {
                 const hasInlineChanges = inline !== undefined;
 
                 return (
-                  <div key={p.slug} className="p-4 bg-white space-y-3">
+                  <div key={p.slug} className={`p-4 bg-white space-y-3 ${p.isDeleted ? "opacity-60 bg-red-50/20 line-through decoration-red-500/20" : ""}`}>
                     <div className="flex gap-3">
                       {/* Image Preview */}
                       <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-stone-200 bg-white p-1 flex items-center justify-center shadow-sm">
@@ -871,12 +937,23 @@ function DashboardView({ onLogout }: DashboardViewProps) {
                               Custom
                             </span>
                           ) : dbProducts.some(dbp => dbp.slug === p.slug) ? (
-                            <span className="rounded bg-amber-50 border border-amber-200 px-1 py-0.2 text-[8px] font-bold text-amber-700">
-                              Modified
+                            <span className={`rounded border px-1.5 py-0.5 text-[9px] font-bold ${
+                              p.isDeleted
+                                ? "bg-rose-50 border-rose-200 text-rose-700"
+                                : "bg-amber-50 border-amber-200 text-amber-700"
+                            }`}>
+                              {p.isDeleted ? "Deleted" : "Modified"}
                             </span>
                           ) : null}
                         </div>
-                        <h4 className="font-bold text-[#1a130f] text-xs line-clamp-2 mt-0.5">{p.name}</h4>
+                        <h4 className="font-bold text-[#1a130f] text-xs line-clamp-2 mt-0.5 flex items-center gap-1.5">
+                          {p.name}
+                          {p.isDeleted && (
+                            <span className="rounded bg-rose-100 border border-rose-200 px-1.5 py-0.5 text-[7px] font-extrabold text-rose-700 no-underline">
+                              Hidden
+                            </span>
+                          )}
+                        </h4>
                       </div>
                     </div>
 
@@ -916,13 +993,15 @@ function DashboardView({ onLogout }: DashboardViewProps) {
                             <Check className="h-3 w-3" />
                           </button>
                         )}
-                        <button
-                          type="button"
-                          onClick={() => handleOpenEdit(p)}
-                          className="inline-flex items-center justify-center h-6 w-6 rounded-lg bg-white text-[#1a130f] hover:bg-slate-100 border border-stone-200 transition-colors"
-                        >
-                          <Edit className="h-3 w-3" />
-                        </button>
+                        {!p.isDeleted && (
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEdit(p)}
+                            className="inline-flex items-center justify-center h-6 w-6 rounded-lg bg-white text-[#1a130f] hover:bg-slate-100 border border-stone-200 transition-colors"
+                          >
+                            <Edit className="h-3 w-3" />
+                          </button>
+                        )}
                         {p.isCustom ? (
                           <button
                             type="button"
@@ -932,15 +1011,26 @@ function DashboardView({ onLogout }: DashboardViewProps) {
                             <Trash2 className="h-3 w-3" />
                           </button>
                         ) : (
-                          dbProducts.some(dbp => dbp.slug === p.slug) && (
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteRevert(p)}
-                              className="inline-flex items-center justify-center h-6 w-6 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition-colors"
-                            >
-                              <RotateCcw className="h-3 w-3" />
-                            </button>
-                          )
+                          <>
+                            {!p.isDeleted && (
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteStatic(p)}
+                                className="inline-flex items-center justify-center h-6 w-6 rounded-lg bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 transition-colors"
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </button>
+                            )}
+                            {dbProducts.some(dbp => dbp.slug === p.slug) && (
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteRevert(p)}
+                                className="inline-flex items-center justify-center h-6 w-6 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition-colors"
+                              >
+                                <RotateCcw className="h-3 w-3" />
+                              </button>
+                            )}
+                          </>
                         )}
                       </div>
                     </div>

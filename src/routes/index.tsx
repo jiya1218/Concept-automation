@@ -133,8 +133,9 @@ function Index() {
   }, [dbProducts]);
 
   const previewProducts = useMemo(() => {
-    if (catalogBrandFilter === "All") return mergedProducts.slice(0, 4);
-    return mergedProducts.filter((p) => p.brand.toLowerCase() === catalogBrandFilter.toLowerCase()).slice(0, 4);
+    const activeProducts = mergedProducts.filter((p) => !p.isDeleted);
+    if (catalogBrandFilter === "All") return activeProducts.slice(0, 4);
+    return activeProducts.filter((p) => p.brand.toLowerCase() === catalogBrandFilter.toLowerCase()).slice(0, 4);
   }, [catalogBrandFilter, mergedProducts]);
 
   const openQuote = (name = "", part = "") => {

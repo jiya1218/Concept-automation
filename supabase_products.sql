@@ -15,8 +15,12 @@ CREATE TABLE IF NOT EXISTS public.products (
     stock BOOLEAN NOT NULL DEFAULT true,
     stock_count INTEGER NOT NULL DEFAULT 1,
     is_custom BOOLEAN NOT NULL DEFAULT false,
+    is_deleted BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
+
+-- Migration query to add column to existing tables:
+-- ALTER TABLE public.products ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN NOT NULL DEFAULT false;
 
 -- Enable Row Level Security (RLS)
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;

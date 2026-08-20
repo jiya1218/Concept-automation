@@ -15,12 +15,14 @@ export interface DbProduct {
   stock: boolean;
   stock_count: number;
   is_custom: boolean;
+  is_deleted?: boolean;
   created_at?: string;
 }
 
 export interface ExtendedProduct extends Product {
   stockCount: number;
   isCustom: boolean;
+  isDeleted?: boolean;
 }
 
 /**
@@ -98,6 +100,7 @@ export function mergeProducts(staticProducts: Product[], dbProducts: DbProduct[]
       ...p,
       stockCount: p.stock ? 1000 : 0, // default stock count for static products
       isCustom: false,
+      isDeleted: false,
     });
   });
 
@@ -131,6 +134,7 @@ export function mergeProducts(staticProducts: Product[], dbProducts: DbProduct[]
       stock: dbP.stock,
       stockCount: dbP.stock_count,
       isCustom: dbP.is_custom,
+      isDeleted: dbP.is_deleted || false,
     };
 
     mergedMap.set(key, mergedItem);
