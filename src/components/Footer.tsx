@@ -85,13 +85,12 @@ export function Footer() {
               <img
                 src="/logo.jpg"
                 alt="Concept Automation"
-                className="h-12 w-12 rounded-xl object-contain bg-white p-1 border border-white/20 shadow-sm"
-                width={48}
-                height={48}
+                className="h-14 w-14 sm:h-16 sm:w-16 rounded-2xl object-contain bg-white p-1 border border-white/20 shadow-sm"
+                width={64}
+                height={64}
               />
-              <span className="font-display text-lg font-extrabold uppercase leading-tight text-white">
-                Concept Automation<br />
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#b45309]">Technologies</span>
+              <span className="font-display text-base sm:text-lg font-extrabold uppercase tracking-tight text-white">
+                Concept Automation <span className="text-[#b45309]">Technologies</span>
               </span>
             </div>
             <p className="text-xs leading-relaxed text-slate-300">

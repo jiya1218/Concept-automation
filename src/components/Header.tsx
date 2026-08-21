@@ -64,17 +64,12 @@ export function Header() {
             <img
               src="/logo.jpg"
               alt="Concept Automation Technologies"
-              className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg object-contain border border-[#e7e5e4] p-0.5 bg-white"
-              width={48}
-              height={48}
+              className="h-14 w-14 sm:h-16 sm:w-16 rounded-xl object-contain border border-[#e7e5e4] p-0.5 bg-white"
+              width={64}
+              height={64}
             />
-            <span className="leading-tight hidden sm:block">
-              <span className="block font-display text-base font-bold tracking-tight text-[#1a130f] sm:text-lg">
-                Concept Automation
-              </span>
-              <span className="block text-[10px] font-bold uppercase tracking-[0.22em] text-[#b45309]">
-                Technologies
-              </span>
+            <span className="font-display text-base sm:text-lg font-extrabold tracking-tight text-[#1a130f] hidden sm:block">
+              Concept Automation <span className="text-[#b45309]">Technologies</span>
             </span>
           </Link>
 
