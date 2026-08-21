@@ -69,7 +69,7 @@ export function Header() {
                 width={64}
                 height={64}
               />
-              <span className="font-display text-base sm:text-lg font-extrabold tracking-tight text-[#1a130f] hidden sm:block">
+              <span className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-[#1a130f] hidden sm:block">
                 Concept Automation <span className="text-[#b45309]">Technologies</span>
               </span>
             </Link>
