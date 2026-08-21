@@ -76,6 +76,41 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             transition={{ duration: 0.3 }}
             className="h-full w-full object-contain"
           />
+
+          {/* Descriptive Hover Overlay */}
+          <div className="absolute inset-0 bg-stone-950/95 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-between p-3.5 sm:p-5 text-white z-20">
+            <div>
+              <span className="text-[8px] sm:text-[9px] font-extrabold uppercase tracking-widest text-[#b45309] block mb-1">
+                {product.category}
+              </span>
+              <h4 className="text-[11px] sm:text-xs font-bold leading-tight line-clamp-2 text-white font-display">
+                {product.name}
+              </h4>
+              {product.partNumber && (
+                <div className="mt-2.5">
+                  <span className="text-[9px] text-stone-400 font-bold block mb-0.5">PART NUMBER</span>
+                  <span className="text-[9px] sm:text-[10px] font-mono font-bold text-white bg-white/10 px-2 py-0.5 rounded border border-white/5">
+                    {product.partNumber}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="pt-2 border-t border-white/10 space-y-1.5">
+              <div className="flex justify-between items-center text-[9px] sm:text-[10px] text-stone-300">
+                <span className="font-medium">Category:</span>
+                <span className="font-bold text-white uppercase tracking-wider">{product.type || "Hardware"}</span>
+              </div>
+              <div className="flex justify-between items-center text-[9px] sm:text-[10px] text-stone-300">
+                <span className="font-medium">Price:</span>
+                <span className="font-extrabold text-amber-400">On Request (Wholesale)</span>
+              </div>
+              <div className="flex justify-between items-center text-[9px] sm:text-[10px] text-stone-300">
+                <span className="font-medium">Availability:</span>
+                <span className="font-bold text-emerald-400">In Stock (Ahmedabad)</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Content Box — Uniform White (#ffffff) */}
