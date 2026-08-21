@@ -76,7 +76,7 @@ export function Header() {
           </div>
 
           {/* Center: Main Menu Items */}
-          <nav className="hidden items-center justify-center gap-1 lg:flex shrink-0">
+          <nav className="hidden items-center justify-center gap-1 lg:flex shrink-0 lg:translate-x-10">
             {nav.map((item) => (
               <div key={item.to} className="group relative">
                 <Link
