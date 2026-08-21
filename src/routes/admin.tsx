@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { 
   Plus, Edit, Trash2, RotateCcw, Check, Search, LogOut, Lock, 
   Package, Layers, Eye, RefreshCw, X, AlertTriangle, LayoutDashboard,
-  CheckCircle, ShieldAlert, SlidersHorizontal, Upload, FileImage
+  CheckCircle, ShieldAlert, SlidersHorizontal, Upload, FileImage, Copy
 } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -15,6 +15,7 @@ import {
   getGlobalSettings, saveGlobalSetting
 } from "@/lib/products";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin")({
   component: AdminPortal,
@@ -38,6 +39,7 @@ function AdminPortal() {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  const [isForgotOpen, setIsForgotOpen] = useState(false);
 
   // Check auth state on mount
   useEffect(() => {
@@ -91,6 +93,118 @@ function AdminPortal() {
     sessionStorage.removeItem("concept_admin_auth");
     setIsAuthenticated(false);
     toast.success("Logged out successfully.");
+  };
+
+  // Recovery wizard state
+  const [recoveryStep, setRecoveryStep] = useState<1 | 2 | 3>(1);
+  const [adminEmail, setAdminEmail] = useState("");
+  const [enteredOtp, setEnteredOtp] = useState("");
+  const [recoveryNewUsername, setRecoveryNewUsername] = useState("");
+  const [recoveryNewPassword, setRecoveryNewPassword] = useState("");
+  const [recoveryConfirmPassword, setRecoveryConfirmPassword] = useState("");
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+
+  const handleOpenForgotModal = async () => {
+    setIsForgotOpen(true);
+    setRecoveryStep(1);
+    setEnteredOtp("");
+    try {
+      const settings = await getGlobalSettings();
+      setAdminEmail(settings['admin_email'] || "jiya@scalezix.com");
+    } catch (e) {
+      setAdminEmail("jiya@scalezix.com");
+    }
+  };
+
+  const handleSendOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSendingOtp(true);
+    toast.loading(`Sending verification code to ${adminEmail}...`, { id: "sendOtp" });
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email: adminEmail,
+      });
+      if (error) {
+        toast.error(`Failed to send code: ${error.message}`, { id: "sendOtp" });
+      } else {
+        toast.success(`Verification code sent to ${adminEmail}!`, { id: "sendOtp" });
+        setRecoveryStep(2);
+      }
+    } catch (err) {
+      console.error("OTP send error:", err);
+      toast.error("Failed to send OTP code. Please check console.", { id: "sendOtp" });
+    } finally {
+      setIsSendingOtp(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!enteredOtp.trim()) {
+      toast.error("Please enter the verification code.");
+      return;
+    }
+    setIsVerifyingOtp(true);
+    toast.loading("Verifying code...", { id: "verifyOtp" });
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email: adminEmail,
+        token: enteredOtp.trim(),
+        type: 'email',
+      });
+      if (error) {
+        toast.error(`Invalid verification code: ${error.message}`, { id: "verifyOtp" });
+      } else {
+        toast.success("Code verified successfully!", { id: "verifyOtp" });
+        setRecoveryStep(3);
+      }
+    } catch (err) {
+      console.error("OTP verify error:", err);
+      toast.error("An error occurred during verification.", { id: "verifyOtp" });
+    } finally {
+      setIsVerifyingOtp(false);
+    }
+  };
+
+  const handleResetCredentials = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!recoveryNewUsername.trim()) {
+      toast.error("Username cannot be empty.");
+      return;
+    }
+    if (recoveryNewPassword !== recoveryConfirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+    if (recoveryNewPassword.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      return;
+    }
+    
+    toast.loading("Resetting credentials...", { id: "resetCredentials" });
+    
+    try {
+      const userRes = await saveGlobalSetting("admin_username", recoveryNewUsername.trim());
+      const passHash = await sha256(recoveryNewPassword);
+      const passRes = await saveGlobalSetting("admin_password_hash", passHash);
+      
+      if (userRes.success && passRes.success) {
+        toast.success("Credentials reset successfully! Please log in now.", { id: "resetCredentials" });
+        setIsForgotOpen(false);
+        // Reset states
+        setRecoveryStep(1);
+        setEnteredOtp("");
+        setRecoveryNewUsername("");
+        setRecoveryNewPassword("");
+        setRecoveryConfirmPassword("");
+      } else {
+        toast.error("Failed to reset credentials. Database error.", { id: "resetCredentials" });
+      }
+    } catch (err) {
+      console.error("Reset error:", err);
+      toast.error("An error occurred during reset.", { id: "resetCredentials" });
+    }
   };
 
   if (isLoadingAuth) {
@@ -163,7 +277,171 @@ function AdminPortal() {
               </button>
             </div>
           </form>
+
+          <div className="text-center mt-4">
+            <button
+              type="button"
+              onClick={handleOpenForgotModal}
+              className="text-xs font-bold text-[#b45309] hover:underline transition-colors"
+            >
+              Forgot Password?
+            </button>
+          </div>
         </div>
+
+        {/* Forgot Password Reset Modal */}
+        {isForgotOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center font-sans">
+            <div className="absolute inset-0 bg-stone-900/60 backdrop-blur-sm transition-opacity" onClick={() => setIsForgotOpen(false)} />
+            
+            <div className="relative w-full max-w-md bg-white rounded-3xl p-6 shadow-2xl animate-fade-in border border-[#e7e5e4] mx-4">
+              <div className="flex justify-between items-center border-b border-[#e7e5e4] pb-4 mb-4">
+                <div className="flex items-center gap-2">
+                  <span className="rounded-lg bg-amber-50 p-2 text-[#b45309]">
+                    <AlertTriangle className="h-4 w-4" />
+                  </span>
+                  <h3 className="text-sm font-extrabold text-[#1a130f]">
+                    {recoveryStep === 1 ? "Send Verification Code" : recoveryStep === 2 ? "Verify OTP Code" : "Reset Admin Credentials"}
+                  </h3>
+                </div>
+                <button onClick={() => setIsForgotOpen(false)} className="rounded-full p-1 hover:bg-stone-100 transition-colors">
+                  <X className="h-4 w-4 text-slate-400" />
+                </button>
+              </div>
+
+              {recoveryStep === 1 ? (
+                <form onSubmit={handleSendOtp} className="space-y-4">
+                  <p className="text-xs text-stone-600 leading-relaxed">
+                    To reset your credentials, we will send a 6-digit OTP verification code to your registered admin email.
+                  </p>
+                  
+                  <div>
+                    <label className="text-[11px] font-bold text-[#1a130f] block mb-1">Registered Admin Email</label>
+                    <input
+                      type="text"
+                      disabled
+                      value={adminEmail}
+                      className="w-full rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-xs text-stone-500 font-semibold shadow-sm cursor-not-allowed"
+                    />
+                    <span className="text-[9px] text-slate-400 mt-1 block">
+                      * You can change this recovery email inside your Admin Dashboard account settings.
+                    </span>
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-3 border-t border-[#e7e5e4]">
+                    <button
+                      type="button"
+                      onClick={() => setIsForgotOpen(false)}
+                      className="rounded-xl border border-[#e7e5e4] bg-white px-4 py-2 text-xs font-bold text-[#1a130f] hover:bg-stone-50 transition-all cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSendingOtp}
+                      className="rounded-xl bg-[#1a130f] hover:bg-[#b45309] text-white px-4 py-2 text-xs font-bold transition-all cursor-pointer shadow-md disabled:opacity-50"
+                    >
+                      {isSendingOtp ? "Sending..." : "Send OTP Code"}
+                    </button>
+                  </div>
+                </form>
+              ) : recoveryStep === 2 ? (
+                <form onSubmit={handleVerifyOtp} className="space-y-4">
+                  <p className="text-xs text-stone-600 leading-relaxed">
+                    A 6-digit OTP verification code has been sent to <strong>{adminEmail}</strong>. Please enter it below.
+                  </p>
+                  
+                  <div>
+                    <label className="text-[11px] font-bold text-[#1a130f] block mb-1">6-Digit OTP Code</label>
+                    <input
+                      type="text"
+                      required
+                      value={enteredOtp}
+                      onChange={(e) => setEnteredOtp(e.target.value)}
+                      placeholder="Enter 6-digit OTP"
+                      className="w-full rounded-xl border border-[#e7e5e4] bg-white px-3 py-2.5 text-xs text-[#1a130f] font-semibold focus:border-[#1a130f] focus:outline-none shadow-sm"
+                    />
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-3 border-t border-[#e7e5e4]">
+                    <button
+                      type="button"
+                      onClick={() => setRecoveryStep(1)}
+                      className="rounded-xl border border-[#e7e5e4] bg-white px-4 py-2 text-xs font-bold text-[#1a130f] hover:bg-stone-50 transition-all cursor-pointer"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isVerifyingOtp}
+                      className="rounded-xl bg-[#1a130f] hover:bg-[#b45309] text-white px-4 py-2 text-xs font-bold transition-all cursor-pointer shadow-md disabled:opacity-50"
+                    >
+                      {isVerifyingOtp ? "Verifying..." : "Verify Code"}
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <form onSubmit={handleResetCredentials} className="space-y-4">
+                  <p className="text-xs text-stone-600 leading-relaxed">
+                    Verification successful! Enter your new admin credentials to overwrite the forgotten settings.
+                  </p>
+                  
+                  <div>
+                    <label className="text-[11px] font-bold text-[#1a130f] block mb-1">New Username *</label>
+                    <input
+                      type="text"
+                      required
+                      value={recoveryNewUsername}
+                      onChange={(e) => setRecoveryNewUsername(e.target.value)}
+                      placeholder="e.g. admin"
+                      className="w-full rounded-xl border border-[#e7e5e4] bg-white px-3 py-2.5 text-xs text-[#1a130f] font-semibold focus:border-[#1a130f] focus:outline-none shadow-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-[#1a130f] block mb-1">New Password *</label>
+                    <input
+                      type="password"
+                      required
+                      value={recoveryNewPassword}
+                      onChange={(e) => setRecoveryNewPassword(e.target.value)}
+                      placeholder="Enter secure new password"
+                      className="w-full rounded-xl border border-[#e7e5e4] bg-white px-3 py-2.5 text-xs text-[#1a130f] font-semibold focus:border-[#1a130f] focus:outline-none shadow-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-[#1a130f] block mb-1">Confirm New Password *</label>
+                    <input
+                      type="password"
+                      required
+                      value={recoveryConfirmPassword}
+                      onChange={(e) => setRecoveryConfirmPassword(e.target.value)}
+                      placeholder="Confirm new password"
+                      className="w-full rounded-xl border border-[#e7e5e4] bg-white px-3 py-2.5 text-xs text-[#1a130f] font-semibold focus:border-[#1a130f] focus:outline-none shadow-sm"
+                    />
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-3 border-t border-[#e7e5e4]">
+                    <button
+                      type="button"
+                      onClick={() => setRecoveryStep(2)}
+                      className="rounded-xl border border-[#e7e5e4] bg-white px-4 py-2 text-xs font-bold text-[#1a130f] hover:bg-stone-50 transition-all cursor-pointer"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="submit"
+                      className="rounded-xl bg-[#b45309] hover:bg-stone-900 text-white px-4 py-2 text-xs font-bold transition-all cursor-pointer shadow-md"
+                    >
+                      Reset Credentials
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -236,12 +514,16 @@ function DashboardView({ onLogout }: DashboardViewProps) {
   const [newUsername, setNewUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [newRecoveryKey, setNewRecoveryKey] = useState("");
+  const [newEmail, setNewEmail] = useState("");
 
   useEffect(() => {
     if (isSettingsOpen && globalSettings) {
       setNewUsername(globalSettings['admin_username'] || ADMIN_USER);
       setNewPassword("");
       setConfirmPassword("");
+      setNewRecoveryKey("");
+      setNewEmail(globalSettings['admin_email'] || "jiya@scalezix.com");
     }
   }, [isSettingsOpen, globalSettings]);
 
@@ -251,21 +533,40 @@ function DashboardView({ onLogout }: DashboardViewProps) {
       toast.error("Username cannot be empty.");
       return;
     }
-    if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match.");
-      return;
+    
+    if (newPassword) {
+      if (newPassword !== confirmPassword) {
+        toast.error("Passwords do not match.");
+        return;
+      }
+      if (newPassword.length < 6) {
+        toast.error("Password must be at least 6 characters long.");
+        return;
+      }
     }
-    if (newPassword.length < 6) {
-      toast.error("Password must be at least 6 characters long.");
+
+    if (!newEmail.trim() || !newEmail.includes("@")) {
+      toast.error("Please enter a valid admin email address.");
       return;
     }
 
     toast.loading("Updating credentials...", { id: "saveAccountSettings" });
     const userRes = await saveGlobalSetting("admin_username", newUsername.trim());
-    const passHash = await sha256(newPassword);
-    const passRes = await saveGlobalSetting("admin_password_hash", passHash);
+    const emailRes = await saveGlobalSetting("admin_email", newEmail.trim());
+    
+    let passRes = { success: true };
+    if (newPassword) {
+      const passHash = await sha256(newPassword);
+      passRes = await saveGlobalSetting("admin_password_hash", passHash);
+    }
+    
+    let recoveryRes = { success: true };
+    if (newRecoveryKey.trim()) {
+      const recoveryHash = await sha256(newRecoveryKey.trim());
+      recoveryRes = await saveGlobalSetting("admin_recovery_key_hash", recoveryHash);
+    }
 
-    if (userRes.success && passRes.success) {
+    if (userRes.success && emailRes.success && passRes.success && recoveryRes.success) {
       toast.success("Credentials updated successfully!", { id: "saveAccountSettings" });
       setIsSettingsOpen(false);
       queryClient.invalidateQueries({ queryKey: ["globalSettings"] });
@@ -1584,27 +1885,54 @@ function DashboardView({ onLogout }: DashboardViewProps) {
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-[#1a130f] block mb-1">New Password *</label>
+                <label className="text-[11px] font-bold text-[#1a130f] block mb-1">New Password</label>
                 <input
                   type="password"
-                  required
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="Enter secure new password"
+                  placeholder="Leave blank to keep current password"
                   className="w-full rounded-xl border border-[#e7e5e4] bg-white px-3 py-2.5 text-xs text-[#1a130f] font-semibold focus:border-[#1a130f] focus:outline-none shadow-sm"
                 />
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-[#1a130f] block mb-1">Confirm New Password *</label>
+                <label className="text-[11px] font-bold text-[#1a130f] block mb-1">Confirm New Password</label>
                 <input
                   type="password"
-                  required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Re-enter new password"
+                  placeholder="Confirm new password"
                   className="w-full rounded-xl border border-[#e7e5e4] bg-white px-3 py-2.5 text-xs text-[#1a130f] font-semibold focus:border-[#1a130f] focus:outline-none shadow-sm"
                 />
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-[#1a130f] block mb-1">New Security Recovery Key</label>
+                <input
+                  type="text"
+                  value={newRecoveryKey}
+                  onChange={(e) => setNewRecoveryKey(e.target.value)}
+                  placeholder="Set custom key (leave blank to keep current)"
+                  className="w-full rounded-xl border border-[#e7e5e4] bg-white px-3 py-2.5 text-xs text-[#1a130f] font-semibold focus:border-[#1a130f] focus:outline-none shadow-sm"
+                />
+                <span className="text-[9px] text-slate-400 mt-1 block">
+                  * Backup recovery key (default: concept@recovery2026).
+                </span>
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-[#1a130f] block mb-1">Registered Admin Email *</label>
+                <input
+                  type="email"
+                  required
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  placeholder="e.g. sales@conceptautotech.com"
+                  className="w-full rounded-xl border border-[#e7e5e4] bg-white px-3 py-2.5 text-xs text-[#1a130f] font-semibold focus:border-[#1a130f] focus:outline-none shadow-sm"
+                />
+                <span className="text-[9px] text-slate-400 mt-1 block">
+                  * Receives 6-digit OTP verification codes during password recovery.
+                </span>
               </div>
 
               <div className="flex justify-end gap-2 pt-4 border-t border-[#e7e5e4]">

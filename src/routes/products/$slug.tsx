@@ -40,6 +40,7 @@ function ProductDetailPage() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorCount, setErrorCount] = useState(0);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const { data: settings = { show_stock_status: true } } = useQuery({
     queryKey: ["globalSettings"],
@@ -51,11 +52,19 @@ function ProductDetailPage() {
   const brand = product ? product.brand : (category?.brand || "OEM Hardware");
   const partNumber = product ? product.partNumber : "";
   const rawImage = product?.image || "";
+  
+  const imagesList = product?.images && product.images.length > 0 ? product.images : [rawImage];
+  const activeImage = imagesList[activeImageIndex] || rawImage;
 
   const getImageSrc = () => {
-    if (errorCount === 0) return getProxiedImageUrl(rawImage);
+    if (errorCount === 0) return getProxiedImageUrl(activeImage);
     if (errorCount === 1) return getFallbackImageUrl(brand, product?.type || category?.type);
     return getSvgDataUrl(title, brand);
+  };
+
+  const handleThumbnailClick = (idx: number) => {
+    setActiveImageIndex(idx);
+    setErrorCount(0);
   };
 
   const description = product ? product.description : (category ? `${category.name} supplied by Concept Automation Technologies Makarba, Ahmedabad.` : "Original OEM factory automation hardware.");
@@ -144,6 +153,31 @@ function ProductDetailPage() {
                   className="h-full w-full object-contain transition-transform duration-500 hover:scale-105"
                 />
               </div>
+
+              {/* Thumbnail Gallery */}
+              {imagesList.length > 1 && (
+                <div className="mt-3 flex gap-2 overflow-x-auto pb-1.5 scrollbar-thin scrollbar-thumb-stone-300">
+                  {imagesList.map((imgUrl, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => handleThumbnailClick(idx)}
+                      className={`relative aspect-square w-16 h-16 overflow-hidden rounded-xl border-2 bg-white p-1 flex items-center justify-center shrink-0 transition-all ${
+                        activeImageIndex === idx 
+                          ? "border-amber-500 shadow-sm ring-1 ring-amber-500/25" 
+                          : "border-stone-200 opacity-70 hover:opacity-100 hover:border-stone-400"
+                      }`}
+                    >
+                      <img
+                        src={getProxiedImageUrl(imgUrl)}
+                        alt={`Product thumbnail ${idx + 1}`}
+                        referrerPolicy="no-referrer"
+                        className="h-full w-full object-contain"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
 
               {/* Trust badges */}
               <div className="mt-4 grid grid-cols-3 gap-3">
