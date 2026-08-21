@@ -70,10 +70,10 @@ const heroBrandTabs = [
   },
   {
     id: "omron",
-    name: "Omron & Delta",
-    badge: "Factory Direct Hardware",
-    title: "Omron Sysmac CP1E/CJ2 & Delta VFD-E",
-    desc: "Complete stock of Omron micro PLCs, Delta MS300 vector inverters, and Pepperl+Fuchs inductive sensors.",
+    name: "Omron & Sensors",
+    badge: "Factory Direct Sensors & PLCs",
+    title: "Omron Controllers & Pepperl+Fuchs Sensors",
+    desc: "Supplying Omron micro PLCs, Autonics rotary encoders, and a full range of Pepperl+Fuchs inductive/photoelectric sensors.",
     highlightPart: "CP1E-N40DR-A",
     image: "https://cpimg.tistatic.com/09512948/b/4/PAPPERL-FUCHS-UC2000-30GM-IUR2-V15.jpg",
   },
@@ -89,11 +89,11 @@ const networkStats = [
 ];
 
 const keyIndustries = [
-  { id: "pharma", title: "Pharma Industry", desc: "Cleanroom automation, batch processing, 21 CFR Part 11 compliance, and precision tablet press PLC panels.", image: "https://cpimg.tistatic.com/09164979/b/4/Siemens-Logo-6ED1052-1FB08-0BA1-PLC.jpg" },
-  { id: "textile", title: "Textile & Packaging", desc: "High-speed multi-axis motion synchronization, tension control VFD inverters, and automatic wrapping SCADA.", image: "https://cpimg.tistatic.com/09377052/b/4/FR-CS84-295-60-MITSUBISHI-VFD.jpg" },
-  { id: "automotive", title: "Automotive Line", desc: "Robotic welding line racks, assembly line PLC controllers, safety light curtains, and industrial Ethernet fieldbus IO.", image: "https://cpimg.tistatic.com/09377302/b/4/CompactLogix-5380.jpg" },
-  { id: "plastic", title: "Plastic & Paper", desc: "Extruder vector drives, precise melt temperature PID control modules, and heavy-duty shaft encoders.", image: "https://cpimg.tistatic.com/09512948/b/4/PAPPERL-FUCHS-UC2000-30GM-IUR2-V15.jpg" },
-  { id: "machine", title: "Machine Engineering", desc: "Turnkey electrical control panel manufacturing, customized PLC program suites, and HMI touch screen development.", image: "https://cpimg.tistatic.com/09377030/b/4/GS2110-WTBD-N-Mitsubishi-HMI-10-inch.jpg" },
+  { id: "pharma", title: "Pharma Industry", desc: "Supplying high-reliability PLC controllers, HMI touchscreens, and temperature control modules for cleanrooms, batch processing machinery, and tablet press systems.", image: "https://cpimg.tistatic.com/09164979/b/4/Siemens-Logo-6ED1052-1FB08-0BA1-PLC.jpg" },
+  { id: "textile", title: "Textile & Packaging", desc: "Direct supply of high-speed motion sync modules, variable frequency drives (VFDs) for tension control, and sensor kits for automated wrapping and weaving machinery.", image: "https://cpimg.tistatic.com/09377052/b/4/FR-CS84-295-60-MITSUBISHI-VFD.jpg" },
+  { id: "automotive", title: "Automotive Lines", desc: "Sourcing and importing robust safety light curtains, PLC CPUs, industrial Ethernet cables, and fieldbus I/O modules for assembly and manufacturing lines.", image: "https://cpimg.tistatic.com/09377302/b/4/CompactLogix-5380.jpg" },
+  { id: "plastic", title: "Plastic & Paper", desc: "Supplying vector control AC drives, precise PID heating control modules, and heavy-duty shaft encoders for extruders, winding machines, and paper rollers.", image: "https://cpimg.tistatic.com/09512948/b/4/PAPPERL-FUCHS-UC2000-30GM-IUR2-V15.jpg" },
+  { id: "machine", title: "Panel Builders", desc: "Primary trade supplier of genuine PLCs, HMIs, VFDs, and sensors to electrical panel builders and automation integrators at competitive wholesale rates.", image: "https://cpimg.tistatic.com/09377030/b/4/GS2110-WTBD-N-Mitsubishi-HMI-10-inch.jpg" },
 ];
 
 const reviews = [
@@ -484,9 +484,9 @@ function Index() {
         <section className="py-16 sm:py-24 bg-[#f4f1eb] border-t border-[#e7e5e4]">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="text-center max-w-2xl mx-auto mb-8">
-              <span className="eyebrow">ENGINEERED SOLUTIONS</span>
+              <span className="eyebrow">INDUSTRIES WE SUPPLY</span>
               <h2 className="mt-1 font-display text-2xl sm:text-4xl font-extrabold text-[#1a130f]">
-                Serving Key Industries
+                Where We Supply Products
               </h2>
             </div>
 
@@ -518,7 +518,7 @@ function Index() {
                 <div className="grid gap-6 lg:grid-cols-12 items-center">
                   <div className="lg:col-span-7 space-y-4">
                     <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#b45309]">
-                      Targeted Industry Hardware
+                      Targeted Industry Supply
                     </span>
                     <h3 className="font-display text-2xl sm:text-3xl font-extrabold uppercase text-[#1a130f]">
                       {activeIndustry.title}
@@ -530,7 +530,7 @@ function Index() {
                       onClick={() => openQuote(activeIndustry.title, "")}
                       className="inline-flex items-center gap-2 rounded-xl bg-[#1a130f] px-6 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#b45309] transition-colors"
                     >
-                      Inquire Solution <ArrowRight className="h-4 w-4 text-amber-400" />
+                      Inquire for Bulk Supply <ArrowRight className="h-4 w-4 text-amber-400" />
                     </button>
                   </div>
                   <div className="lg:col-span-5 flex justify-center">
