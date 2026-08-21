@@ -89,7 +89,7 @@ export function Footer() {
                 width={64}
                 height={64}
               />
-              <span className="font-display text-lg sm:text-xl font-extrabold uppercase tracking-tight text-white">
+              <span className="font-display text-xl sm:text-2xl font-extrabold uppercase tracking-tight text-white">
                 Concept Automation <span className="text-[#b45309]">Technologies</span>
               </span>
             </div>

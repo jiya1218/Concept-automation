@@ -58,25 +58,21 @@ export function Header() {
         </div>
 
         {/* Main Header Row */}
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          {/* Left: Logo Name */}
-          <div className="flex-1 flex justify-start min-w-0">
-            <Link to="/" className="flex items-center gap-3 shrink-0">
-              <img
-                src="/logo.jpg"
-                alt="Concept Automation Technologies"
-                className="h-14 w-14 sm:h-16 sm:w-16 rounded-xl object-contain border border-[#e7e5e4] p-0.5 bg-white shadow-sm"
-                width={64}
-                height={64}
-              />
-              <span className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-[#1a130f] hidden sm:block">
-                Concept Automation <span className="text-[#b45309]">Technologies</span>
-              </span>
-            </Link>
-          </div>
-
-          {/* Center: Main Menu Items */}
-          <nav className="hidden items-center justify-center gap-1 lg:flex shrink-0 lg:translate-x-10">
+        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-3 shrink-0">
+            <img
+              src="/logo.jpg"
+              alt="Concept Automation Technologies"
+              className="h-14 w-14 sm:h-16 sm:w-16 rounded-xl object-contain border border-[#e7e5e4] p-0.5 bg-white shadow-sm"
+              width={64}
+              height={64}
+            />
+            <span className="font-display text-xl sm:text-2xl font-extrabold tracking-tight text-[#1a130f] hidden sm:block">
+              Concept Automation <span className="text-[#b45309]">Technologies</span>
+            </span>
+          </Link>          {/* Desktop Navigation — Aligned Right next to actions */}
+          <nav className="ml-auto hidden items-center gap-1.5 lg:flex shrink-0">
             {nav.map((item) => (
               <div key={item.to} className="group relative">
                 <Link
@@ -136,8 +132,8 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Right: Search Icon and Get Quote */}
-          <div className="flex-1 flex items-center justify-end gap-2 shrink-0">
+          {/* Right Action CTA */}
+          <div className="ml-auto flex items-center gap-2 lg:ml-0 shrink-0">
             <button
               onClick={() => setSearchOpen((v) => !v)}
               aria-label="Search catalog"
